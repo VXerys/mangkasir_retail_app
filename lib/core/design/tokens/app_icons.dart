@@ -137,6 +137,14 @@ abstract final class AppIcons {
   static const import = Icons.upload_outlined;
   static const logout = Icons.logout;
 
+  // --- Tampilan -------------------------------------------------------------
+
+  /// Mengikuti tema sistem operasi.
+  static const themeSystem = Icons.brightness_auto_outlined;
+
+  static const themeLight = Icons.light_mode_outlined;
+  static const themeDark = Icons.dark_mode_outlined;
+
   // --- Umpan balik ----------------------------------------------------------
 
   static const success = Icons.check_circle_outline;

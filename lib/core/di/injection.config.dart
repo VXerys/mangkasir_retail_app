@@ -72,8 +72,10 @@ import '../../features/transactions/data/repositories/transaction_repository_imp
 import '../../features/transactions/domain/repositories/transaction_repository.dart'
     as _i421;
 import '../database/app_database.dart' as _i982;
+import '../design/theme/theme_cubit.dart' as _i104;
 import '../network/connectivity_module.dart' as _i154;
 import '../network/supabase_module.dart' as _i374;
+import '../preferences/app_preferences.dart' as _i597;
 import '../sync/connectivity_service.dart' as _i312;
 import '../sync/sync_bloc/sync_bloc.dart' as _i547;
 import '../sync/sync_worker.dart' as _i987;
@@ -94,6 +96,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i895.Connectivity>(() => connectivityModule.connectivity);
     gh.lazySingleton<_i454.SupabaseClient>(() => supabaseModule.supabaseClient);
     gh.lazySingleton<_i669.CartStorage>(() => _i669.CartStorage());
+    gh.lazySingleton<_i597.AppPreferences>(() => _i597.AppPreferences());
+    gh.lazySingleton<_i104.ThemeCubit>(
+      () => _i104.ThemeCubit(gh<_i597.AppPreferences>()),
+    );
     gh.lazySingleton<_i214.ProductLocalDs>(
       () => _i214.ProductLocalDsImpl(gh<_i982.AppDatabase>()),
     );

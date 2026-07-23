@@ -46,7 +46,11 @@ abstract final class AppPalette {
   static const n400 = Color(0xFF8A939D);
 
   /// Teks tersier: metadata, timestamp, hint.
-  static const n500 = Color(0xFF6B747E);
+  ///
+  /// Digelapkan pada UI-1. Nilai sebelumnya (`0xFF6B747E`) hanya mencapai
+  /// 4,38:1 di atas [n50] — dan [n50] justru tempat teks tersier paling sering
+  /// muncul: header tabel dan baris zebra. Nilai ini mencapai 4,71:1.
+  static const n500 = Color(0xFF666F79);
 
   /// Teks sekunder: label, kolom pendukung.
   static const n600 = Color(0xFF4E565F);
@@ -115,4 +119,108 @@ abstract final class AppPalette {
 
   /// Pembelian / purchase order / penerimaan.
   static const domainPurchase = Color(0xFFA85D00);
+
+  // ---------------------------------------------------------------------------
+  // Ramp gelap.
+  //
+  // Bukan hasil membalik ramp terang. Tiga hal dikerjakan berbeda:
+  //
+  // 1. Selisih terang antar lapisan dibuat lebih rapat. Mata membedakan
+  //    perbedaan kecerahan jauh lebih buruk di ujung gelap, jadi langkah
+  //    sebesar ramp terang akan membuat lapisan atas terlihat abu-abu terang
+  //    dan lapisan bawah hitam pekat.
+  // 2. Saturasi warna semantik diturunkan. Merah dan hijau penuh di atas
+  //    permukaan gelap tampak menyala dan melelahkan pada sesi delapan jam.
+  // 3. Aksen dinaikkan kecerahannya, bukan diturunkan — biru gelap di atas
+  //    permukaan gelap kehilangan seluruh perannya sebagai penanda aksi.
+  //
+  // Angka menaik selalu berarti lebih terang, sama seperti ramp `n` dibaca
+  // dari n900 ke n0.
+  // ---------------------------------------------------------------------------
+
+  /// Kanvas workspace. Permukaan paling belakang dan paling gelap.
+  static const d0 = Color(0xFF0F1318);
+
+  /// Permukaan yang diredam: header tabel, sidebar, baris zebra.
+  ///
+  /// Lebih gelap dari [d100], bukan lebih terang. Peran "diredam" berarti
+  /// mundur ke belakang di kedua tema.
+  static const d50 = Color(0xFF141A21);
+
+  /// Permukaan konten utama: panel, kartu, isi tabel.
+  static const d100 = Color(0xFF1A2028);
+
+  /// Baris dan kontrol saat disorot kursor.
+  static const d150 = Color(0xFF212934);
+
+  /// Permukaan yang melayang: dropdown, popover, dialog. Lebih terang dari
+  /// [d100] — di tema gelap ketinggian dinyatakan dengan cahaya, bukan bayangan.
+  static const d200 = Color(0xFF252E3A);
+
+  /// Pemisah paling halus, di dalam satu panel.
+  static const d300 = Color(0xFF2B3542);
+
+  /// Garis default: batas panel, batas input, batas tabel.
+  static const d400 = Color(0xFF38424F);
+
+  /// Garis tegas: pembatas antar area besar, handle resize.
+  static const d500 = Color(0xFF4B5665);
+
+  /// Teks pada kontrol yang dinonaktifkan.
+  static const d600 = Color(0xFF5F6A78);
+
+  /// Teks tersier: metadata, timestamp, hint.
+  static const d700 = Color(0xFF8B95A1);
+
+  /// Teks sekunder: label, kolom pendukung.
+  static const d800 = Color(0xFFB4BDC7);
+
+  /// Teks utama pada permukaan gelap.
+  ///
+  /// Sengaja bukan putih murni: putih penuh di atas permukaan gelap
+  /// menghasilkan halo yang membuat teks kecil terlihat bergetar.
+  static const d900 = Color(0xFFE3E8EE);
+
+  // Accent versi gelap. Perhatikan hover justru lebih *terang* dari nilai
+  // dasarnya — di tema gelap, "lebih dekat ke pengguna" berarti lebih terang.
+
+  static const accent50Dark = Color(0xFF1B2B45);
+  static const accent500Dark = Color(0xFF3B82F6);
+  static const accent600Dark = Color(0xFF5B99F8);
+  static const accent700Dark = Color(0xFF2A6FD8);
+
+  /// Teks di atas permukaan beraksen pada tema gelap.
+  ///
+  /// **Bukan putih.** Putih di atas [accent500Dark] hanya mencapai rasio 3,3:1
+  /// dan gagal WCAG AA untuk teks berukuran normal; nilai gelap ini mencapai
+  /// 5,2:1. Konsekuensinya label tombol primer di mode gelap berwarna gelap —
+  /// itu memang keputusannya.
+  static const onAccentDark = Color(0xFF0B0F14);
+
+  // Semantik versi gelap: fg terang lembut, bg gelap ber-tint tipis, border
+  // menengah supaya bentuk badge tetap terbaca tanpa mengandalkan rona saja.
+
+  static const successFgDark = Color(0xFF6EDBA0);
+  static const successBgDark = Color(0xFF10241A);
+  static const successBorderDark = Color(0xFF275C40);
+
+  static const dangerFgDark = Color(0xFFFF9B92);
+  static const dangerBgDark = Color(0xFF2A1513);
+  static const dangerBorderDark = Color(0xFF6B2E29);
+
+  static const warningFgDark = Color(0xFFF0BE68);
+  static const warningBgDark = Color(0xFF271B0B);
+  static const warningBorderDark = Color(0xFF61451A);
+
+  static const infoFgDark = Color(0xFF8FBEFF);
+  static const infoBgDark = Color(0xFF12203A);
+  static const infoBorderDark = Color(0xFF2E4B7A);
+
+  // Aksen domain versi gelap — rona yang sama, kecerahan dinaikkan agar tetap
+  // terbedakan sebagai seri chart di atas kanvas gelap.
+
+  static const domainSalesDark = Color(0xFF5B99F8);
+  static const domainInventoryDark = Color(0xFF9B7BE8);
+  static const domainFinanceDark = Color(0xFF35B3BD);
+  static const domainPurchaseDark = Color(0xFFD08A2E);
 }

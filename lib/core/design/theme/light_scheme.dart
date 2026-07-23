@@ -1,5 +1,6 @@
 import 'package:flutter/painting.dart';
 
+import '../tokens/app_elevation.dart';
 import '../tokens/app_palette.dart';
 import '../tokens/app_semantic_colors.dart';
 import '../tokens/app_typography.dart';
@@ -105,4 +106,6 @@ abstract final class LightScheme {
 
   static final typography =
       AppTypography.standard(defaultColor: colors.textPrimary);
+
+  static const elevation = AppElevation.light();
 }

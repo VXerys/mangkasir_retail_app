@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'tokens/app_density.dart';
+import 'tokens/app_elevation.dart';
 import 'tokens/app_semantic_colors.dart';
 import 'tokens/app_typography.dart';
 
@@ -17,11 +18,13 @@ export 'components/shell/app_sidebar.dart';
 export 'theme/app_theme.dart';
 export 'tokens/app_breakpoints.dart';
 export 'tokens/app_density.dart';
+export 'tokens/app_elevation.dart';
 export 'tokens/app_icons.dart';
 export 'tokens/app_motion.dart';
 export 'tokens/app_radius.dart';
 export 'tokens/app_semantic_colors.dart';
-export 'tokens/app_shadows.dart';
+// `app_shadows.dart` sengaja tidak diekspor, sama seperti `app_palette.dart`:
+// keduanya nilai mentah. Feature membaca bayangan lewat `context.elevation`.
 export 'tokens/app_typography.dart';
 
 /// Pintu masuk design system.
@@ -49,6 +52,9 @@ extension AppThemeContext on BuildContext {
 
   /// Gaya teks berbasis peran.
   AppTypography get text => Theme.of(this).extension<AppTypography>()!;
+
+  /// Bayangan per peran ketinggian, sudah sesuai tema yang sedang aktif.
+  AppElevation get elevation => Theme.of(this).extension<AppElevation>()!;
 
   /// Spasi dan metrik kontrol untuk kerapatan yang berlaku di sini.
   ///

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../tokens/app_density.dart';
+import '../tokens/app_elevation.dart';
 import '../tokens/app_radius.dart';
 import '../tokens/app_semantic_colors.dart';
 import '../tokens/app_typography.dart';
@@ -21,19 +22,21 @@ abstract final class AppTheme {
         brightness: Brightness.light,
         colors: LightScheme.colors,
         typography: LightScheme.typography,
+        elevation: LightScheme.elevation,
       );
 
-  /// Tema gelap. Saat ini memakai nilai skema terang — lihat [DarkScheme].
   static ThemeData get dark => _build(
-        brightness: Brightness.light,
+        brightness: Brightness.dark,
         colors: DarkScheme.colors,
         typography: DarkScheme.typography,
+        elevation: DarkScheme.elevation,
       );
 
   static ThemeData _build({
     required Brightness brightness,
     required AppSemanticColors colors,
     required AppTypography typography,
+    required AppElevation elevation,
   }) {
     // Tema global tidak punya akses ke lebar layar, jadi metrik kontrol di sini
     // memakai kerapatan menengah. Komponen kita membaca kerapatan yang benar
@@ -63,7 +66,10 @@ abstract final class AppTheme {
       onSurfaceVariant: colors.textSecondary,
       outline: colors.borderDefault,
       outlineVariant: colors.borderSubtle,
-      shadow: const Color(0xFF101828),
+      // Widget Material bawaan menghitung sendiri opasitas bayangannya dari
+      // warna ini, jadi yang diberikan adalah warna dasar bayangan tema —
+      // bukan salah satu nilai jadi di `AppElevation`.
+      shadow: elevation.dialog.first.color.withAlpha(0xFF),
       scrim: colors.overlay,
       inverseSurface: colors.textPrimary,
       onInverseSurface: colors.surface,
@@ -78,8 +84,9 @@ abstract final class AppTheme {
       canvasColor: colors.surface,
       dividerColor: colors.borderDefault,
 
-      // Token kita hidup di sini. Diakses lewat `context.colors` / `context.text`.
-      extensions: <ThemeExtension<dynamic>>[colors, typography],
+      // Token kita hidup di sini. Diakses lewat `context.colors`,
+      // `context.text`, dan `context.elevation`.
+      extensions: <ThemeExtension<dynamic>>[colors, typography, elevation],
 
       // Rapatkan widget Material bawaan agar sejalan dengan prinsip kerapatan
       // tinggi. Area sentuh minimum tetap dijaga oleh komponen kita sendiri.

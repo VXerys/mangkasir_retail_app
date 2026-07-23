@@ -92,10 +92,12 @@ void main() {
   });
 
   group('AppTheme', () {
-    test('memasang kedua ThemeExtension', () {
-      final theme = AppTheme.light;
-      expect(theme.extension<AppSemanticColors>(), isNotNull);
-      expect(theme.extension<AppTypography>(), isNotNull);
+    test('memasang ketiga ThemeExtension', () {
+      for (final theme in [AppTheme.light, AppTheme.dark]) {
+        expect(theme.extension<AppSemanticColors>(), isNotNull);
+        expect(theme.extension<AppTypography>(), isNotNull);
+        expect(theme.extension<AppElevation>(), isNotNull);
+      }
     });
 
     test('ColorScheme mengikuti token, bukan ungu bawaan Flutter', () {

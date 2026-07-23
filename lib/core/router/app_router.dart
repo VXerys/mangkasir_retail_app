@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_routes.dart';
 import '../design/design.dart';
 import '../design/gallery/design_gallery_page.dart';
+import '../design/theme/theme_cubit.dart';
 import 'app_navigation_shell.dart';
 
 /// Konfigurasi rute aplikasi.
@@ -64,9 +66,16 @@ abstract final class AppRouter {
         if (kDebugMode)
           GoRoute(
             path: AppRoutes.designGallery,
+            // Sakelar tema dirakit di sini, bukan di dalam galeri: galeri harus
+            // tetap bisa dirender tanpa DI agar uji asapnya murah.
             pageBuilder: (context, state) => _page(
               state,
-              const DesignGalleryPage(),
+              BlocBuilder<ThemeCubit, ThemeMode>(
+                builder: (context, mode) => DesignGalleryPage(
+                  themeMode: mode,
+                  onThemeModeChanged: context.read<ThemeCubit>().setMode,
+                ),
+              ),
             ),
           ),
       ],

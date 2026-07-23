@@ -6,7 +6,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/design/design.dart';
+import 'core/design/theme/theme_cubit.dart';
 import 'core/di/injection.dart';
+import 'core/preferences/app_preferences.dart';
 import 'core/router/app_router.dart';
 import 'core/sync/connectivity_service.dart';
 import 'core/sync/sync_bloc/sync_bloc.dart';
@@ -19,6 +21,11 @@ void main() async {
 
   await dotenv.load();
   await Hive.initFlutter();
+
+  // Dibuka sebelum runApp supaya ThemeCubit bisa membaca mode tema secara
+  // sinkron. Kalau dibaca belakangan, aplikasi selalu berkedip terang lebih
+  // dulu sebelum berpindah ke gelap.
+  await AppPreferences.open();
 
   // Nama hari dan bulan berbahasa Indonesia dipakai oleh DateFormatter.
   // Tanpa pemanggilan ini, intl melempar galat locale saat pertama kali
@@ -66,16 +73,17 @@ class _MangRitelAppState extends State<MangRitelApp> {
         // hilang dan sinkronisasi berhenti diam-diam.
         BlocProvider.value(value: getIt<CartBloc>()),
         BlocProvider.value(value: getIt<SyncBloc>()),
+        BlocProvider.value(value: getIt<ThemeCubit>()),
       ],
-      child: MaterialApp.router(
-        title: 'MangRitel',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
-        // Tema gelap belum diisi (lihat DarkScheme), jadi mode dikunci ke
-        // terang agar tidak ada layar yang terbaca salah.
-        themeMode: ThemeMode.light,
-        routerConfig: _router,
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, themeMode) => MaterialApp.router(
+          title: 'MangRitel',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: themeMode,
+          routerConfig: _router,
+        ),
       ),
     );
   }

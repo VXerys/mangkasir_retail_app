@@ -14,7 +14,22 @@ import '../design.dart';
 ///
 /// Hanya terdaftar pada build debug (lihat `app_router.dart`).
 class DesignGalleryPage extends StatelessWidget {
-  const DesignGalleryPage({super.key});
+  /// Mode tema yang sedang aktif, untuk menyorot posisi sakelar.
+  ///
+  /// Sakelar tema hanya muncul bila [themeMode] dan [onThemeModeChanged]
+  /// keduanya diisi. Galeri sengaja tidak membaca `ThemeCubit` sendiri:
+  /// halaman ini harus tetap bisa dirender tanpa DI apa pun — itu yang
+  /// menjadikannya uji asap yang murah. Perakitannya dilakukan di
+  /// `app_router.dart`.
+  final ThemeMode? themeMode;
+
+  final ValueChanged<ThemeMode>? onThemeModeChanged;
+
+  const DesignGalleryPage({
+    super.key,
+    this.themeMode,
+    this.onThemeModeChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +40,15 @@ class DesignGalleryPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Design System — MangRitel'),
         actions: [
+          if (themeMode != null && onThemeModeChanged != null)
+            Center(
+              child: _ThemeSwitch(
+                current: themeMode!,
+                onChanged: onThemeModeChanged!,
+              ),
+            ),
           Padding(
-            padding: const EdgeInsets.only(right: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Center(
               child: AppBadge(
                 label: context.windowSize.name,
@@ -89,6 +111,66 @@ class DesignGalleryPage extends StatelessWidget {
                 'yang benar-benar melayang.',
             child: _SurfaceSection(),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Sakelar tiga posisi: Sistem / Terang / Gelap.
+///
+/// Inilah yang menjadikan galeri alat QA, bukan sekadar katalog: setiap token
+/// di halaman ini bisa diperiksa pada kedua tema tanpa mengubah setelan sistem
+/// operasi lebih dulu.
+class _ThemeSwitch extends StatelessWidget {
+  final ThemeMode current;
+  final ValueChanged<ThemeMode> onChanged;
+
+  const _ThemeSwitch({required this.current, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    Widget option(ThemeMode mode, IconData icon, String tooltip) {
+      final isSelected = mode == current;
+
+      return Tooltip(
+        message: tooltip,
+        child: InkWell(
+          onTap: () => onChanged(mode),
+          borderRadius: AppRadius.rSm,
+          child: Container(
+            width: 34,
+            height: 28,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: isSelected ? colors.accentSubtle : Colors.transparent,
+              borderRadius: AppRadius.rSm,
+            ),
+            child: Icon(
+              icon,
+              size: 16,
+              color: isSelected ? colors.accent : colors.textTertiary,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: colors.surfaceSubtle,
+        borderRadius: AppRadius.rSm,
+        border: Border.all(color: colors.borderDefault),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          option(ThemeMode.system, AppIcons.themeSystem, 'Ikuti sistem'),
+          option(ThemeMode.light, AppIcons.themeLight, 'Terang'),
+          option(ThemeMode.dark, AppIcons.themeDark, 'Gelap'),
         ],
       ),
     );
@@ -816,6 +898,7 @@ class _SurfaceSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final density = context.space;
+    final elevation = context.elevation;
 
     Widget box(String label, BorderRadius radius, List<BoxShadow> shadow) {
       return Container(
@@ -823,7 +906,10 @@ class _SurfaceSection extends StatelessWidget {
         height: 64,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: colors.surface,
+          // Kotak melayang memakai surfaceRaised, bukan surface. Di tema gelap
+          // justru permukaan yang lebih terang inilah pemisah utamanya —
+          // bayangan hanya menegaskan.
+          color: shadow.isEmpty ? colors.surface : colors.surfaceRaised,
           borderRadius: radius,
           border: Border.all(color: colors.borderDefault),
           boxShadow: shadow,
@@ -836,12 +922,12 @@ class _SurfaceSection extends StatelessWidget {
       spacing: density.lg,
       runSpacing: density.lg,
       children: [
-        box('xs · badge', AppRadius.rXs, AppShadows.none),
-        box('sm · kontrol', AppRadius.rSm, AppShadows.none),
-        box('md · panel', AppRadius.rMd, AppShadows.none),
-        box('lg · popover', AppRadius.rLg, AppShadows.popover),
-        box('lg · dialog', AppRadius.rLg, AppShadows.dialog),
-        box('drag', AppRadius.rMd, AppShadows.drag),
+        box('xs · badge', AppRadius.rXs, elevation.flat),
+        box('sm · kontrol', AppRadius.rSm, elevation.flat),
+        box('md · panel', AppRadius.rMd, elevation.flat),
+        box('lg · popover', AppRadius.rLg, elevation.popover),
+        box('lg · dialog', AppRadius.rLg, elevation.dialog),
+        box('drag', AppRadius.rMd, elevation.drag),
       ],
     );
   }

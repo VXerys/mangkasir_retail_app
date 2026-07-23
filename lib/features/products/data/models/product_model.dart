@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-import '../../../../core/database/tables/product_table.dart';
+import '../../../../core/database/app_database.dart';
 import '../../domain/entities/product.dart';
 
 // Maps between: Drift row ↔ Product entity ↔ Supabase JSON

@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-import '../../../../core/database/tables/transaction_table.dart';
+import '../../../../core/database/app_database.dart';
 import '../../domain/entities/transaction.dart';
 
 class TransactionModel {

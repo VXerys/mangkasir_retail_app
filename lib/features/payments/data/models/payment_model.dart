@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-import '../../../../core/database/tables/payment_table.dart';
+import '../../../../core/database/app_database.dart';
 import '../../domain/entities/payment.dart';
 
 class PaymentModel {

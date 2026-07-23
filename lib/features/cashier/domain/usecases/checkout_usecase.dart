@@ -9,7 +9,6 @@ import '../../../transactions/domain/entities/transaction.dart';
 import '../../../transactions/domain/entities/transaction_detail.dart';
 import '../../../transactions/domain/repositories/transaction_repository.dart';
 import '../entities/cart_tab.dart';
-import '../entities/cart_totals.dart';
 import 'calculate_cart_totals.dart';
 
 class CheckoutParams {

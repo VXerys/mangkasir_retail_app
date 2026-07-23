@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../features/cashier/domain/entities/cart_tab.dart';
-import '../../../../../features/cashier/domain/entities/cart_totals.dart';
 import '../../../../../features/cashier/domain/usecases/calculate_cart_totals.dart';
 import '../../../../../features/cashier/domain/usecases/checkout_usecase.dart';
 import '../cart/cart_bloc.dart';

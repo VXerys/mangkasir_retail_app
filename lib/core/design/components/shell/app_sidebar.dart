@@ -203,7 +203,7 @@ class _SidebarTile extends StatelessWidget {
     // Pada mode rail label tidak terlihat, jadi tooltip menjadi satu-satunya
     // cara mengetahui tujuan sebuah ikon.
     return isRail
-        ? Tooltip(message: item.label, child: spaced)
+        ? AppTooltip(message: item.label, preferBelow: false, child: spaced)
         : spaced;
   }
 }

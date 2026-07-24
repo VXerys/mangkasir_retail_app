@@ -93,6 +93,44 @@ class DesignGalleryPage extends StatelessWidget {
             child: _FieldSection(),
           ),
           _Section(
+            title: 'Kontrol pilihan',
+            note: 'Digambar sendiri, bukan Checkbox/Switch Material — '
+                'keduanya mengambil warna dari ColorScheme.',
+            child: _ToggleSection(),
+          ),
+          _Section(
+            title: 'Daftar pilihan dan tanggal',
+            note: 'Popover menempel pada isian dan bisa dijelajahi '
+                'dengan panah lalu Enter.',
+            child: _SelectSection(),
+          ),
+          _Section(
+            title: 'Angka dan uang',
+            child: _NumberSection(),
+          ),
+          _Section(
+            title: 'Tabel data',
+            note: 'Perkecil jendela sampai di bawah 600 px: tabel berubah '
+                'menjadi daftar kartu, bukan menggeser mendatar.',
+            child: _TableSection(),
+          ),
+          _Section(
+            title: 'Tab',
+            note: 'Identitas tab memakai id, bukan indeks — supaya tab yang '
+                'ditutup tidak menggeser tab lain.',
+            child: _TabsSection(),
+          ),
+          _Section(
+            title: 'Pencarian dan penyaring',
+            child: _FilterSection(),
+          ),
+          _Section(
+            title: 'Lapisan mengambang',
+            note: 'Dialog, laci, dan toast. Semuanya memakai tirai '
+                'colors.overlay dan tunduk pada plafon gerak 220 ms.',
+            child: _OverlaySection(),
+          ),
+          _Section(
             title: 'Lencana status',
             child: _BadgeSection(),
           ),
@@ -928,6 +966,615 @@ class _SurfaceSection extends StatelessWidget {
         box('lg · popover', AppRadius.rLg, elevation.popover),
         box('lg · dialog', AppRadius.rLg, elevation.dialog),
         box('drag', AppRadius.rMd, elevation.drag),
+      ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Komponen UI-2
+// ---------------------------------------------------------------------------
+
+class _ToggleSection extends StatefulWidget {
+  const _ToggleSection();
+
+  @override
+  State<_ToggleSection> createState() => _ToggleSectionState();
+}
+
+class _ToggleSectionState extends State<_ToggleSection> {
+  bool _active = true;
+  bool _printReceipt = false;
+  bool? _selectAll;
+  String _payment = 'tunai';
+
+  @override
+  Widget build(BuildContext context) {
+    final density = context.space;
+
+    return Wrap(
+      spacing: density.xl,
+      runSpacing: density.lg,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _Label('KOTAK CENTANG'),
+            AppCheckbox(
+              value: _active,
+              label: 'Produk aktif',
+              helperText: 'Muncul di layar kasir',
+              onChanged: (value) => setState(() => _active = value),
+            ),
+            AppCheckbox(
+              value: _selectAll,
+              tristate: true,
+              label: 'Pilih semua baris',
+              helperText: 'Keadaan setengah dipakai header tabel',
+              onChanged: (value) => setState(() => _selectAll = value),
+            ),
+            const AppCheckbox(
+              value: false,
+              label: 'Nonaktif',
+              onChanged: null,
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _Label('PILIHAN TUNGGAL'),
+            AppRadioGroup<String>(
+              value: _payment,
+              options: const [
+                ('tunai', 'Tunai'),
+                ('qris', 'QRIS'),
+                ('transfer', 'Transfer bank'),
+              ],
+              onChanged: (value) => setState(() => _payment = value),
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _Label('SAKELAR'),
+            AppSwitch(
+              value: _printReceipt,
+              label: 'Cetak struk otomatis',
+              helperText: 'Berlaku seketika, tanpa tombol Simpan',
+              onChanged: (value) => setState(() => _printReceipt = value),
+            ),
+            const AppSwitch(
+              value: true,
+              label: 'Nonaktif',
+              onChanged: null,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _SelectSection extends StatefulWidget {
+  const _SelectSection();
+
+  @override
+  State<_SelectSection> createState() => _SelectSectionState();
+}
+
+class _SelectSectionState extends State<_SelectSection> {
+  String? _category;
+  String? _product;
+  DateTime? _date = DateTime.now();
+  DateTime? _start;
+  DateTime? _end;
+
+  @override
+  Widget build(BuildContext context) {
+    final density = context.space;
+
+    return Wrap(
+      spacing: density.lg,
+      runSpacing: density.lg,
+      children: [
+        SizedBox(
+          width: 240,
+          child: AppSelect<String>(
+            label: 'Kategori',
+            value: _category,
+            options: const [
+              AppSelectOption(value: 'minuman', label: 'Minuman'),
+              AppSelectOption(value: 'makanan', label: 'Makanan'),
+              AppSelectOption(
+                value: 'rokok',
+                label: 'Rokok',
+                description: 'Perlu izin khusus',
+                enabled: false,
+              ),
+            ],
+            onChanged: (value) => setState(() => _category = value),
+          ),
+        ),
+        SizedBox(
+          width: 280,
+          child: AppSelect<String>(
+            label: 'Produk',
+            hint: 'Cari lalu pilih',
+            searchable: true,
+            prefixIcon: AppIcons.product,
+            value: _product,
+            options: const [
+              AppSelectOption(
+                value: 'p1',
+                label: 'Indomie Goreng',
+                description: 'SKU-0001',
+              ),
+              AppSelectOption(
+                value: 'p2',
+                label: 'Teh Botol Sosro 350ml',
+                description: 'SKU-0002',
+              ),
+              AppSelectOption(
+                value: 'p3',
+                label: 'Aqua 600ml',
+                description: 'SKU-0003',
+              ),
+            ],
+            onChanged: (value) => setState(() => _product = value),
+          ),
+        ),
+        SizedBox(
+          width: 220,
+          child: AppDateField(
+            label: 'Tanggal transaksi',
+            value: _date,
+            onChanged: (value) => setState(() => _date = value),
+            onCleared: () => setState(() => _date = null),
+          ),
+        ),
+        SizedBox(
+          width: 360,
+          child: AppDateRangeField(
+            label: 'Periode laporan',
+            start: _start,
+            end: _end,
+            onStartChanged: (value) => setState(() => _start = value),
+            onEndChanged: (value) => setState(() => _end = value),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _NumberSection extends StatefulWidget {
+  const _NumberSection();
+
+  @override
+  State<_NumberSection> createState() => _NumberSectionState();
+}
+
+class _NumberSectionState extends State<_NumberSection> {
+  int _qty = 2;
+  double _price = 15000;
+
+  @override
+  Widget build(BuildContext context) {
+    final density = context.space;
+
+    return Wrap(
+      spacing: density.lg,
+      runSpacing: density.lg,
+      crossAxisAlignment: WrapCrossAlignment.start,
+      children: [
+        AppNumberInput(
+          label: 'Kuantitas',
+          value: _qty,
+          min: 1,
+          max: 99,
+          suffix: 'pcs',
+          width: 180,
+          onChanged: (value) => setState(() => _qty = value),
+        ),
+        SizedBox(
+          width: 220,
+          child: AppCurrencyInput(
+            label: 'Harga jual',
+            value: _price,
+            helperText: 'Terformat sambil diketik',
+            onChanged: (value) => setState(() => _price = value),
+          ),
+        ),
+        SizedBox(
+          width: 200,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const _Label('SUBTOTAL'),
+              Text(
+                CurrencyFormatter.format(_qty * _price),
+                style: context.text.priceLarge,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Baris contoh untuk tabel galeri.
+class _DemoRow {
+  final String id;
+  final String name;
+  final String sku;
+  final int stock;
+  final double price;
+
+  const _DemoRow(this.id, this.name, this.sku, this.stock, this.price);
+}
+
+class _TableSection extends StatefulWidget {
+  const _TableSection();
+
+  @override
+  State<_TableSection> createState() => _TableSectionState();
+}
+
+class _TableSectionState extends State<_TableSection> {
+  static const _all = [
+    _DemoRow('1', 'Indomie Goreng', 'SKU-0001', 120, 3500),
+    _DemoRow('2', 'Teh Botol Sosro 350ml', 'SKU-0002', 8, 5000),
+    _DemoRow('3', 'Aqua 600ml', 'SKU-0003', 0, 4000),
+    _DemoRow('4', 'Kopi Kapal Api Sachet', 'SKU-0004', 240, 1500),
+    _DemoRow('5', 'Beras Ramos 5kg', 'SKU-0005', 15, 68000),
+    _DemoRow('6', 'Minyak Goreng 1L', 'SKU-0006', 42, 17500),
+  ];
+
+  AppSortState _sort = const AppSortState('name');
+  Set<Object> _selected = {};
+  int _page = 1;
+  int _pageSize = 25;
+
+  List<_DemoRow> get _sorted {
+    final rows = [..._all];
+    rows.sort((a, b) {
+      final result = switch (_sort.columnId) {
+        'stock' => a.stock.compareTo(b.stock),
+        'price' => a.price.compareTo(b.price),
+        _ => a.name.compareTo(b.name),
+      };
+      return _sort.ascending ? result : -result;
+    });
+    return rows;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return SizedBox(
+      height: 320,
+      child: AppDataTable<_DemoRow>(
+        rows: _sorted,
+        rowId: (row) => row.id,
+        sort: _sort,
+        onSortChanged: (sort) => setState(() => _sort = sort),
+        selectedIds: _selected,
+        onSelectionChanged: (next) => setState(() => _selected = next),
+        onRowTap: (_) {},
+        minWidth: 720,
+        toolbar: Row(
+          children: [
+            Text('Produk', style: context.text.toolbarTitle),
+            const Spacer(),
+            AppButton(
+              label: 'Tambah',
+              icon: AppIcons.add,
+              size: AppButtonSize.small,
+              onPressed: () {},
+            ),
+          ],
+        ),
+        columns: [
+          AppColumn.text(
+            id: 'name',
+            label: 'Nama produk',
+            value: (row) => row.name,
+            priority: ColumnPriority.primary,
+            sortable: true,
+            emphasis: true,
+            flex: 3,
+          ),
+          AppColumn.text(
+            id: 'sku',
+            label: 'SKU',
+            value: (row) => row.sku,
+            priority: ColumnPriority.detail,
+            width: 120,
+          ),
+          AppColumn<_DemoRow>(
+            id: 'status',
+            label: 'Status stok',
+            width: 130,
+            priority: ColumnPriority.secondary,
+            cell: (context, row) => AppBadge(
+              label: row.stock == 0
+                  ? 'Habis'
+                  : row.stock < 10
+                      ? 'Menipis'
+                      : 'Aman',
+              color: row.stock == 0
+                  ? colors.stockOut
+                  : row.stock < 10
+                      ? colors.stockLow
+                      : colors.stockOk,
+              showDot: true,
+            ),
+          ),
+          AppColumn.number(
+            id: 'stock',
+            label: 'Stok',
+            value: (row) => NumberFormatter.count(row.stock),
+            sortable: true,
+            width: 90,
+          ),
+          AppColumn.number(
+            id: 'price',
+            label: 'Harga',
+            value: (row) => CurrencyFormatter.plain(row.price),
+            sortable: true,
+            width: 120,
+          ),
+        ],
+        footer: AppPagination(
+          page: _page,
+          pageSize: _pageSize,
+          totalRows: _all.length,
+          onPageChanged: (page) => setState(() => _page = page),
+          onPageSizeChanged: (size) => setState(() {
+            _pageSize = size;
+            _page = 1;
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+class _TabsSection extends StatefulWidget {
+  const _TabsSection();
+
+  @override
+  State<_TabsSection> createState() => _TabsSectionState();
+}
+
+class _TabsSectionState extends State<_TabsSection> {
+  var _tabs = <AppTabItem>[
+    const AppTabItem(id: 't1', label: 'Pelanggan 1', count: 3, closable: true),
+    const AppTabItem(id: 't2', label: 'Pelanggan 2', count: 7, closable: true),
+  ];
+  String _selected = 't1';
+  int _counter = 2;
+
+  String _detailTab = 'ringkasan';
+
+  @override
+  Widget build(BuildContext context) {
+    final density = context.space;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _Label('TAB DINAMIS — KERANJANG MULTI-TAB'),
+        AppTabs(
+          tabs: _tabs,
+          selectedId: _selected,
+          onSelected: (id) => setState(() => _selected = id),
+          onClosed: (id) => setState(() {
+            _tabs = _tabs.where((tab) => tab.id != id).toList();
+            if (_selected == id && _tabs.isNotEmpty) {
+              _selected = _tabs.first.id;
+            }
+          }),
+          onAdd: () => setState(() {
+            _counter++;
+            final id = 't$_counter';
+            _tabs = [
+              ..._tabs,
+              AppTabItem(id: id, label: 'Pelanggan $_counter', closable: true),
+            ];
+            _selected = id;
+          }),
+        ),
+        SizedBox(height: density.lg),
+        const _Label('TAB TETAP — DETAIL PRODUK'),
+        AppTabs(
+          selectedId: _detailTab,
+          onSelected: (id) => setState(() => _detailTab = id),
+          tabs: const [
+            AppTabItem(id: 'ringkasan', label: 'Ringkasan'),
+            AppTabItem(id: 'stok', label: 'Stok', icon: AppIcons.stock),
+            AppTabItem(
+              id: 'riwayat',
+              label: 'Riwayat',
+              icon: AppIcons.movementHistory,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _FilterSection extends StatefulWidget {
+  const _FilterSection();
+
+  @override
+  State<_FilterSection> createState() => _FilterSectionState();
+}
+
+class _FilterSectionState extends State<_FilterSection> {
+  final _active = <String>{'minuman'};
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final density = context.space;
+
+    Widget chip(String id, String label, int count) => AppFilterChip(
+          label: label,
+          count: count,
+          selected: _active.contains(id),
+          onTap: () => setState(() {
+            _active.contains(id) ? _active.remove(id) : _active.add(id);
+          }),
+          onRemove: () => setState(() => _active.remove(id)),
+        );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppFilterBar(
+          activeCount: _active.length,
+          leading: SizedBox(
+            width: 260,
+            child: AppSearchField(
+              hint: 'Cari produk…',
+              onChanged: (value) => setState(() => _query = value),
+            ),
+          ),
+          chips: [
+            chip('minuman', 'Minuman', 42),
+            chip('makanan', 'Makanan', 118),
+            chip('rokok', 'Rokok', 9),
+          ],
+          onClear: () => setState(_active.clear),
+          onAdvanced: () => showAppDrawer<void>(
+            context: context,
+            builder: (_) => const AppDrawer(
+              title: 'Filter lanjutan',
+              subtitle: 'Syarat yang tidak muat sebagai chip',
+              content: Text(
+                'Rentang harga, tanggal masuk, supplier, dan gabungan '
+                'beberapa syarat sekaligus.',
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: density.md),
+        Text(
+          _query.isEmpty
+              ? 'Kata kunci dilaporkan 300 ms setelah pengetikan berhenti.'
+              : 'Kata kunci: "$_query"',
+          style: context.text.formHelper.copyWith(
+            color: context.colors.textTertiary,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _OverlaySection extends StatelessWidget {
+  const _OverlaySection();
+
+  @override
+  Widget build(BuildContext context) {
+    final density = context.space;
+
+    return Wrap(
+      spacing: density.sm,
+      runSpacing: density.sm,
+      children: [
+        AppButton(
+          label: 'Dialog',
+          variant: AppButtonVariant.secondary,
+          onPressed: () => showAppDialog<void>(
+            context: context,
+            builder: (dialogContext) => AppDialog(
+              title: 'Tambah produk',
+              subtitle: 'Produk baru masuk ke outlet yang sedang aktif',
+              content: const Text(
+                'Isi formulir di sini. Pada layar sempit dialog ini masuk '
+                'sebagai lembar dari tepi bawah.',
+              ),
+              onSubmit: () => Navigator.of(dialogContext).pop(),
+              actions: [
+                AppButton(
+                  label: 'Batal',
+                  variant: AppButtonVariant.secondary,
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                ),
+                AppButton(
+                  label: 'Simpan',
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                ),
+              ],
+            ),
+          ),
+        ),
+        AppButton(
+          label: 'Konfirmasi merusak',
+          variant: AppButtonVariant.danger,
+          onPressed: () async {
+            final confirmed = await showAppConfirm(
+              context: context,
+              title: 'Kosongkan keranjang?',
+              message: '3 item akan dihapus dari tab ini.',
+              confirmLabel: 'Kosongkan',
+              isDestructive: true,
+            );
+            if (!context.mounted) return;
+            confirmed
+                ? AppToast.success(context, 'Keranjang dikosongkan')
+                : AppToast.info(context, 'Dibatalkan');
+          },
+        ),
+        AppButton(
+          label: 'Laci',
+          variant: AppButtonVariant.secondary,
+          onPressed: () => showAppDrawer<void>(
+            context: context,
+            builder: (drawerContext) => AppDrawer(
+              title: 'Detail transaksi',
+              subtitle: 'TRX-20260724-0031',
+              content: const Text(
+                'Masuk dari kanan pada layar lebar, dari bawah pada layar '
+                'sempit.',
+              ),
+              actions: [
+                AppButton(
+                  label: 'Tutup',
+                  variant: AppButtonVariant.secondary,
+                  onPressed: () => Navigator.of(drawerContext).pop(),
+                ),
+              ],
+            ),
+          ),
+        ),
+        AppButton(
+          label: 'Toast sukses',
+          variant: AppButtonVariant.ghost,
+          onPressed: () => AppToast.success(context, 'Transaksi tersimpan'),
+        ),
+        AppButton(
+          label: 'Toast gagal',
+          variant: AppButtonVariant.ghost,
+          onPressed: () => AppToast.danger(context, 'Sinkronisasi gagal'),
+        ),
+        AppIconButton(
+          icon: AppIcons.refresh,
+          tooltip: 'Tombol ikon dengan tooltip',
+          variant: AppButtonVariant.secondary,
+          onPressed: () {},
+        ),
       ],
     );
   }

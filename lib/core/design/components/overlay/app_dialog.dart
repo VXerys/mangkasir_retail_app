@@ -178,7 +178,12 @@ class AppDialog extends StatelessWidget {
     );
 
     if (isCompact) {
-      return SafeArea(top: false, child: shortcuts);
+      // Dialog di layar sempit menempel di tepi bawah — tepat di tempat papan
+      // ketik layar muncul. Tanpa pengangkatan ini, isian di dalamnya tertutup
+      // persis saat pengguna mulai mengetik.
+      return AppKeyboardInset(
+        child: SafeArea(top: false, child: shortcuts),
+      );
     }
 
     return ConstrainedBox(

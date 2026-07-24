@@ -152,9 +152,11 @@ Future<T?> showAppDrawer<T>({
       if (isCompact) {
         return Align(
           alignment: Alignment.bottomCenter,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: media.height * 0.88),
-            child: child,
+          child: AppKeyboardInset(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: media.height * 0.88),
+              child: child,
+            ),
           ),
         );
       }

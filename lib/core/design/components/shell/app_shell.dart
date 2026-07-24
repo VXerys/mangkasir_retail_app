@@ -2,29 +2,44 @@ import 'package:flutter/material.dart';
 
 import '../../design.dart';
 
-/// Kerangka tata letak aplikasi: **Sidebar + Workspace + Inspector +
-/// Bottom Panel**.
+/// Kerangka tata letak aplikasi.
 ///
 /// 16_Design_System.md Tahap 16.4 menolak tata letak "container 1280px ala
 /// dashboard SaaS" dan meminta susunan panel seperti perangkat lunak
 /// profesional (VS Code, Excel, Figma), karena POS adalah aplikasi kerja, bukan
 /// situs yang dibaca sekali lalu ditinggalkan.
 ///
-/// Shell menyesuaikan diri terhadap ruang yang tersedia:
+/// Susunan empat panel itu adalah bentuk **tablet lanskap**, bukan bentuk
+/// universal — batas berlakunya ditetapkan §16.4 setelah perangkat sasaran
+/// diperbaiki di §16.0. Di layar sempit navigasi utama turun ke bilah bawah:
 ///
-/// | Ukuran   | Sidebar   | Inspector      | Bottom panel |
-/// |----------|-----------|----------------|--------------|
-/// | compact  | Laci      | Bottom sheet   | Disembunyikan |
-/// | medium   | Rail ikon | Laci kanan     | Disembunyikan |
-/// | expanded | Rail ikon | Kolom tetap    | Ditampilkan   |
-/// | large    | Berlabel  | Kolom tetap    | Ditampilkan   |
+/// | Ukuran   | Navigasi utama | Inspector    | Bottom panel  |
+/// |----------|----------------|--------------|---------------|
+/// | compact  | **Bilah bawah**| Bottom sheet | Disembunyikan |
+/// | medium   | Rail ikon      | Laci kanan   | Disembunyikan |
+/// | expanded | Rail ikon      | Kolom tetap  | Ditampilkan   |
+/// | large    | Sidebar berlabel| Kolom tetap | Ditampilkan   |
+///
+/// Laci samping tetap ada di layar sempit, tetapi turun perannya menjadi menu
+/// sekunder — ganti outlet, setelan, keluar — dan hanya muncul bila
+/// [secondaryMenuBuilder] diisi.
 ///
 /// Shell juga memasang [DensityScope] untuk seluruh subtree, sehingga setiap
 /// widget di dalamnya otomatis memakai kerapatan yang sesuai perangkat tanpa
 /// perlu memeriksa lebar layar sendiri-sendiri.
 class AppShell extends StatelessWidget {
-  /// Kolom navigasi. Biasanya sebuah [AppSidebar].
+  /// Kolom navigasi untuk layar `medium` ke atas. Biasanya sebuah [AppSidebar].
   final Widget Function(BuildContext context, AppSidebarMode mode) sidebarBuilder;
+
+  /// Navigasi utama untuk layar `compact`. Biasanya sebuah [AppBottomNav].
+  ///
+  /// Bila dibiarkan null, layar sempit jatuh kembali ke laci navigasi. Itu
+  /// hanya untuk halaman yang memang tidak punya navigasi utama — halaman
+  /// masuk, galeri design system — bukan pilihan yang sah untuk halaman kerja.
+  final WidgetBuilder? bottomNavBuilder;
+
+  /// Isi laci sekunder di layar `compact`: menu yang jarang disentuh.
+  final WidgetBuilder? secondaryMenuBuilder;
 
   /// Area kerja utama.
   final Widget workspace;
@@ -48,6 +63,8 @@ class AppShell extends StatelessWidget {
     super.key,
     required this.sidebarBuilder,
     required this.workspace,
+    this.bottomNavBuilder,
+    this.secondaryMenuBuilder,
     this.inspector,
     this.bottomPanel,
     this.appBar,
@@ -75,14 +92,35 @@ class AppShell extends StatelessWidget {
     );
   }
 
-  /// Ponsel: navigasi masuk ke laci, inspector dibuka manual sebagai sheet.
+  /// Ponsel: navigasi utama di bilah bawah, inspector dibuka manual sebagai
+  /// sheet, laci hanya menampung menu sekunder.
   Widget _buildCompact(BuildContext context) {
+    final bottomNav = bottomNavBuilder;
+
     return Scaffold(
       appBar: appBar,
-      drawer: Drawer(
-        width: context.space.sidebarExtendedWidth,
-        child: sidebarBuilder(context, AppSidebarMode.drawer),
-      ),
+      // Papan ketik layar tidak boleh mendorong bilah navigasi ke atas isian
+      // yang sedang diketik. Scaffold mengubah ukuran body untuk isiannya, dan
+      // bilah bawah ikut naik kalau dibiarkan — jadi ia disembunyikan selama
+      // papan ketik terbuka.
+      bottomNavigationBar: bottomNav == null ||
+              MediaQuery.viewInsetsOf(context).bottom > 0
+          ? null
+          : bottomNav(context),
+      drawer: switch ((secondaryMenuBuilder, bottomNav)) {
+        // Ada menu sekunder: laci berisi itu.
+        (final builder?, _) => Drawer(
+            width: context.space.sidebarExtendedWidth,
+            child: builder(context),
+          ),
+        // Tidak ada bilah bawah sama sekali: laci kembali memikul navigasi
+        // utama, supaya halaman tanpa bilah bawah tidak kehilangan jalan.
+        (null, null) => Drawer(
+            width: context.space.sidebarExtendedWidth,
+            child: sidebarBuilder(context, AppSidebarMode.drawer),
+          ),
+        _ => null,
+      },
       body: workspace,
     );
   }

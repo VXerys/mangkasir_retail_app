@@ -26,10 +26,16 @@ export 'components/form/app_select.dart';
 export 'components/form/app_switch.dart';
 // `form/toggle_shell.dart` sengaja tidak diekspor: ia kerangka bersama untuk
 // checkbox/radio/switch, bukan komponen yang dipakai langsung oleh feature.
+export 'components/gesture/app_back_guard.dart';
+export 'components/gesture/app_refresh_view.dart';
+export 'components/gesture/app_swipe_action.dart';
+export 'components/keyboard/app_shortcuts.dart';
+export 'components/keyboard/physical_keyboard.dart';
 export 'components/overlay/app_dialog.dart';
 export 'components/overlay/app_drawer.dart';
 export 'components/overlay/app_toast.dart';
 export 'components/overlay/app_tooltip.dart';
+export 'components/shell/app_bottom_nav.dart';
 export 'components/shell/app_shell.dart';
 export 'components/shell/app_sidebar.dart';
 export 'components/table/app_column.dart';

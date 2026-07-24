@@ -24,6 +24,11 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<!-- Ditampilkan iOS saat izin kamera diminta. Menyebut kegunaannya secara
+	     konkret, bukan "aplikasi ini butuh kamera" — App Review menolak alasan
+	     yang tidak menjelaskan apa-apa, dan pengguna berhak tahu. -->
+	<key>NSCameraUsageDescription</key>
+	<string>Kamera dipakai untuk memindai barcode produk saat transaksi dan penerimaan barang.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

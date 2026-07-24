@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../scanner/barcode_input.dart';
+import '../../scanner/barcode_scanner_sheet.dart';
 import '../../utils/currency_formatter.dart';
 import '../../utils/date_formatter.dart';
 import '../../utils/number_formatter.dart';
@@ -129,6 +132,30 @@ class DesignGalleryPage extends StatelessWidget {
             note: 'Dialog, laci, dan toast. Semuanya memakai tirai '
                 'colors.overlay dan tunduk pada plafon gerak 220 ms.',
             child: _OverlaySection(),
+          ),
+          _Section(
+            title: 'Navigasi bawah',
+            note: 'Navigasi utama di layar sempit. Laci samping turun '
+                'perannya jadi menu sekunder — §16.4.',
+            child: _BottomNavSection(),
+          ),
+          _Section(
+            title: 'Gestur',
+            note: 'Geser baris ke kiri untuk memunculkan aksi. '
+                'Tarik daftar ke bawah untuk memicu sinkronisasi.',
+            child: _GestureSection(),
+          ),
+          _Section(
+            title: 'Pindai barcode',
+            note: 'Kamera dan pemindai HID bermuara ke satu penangan. '
+                'Coba ketik cepat lalu Enter untuk meniru pemindai.',
+            child: _ScannerSection(),
+          ),
+          _Section(
+            title: 'Pintasan papan ketik',
+            note: 'Lambang pintasan hanya muncul bila papan ketik fisik '
+                'terdeteksi. Tekan F2 atau ESC untuk membuktikannya.',
+            child: _ShortcutSection(),
           ),
           _Section(
             title: 'Lencana status',
@@ -1576,6 +1603,345 @@ class _OverlaySection extends StatelessWidget {
           onPressed: () {},
         ),
       ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Komponen UI-3 — mobile-first
+// ---------------------------------------------------------------------------
+
+class _BottomNavSection extends StatefulWidget {
+  const _BottomNavSection();
+
+  @override
+  State<_BottomNavSection> createState() => _BottomNavSectionState();
+}
+
+class _BottomNavSectionState extends State<_BottomNavSection> {
+  int _selected = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    // Dibingkai selebar ponsel supaya proporsinya jujur, walaupun galeri
+    // sedang dibuka di jendela lebar.
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        width: 380,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(color: colors.borderDefault),
+            borderRadius: AppRadius.rMd,
+          ),
+          child: ClipRRect(
+            borderRadius: AppRadius.rMd,
+            child: AppBottomNav(
+              selectedIndex: _selected,
+              items: [
+                AppNavItem(
+                  label: 'Kasir',
+                  icon: AppIcons.pos,
+                  domainColor: colors.domainSales,
+                  onTap: () => setState(() => _selected = 0),
+                ),
+                AppNavItem(
+                  label: 'Dasbor',
+                  icon: AppIcons.dashboard,
+                  onTap: () => setState(() => _selected = 1),
+                ),
+                AppNavItem(
+                  label: 'Produk',
+                  icon: AppIcons.product,
+                  domainColor: colors.domainInventory,
+                  badgeCount: 12,
+                  onTap: () => setState(() => _selected = 2),
+                ),
+                AppNavItem(
+                  label: 'Transaksi',
+                  icon: AppIcons.transaction,
+                  domainColor: colors.domainFinance,
+                  onTap: () => setState(() => _selected = 3),
+                ),
+              ],
+              overflowItem: AppNavItem(
+                label: 'Lainnya',
+                icon: AppIcons.menu,
+                onTap: () {},
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GestureSection extends StatefulWidget {
+  const _GestureSection();
+
+  @override
+  State<_GestureSection> createState() => _GestureSectionState();
+}
+
+class _GestureSectionState extends State<_GestureSection> {
+  var _rows = <String>['Indomie Goreng', 'Teh Botol 350ml', 'Aqua 600ml'];
+
+  Future<void> _refresh() async {
+    await Future<void>.delayed(const Duration(milliseconds: 800));
+    if (mounted) {
+      setState(() {
+        _rows = ['Indomie Goreng', 'Teh Botol 350ml', 'Aqua 600ml'];
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final density = context.space;
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        width: 380,
+        height: 200,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(color: colors.borderDefault),
+            borderRadius: AppRadius.rMd,
+          ),
+          child: ClipRRect(
+            borderRadius: AppRadius.rMd,
+            child: AppRefreshView(
+              onRefresh: _refresh,
+              child: _rows.isEmpty
+                  ? ListView(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(density.xl),
+                          child: const AppEmptyState(
+                            message: 'Semua baris terhapus. '
+                                'Tarik ke bawah untuk memulihkan.',
+                            compact: true,
+                          ),
+                        ),
+                      ],
+                    )
+                  : ListView.separated(
+                      itemCount: _rows.length,
+                      separatorBuilder: (context, _) =>
+                          AppDivider(color: colors.borderSubtle),
+                      itemBuilder: (context, index) => AppSwipeAction(
+                        key: ValueKey(_rows[index]),
+                        endActions: [
+                          AppSwipeActionItem(
+                            label: 'Hapus',
+                            icon: AppIcons.delete,
+                            color: colors.danger,
+                            isFullSwipeAction: true,
+                            onPressed: () => setState(
+                              () => _rows = [..._rows]..removeAt(index),
+                            ),
+                          ),
+                        ],
+                        startActions: [
+                          AppSwipeActionItem(
+                            label: 'Ubah',
+                            icon: AppIcons.edit,
+                            color: colors.info,
+                            onPressed: () {},
+                          ),
+                        ],
+                        child: Container(
+                          color: colors.surface,
+                          height: 56,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: density.md),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  _rows[index],
+                                  style: context.text.tableCellEmphasis,
+                                ),
+                              ),
+                              Text(
+                                CurrencyFormatter.format(3500),
+                                style: context.text.priceRegular,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ScannerSection extends StatefulWidget {
+  const _ScannerSection();
+
+  @override
+  State<_ScannerSection> createState() => _ScannerSectionState();
+}
+
+class _ScannerSectionState extends State<_ScannerSection> {
+  final _scans = <BarcodeScan>[];
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final density = context.space;
+
+    return AppBarcodeListener(
+      onScan: (scan) => setState(() => _scans.insert(0, scan)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: AppTextField(
+                  label: 'Kolom pencarian biasa',
+                  hint: 'Ketik pelan di sini — tidak terbaca sebagai barcode',
+                  prefixIcon: AppIcons.search,
+                  onChanged: (_) {},
+                ),
+              ),
+              SizedBox(width: density.sm),
+              // Pemindai kamera hanya ada di Android, iOS, macOS, dan web.
+              // Di galeri desktop Windows, tombolnya sengaja dimatikan
+              // daripada memunculkan galat plugin yang membingungkan.
+              AppButton(
+                label: 'Pindai kamera',
+                icon: AppIcons.scanBarcode,
+                onPressed: _cameraSupported
+                    ? () => scanWithCamera(context)
+                    : null,
+              ),
+            ],
+          ),
+          SizedBox(height: density.md),
+          const _Label('HASIL PINDAIAN'),
+          if (_scans.isEmpty)
+            Text(
+              _cameraSupported
+                  ? 'Belum ada. Tekan tombol pindai, atau tiru pemindai HID '
+                      'dengan mengetik cepat lalu Enter.'
+                  : 'Belum ada. Kamera tidak tersedia di platform ini — '
+                      'tiru pemindai HID dengan mengetik cepat lalu Enter.',
+              style: context.text.formHelper
+                  .copyWith(color: colors.textTertiary),
+            )
+          else
+            Wrap(
+              spacing: density.sm,
+              runSpacing: density.sm,
+              children: [
+                for (final scan in _scans.take(6))
+                  AppBadge(
+                    label: '${scan.code} · ${scan.source.name}',
+                    color: colors.success,
+                    icon: AppIcons.check,
+                  ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  bool get _cameraSupported {
+    if (kIsWeb) return true;
+    return switch (defaultTargetPlatform) {
+      TargetPlatform.android ||
+      TargetPlatform.iOS ||
+      TargetPlatform.macOS =>
+        true,
+      _ => false,
+    };
+  }
+}
+
+class _ShortcutSection extends StatelessWidget {
+  const _ShortcutSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final density = context.space;
+
+    return AppShortcuts(
+      // Tidak autofocus: galeri punya banyak isian, dan merebut fokus di sini
+      // akan mengganggu bagian lain halaman.
+      autofocus: false,
+      onSearch: () => AppToast.info(context, 'F2 — Cari produk'),
+      onPay: () => AppToast.success(context, 'F4 — Bayar'),
+      onPrint: () => AppToast.info(context, 'Ctrl + P — Cetak struk'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PhysicalKeyboardDetector(
+            builder: (context, hasKeyboard) => Row(
+              children: [
+                Icon(
+                  hasKeyboard ? AppIcons.check : AppIcons.info,
+                  size: 14,
+                  color: hasKeyboard ? colors.success.fg : colors.textTertiary,
+                ),
+                SizedBox(width: density.xs),
+                Text(
+                  hasKeyboard
+                      ? 'Papan ketik fisik terdeteksi — lambang pintasan tampil.'
+                      : 'Belum ada papan ketik fisik. Tekan F2, ESC, atau '
+                          'panah untuk membuktikannya.',
+                  style: context.text.formHelper
+                      .copyWith(color: colors.textSecondary),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: density.md),
+          Wrap(
+            spacing: density.sm,
+            runSpacing: density.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              for (final (label, activator) in const [
+                ('Cari produk', AppShortcutKeys.search),
+                ('Bayar', AppShortcutKeys.pay),
+                ('Batal', AppShortcutKeys.cancel),
+                ('Cetak struk', AppShortcutKeys.print),
+              ])
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: density.sm,
+                    vertical: density.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colors.surfaceSubtle,
+                    borderRadius: AppRadius.rSm,
+                    border: Border.all(color: colors.borderSubtle),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(label, style: context.text.toolbarLabel),
+                      AppShortcutHint(activator: activator),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

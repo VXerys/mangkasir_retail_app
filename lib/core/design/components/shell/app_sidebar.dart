@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../design.dart';
 
-/// Satu tujuan navigasi pada sidebar.
+/// Satu tujuan navigasi utama.
+///
+/// Dipakai bersama oleh [AppSidebar] dan `AppBottomNav`. Keduanya menampilkan
+/// daftar tujuan yang sama dengan bentuk berbeda menurut ruang yang tersedia,
+/// jadi memberi masing-masing model sendiri hanya membuka peluang keduanya
+/// menyimpang — sidebar punya lencana, bilah bawah lupa.
 @immutable
-class AppSidebarItem {
+class AppNavItem {
   final String label;
   final IconData icon;
   final VoidCallback onTap;
@@ -18,7 +23,7 @@ class AppSidebarItem {
   /// Angka pada lencana, misalnya jumlah data yang belum tersinkron.
   final int? badgeCount;
 
-  const AppSidebarItem({
+  const AppNavItem({
     required this.label,
     required this.icon,
     required this.onTap,
@@ -46,7 +51,7 @@ enum AppSidebarMode {
 /// minimum yang besar dan tidak menyediakan mode berlabel penuh maupun strip
 /// aksen per domain.
 class AppSidebar extends StatelessWidget {
-  final List<AppSidebarItem> items;
+  final List<AppNavItem> items;
 
   /// Indeks item yang sedang aktif. `-1` berarti tidak ada.
   final int selectedIndex;
@@ -125,7 +130,7 @@ class AppSidebar extends StatelessWidget {
 }
 
 class _SidebarTile extends StatelessWidget {
-  final AppSidebarItem item;
+  final AppNavItem item;
   final bool isSelected;
   final AppSidebarMode mode;
 

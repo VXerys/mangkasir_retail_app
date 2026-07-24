@@ -1,4 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Pindai barcode lewat kamera. Izin diminta saat pemindai dibuka
+         pertama kali, bukan saat aplikasi dijalankan. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Kamera bukan syarat mutlak: perangkat tanpa kamera tetap bisa memakai
+         aplikasi ini lewat pemindai HID atau ketik manual. Tanpa baris ini,
+         Play Store menyembunyikan aplikasi dari perangkat tersebut. -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <application
         android:label="mangkasir_retail_app"
         android:name="${applicationName}"

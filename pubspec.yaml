@@ -80,6 +80,13 @@ dependencies:
   # Formatting (Rupiah, tanggal id_ID)
   intl: ^0.20.2
 
+  # Pindai barcode lewat kamera — jalur utama sesuai 16_Design_System.md §16.0.
+  # Pemindai HID keyboard-wedge tidak butuh paket: ia mengetik seperti papan
+  # ketik biasa, dan ditangani AppBarcodeListener.
+  # Syarat platform: Android minSdk 23 (proyek memakai 24 bawaan Flutter),
+  # iOS 12.0 (proyek memakai 13.0).
+  mobile_scanner: ^7.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

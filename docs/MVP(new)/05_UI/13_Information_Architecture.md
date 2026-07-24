@@ -131,8 +131,6 @@ Inventory
 ```text
 Purchase
 
-├── Supplier
-
 ├── Purchase Order
 
 ├── Receiving
@@ -141,6 +139,12 @@ Purchase
 
 └── Purchase History
 ```
+
+Supplier **tidak** tinggal di sini. Ia kontak, dan seluruh kontak tinggal di
+CRM — lihat catatan di area CRM di bawah. Purchase menaut ke sana lewat Cross
+Navigation, tidak menyalinnya. Diperbaiki 24 Juli 2026: versi sebelumnya
+mendaftarkan Supplier di dua area sekaligus, padahal bagian Information
+Ownership pada dokumen yang sama menyatakan tidak ada duplikasi informasi.
 
 ---
 
@@ -177,6 +181,12 @@ CRM
 
 └── Contact History
 ```
+
+CRM adalah rumah kanonik seluruh kontak — pelanggan, pemasok, dan pegawai —
+sesuai baris "CRM → Kontak" pada tabel Information Ownership. Purchase dan
+Inventory menaut ke halaman pemasok di sini alih-alih memiliki daftarnya
+sendiri, sehingga satu perubahan alamat pemasok tidak perlu dicari di dua
+tempat.
 
 ---
 
@@ -547,49 +557,29 @@ Tidak ada duplikasi informasi.
 
 Menu mengikuti hak akses.
 
-Misalnya
+Diperbaiki 24 Juli 2026 agar cocok dengan seed `role_permissions` yang
+sebenarnya. Ada tujuh peran, bukan tiga:
 
-Kasir
+| Peran         | Area yang terlihat                                                  |
+| ------------- | ------------------------------------------------------------------- |
+| Owner         | Dashboard, Sales, Inventory, Purchase, CRM, Finance, Reporting, Settings |
+| Administrator | sama seperti Owner                                                   |
+| Manager       | sama seperti Owner                                                   |
+| Kasir         | Dashboard, Sales, Inventory, CRM, Finance                            |
+| Purchasing    | Dashboard, Inventory, Purchase, CRM                                  |
+| Gudang        | Dashboard, Inventory, Purchase                                       |
+| Finance       | Dashboard, Sales, Purchase, Finance, Reporting                       |
 
-```text
-Dashboard
+Kasir melihat Inventory dan Finance karena ia memang memegang `INVENTORY_VIEW`
+dan `CASH_VIEW` — ia perlu tahu sisa stok, dan dialah yang membuka serta
+menutup laci kas.
 
-Sales
-
-Customer
-```
-
-Owner
-
-```text
-Dashboard
-
-Sales
-
-Inventory
-
-Purchase
-
-Finance
-
-Reporting
-
-Settings
-```
-
-Manager
-
-```text
-Dashboard
-
-Inventory
-
-Purchase
-
-Report
-```
-
-Menu dibangun secara dinamis berdasarkan permission, bukan hardcoded.
+Menu dibangun secara dinamis berdasarkan permission, bukan hardcoded — dan
+bukan pula berdasarkan nama peran. Ketujuh peran di atas berlaku global lintas
+tenant (`roles.business_id` NULL), dan tenant boleh membuat peran sendiri
+kelak; menu yang bercabang atas nama peran akan buta terhadap peran baru itu.
+Satu-satunya pengecualian adalah Owner, karena `public.has_permission`
+mem-bypass Owner di sisi database dan klien harus mengikutinya.
 
 ---
 

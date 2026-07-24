@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,55 +9,56 @@ import '../constants/app_routes.dart';
 import '../design/design.dart';
 import '../design/gallery/design_gallery_page.dart';
 import '../design/theme/theme_cubit.dart';
+import '../session/session_cubit.dart';
+import '../session/session_state.dart';
+import 'app_nav_tree.dart';
 import 'app_navigation_shell.dart';
+import 'app_route_guard.dart';
+import 'login_page.dart';
+import 'route_placeholder.dart';
 
 /// Konfigurasi rute aplikasi.
 ///
-/// Halaman-halaman modul masih berupa penanda tempat — Phase UI-0 hanya
-/// membangun fondasinya. Yang sudah nyata di sini adalah rangkanya: shell
-/// navigasi, transisi yang mematuhi aturan gerak, dan galeri design system.
+/// Seluruh tabel rute **diturunkan** dari [AppNavTree], tidak ditulis ulang di
+/// sini. Dua daftar terpisah pasti menyimpang cepat atau lambat: menu yang
+/// menunjuk rute yang tidak terdaftar, atau rute yang terdaftar tapi tak
+/// terjangkau menu mana pun. Dengan satu sumber, keduanya mustahil.
 abstract final class AppRouter {
-  static GoRouter build() {
+  static GoRouter build({required SessionCubit session}) {
     return GoRouter(
-      initialLocation: AppRoutes.pos,
+      initialLocation: AppRoutes.root,
       debugLogDiagnostics: kDebugMode,
+      // Tanpa ini, keputusan penjaga membeku pada keadaan sesi saat rute
+      // pertama kali dibangun — masuk berhasil tetapi layar tidak berpindah.
+      refreshListenable: _SessionRefresh(session),
+      redirect: (context, state) =>
+          AppRouteGuard.redirect(session.state, state.uri.path),
       routes: [
+        GoRoute(
+          path: AppRoutes.root,
+          pageBuilder: (context, state) => _page(state, const AppBootPage()),
+        ),
+        GoRoute(
+          path: AppRoutes.login,
+          pageBuilder: (context, state) => _page(state, const LoginPage()),
+        ),
         ShellRoute(
-          builder: (context, state, child) =>
-              AppNavigationShell(child: child),
+          builder: (context, state, child) => AppNavigationShell(child: child),
           routes: [
-            _shellRoute(
-              AppRoutes.pos,
-              (context) => const _PlaceholderPage(
-                title: 'Kasir',
-                icon: AppIcons.pos,
-                note: 'Layar POS akan dibangun pada fase berikutnya. '
-                    'CartBloc dan CheckoutUseCase sudah siap dipakai.',
-              ),
-            ),
-            _shellRoute(
-              AppRoutes.dashboard,
-              (context) => const _PlaceholderPage(
-                title: 'Dasbor',
-                icon: AppIcons.dashboard,
-                note: 'Ringkasan penjualan, laba, dan peringatan stok.',
-              ),
-            ),
-            _shellRoute(
-              AppRoutes.products,
-              (context) => const _PlaceholderPage(
-                title: 'Produk',
-                icon: AppIcons.product,
-                note: 'ProductBloc sudah tersedia lewat get_it.',
-              ),
-            ),
-            _shellRoute(
-              AppRoutes.transactions,
-              (context) => const _PlaceholderPage(
-                title: 'Transaksi',
-                icon: AppIcons.transaction,
-                note: 'Riwayat transaksi beserta status sinkronisasinya.',
-              ),
+            // Urutannya mengikuti pohon, dan itu penting: anak didaftarkan
+            // sesudah induknya, dan `/inventory/products/new` sebelum
+            // `/inventory/products/:id` — kalau terbalik, formulir produk baru
+            // ditelan pola detail.
+            for (final area in AppNavTree.areas)
+              for (final destination in area.destinations) ...[
+                _navRoute(area, destination),
+                for (final child in destination.children)
+                  _navRoute(area, destination, child),
+              ],
+            GoRoute(
+              path: AppRoutes.forbidden,
+              pageBuilder: (context, state) =>
+                  _page(state, const AppForbiddenPage()),
             ),
           ],
         ),
@@ -82,10 +85,21 @@ abstract final class AppRouter {
     );
   }
 
-  static GoRoute _shellRoute(String path, WidgetBuilder builder) {
+  static GoRoute _navRoute(
+    AppNavArea area,
+    AppNavDestination destination, [
+    AppNavDestination? child,
+  ]) {
+    final match = AppNavMatch(
+      area: area,
+      destination: destination,
+      child: child,
+    );
+
     return GoRoute(
-      path: path,
-      pageBuilder: (context, state) => _page(state, builder(context)),
+      path: (child ?? destination).route,
+      pageBuilder: (context, state) =>
+          _page(state, RoutePlaceholderPage(match: match)),
     );
   }
 
@@ -124,48 +138,19 @@ abstract final class AppRouter {
   }
 }
 
-/// Penanda tempat sementara untuk modul yang belum di-slice.
+/// Menjembatani aliran [SessionCubit] ke `refreshListenable` GoRouter.
 ///
-/// Sengaja dibuat memakai komponen design system, bukan `Center(child: Text())`
-/// seadanya: dengan begitu setiap rute yang ada sudah membuktikan bahwa shell,
-/// token, dan primitive bekerja pada ukuran layar mana pun.
-class _PlaceholderPage extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final String note;
+/// GoRouter menuntut [Listenable], sedangkan bloc menyiarkan [Stream].
+class _SessionRefresh extends ChangeNotifier {
+  late final StreamSubscription<SessionState> _subscription;
 
-  const _PlaceholderPage({
-    required this.title,
-    required this.icon,
-    required this.note,
-  });
+  _SessionRefresh(SessionCubit cubit) {
+    _subscription = cubit.stream.listen((_) => notifyListeners());
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(context.space.xl),
-      child: AppPanel(
-        header: Row(
-          children: [
-            Icon(icon, size: 18, color: context.colors.textSecondary),
-            SizedBox(width: context.space.sm),
-            Text(title, style: context.text.toolbarTitle),
-          ],
-        ),
-        child: AppEmptyState(
-          title: 'Belum dibangun',
-          message: note,
-          icon: icon,
-          action: kDebugMode
-              ? AppButton(
-                  label: 'Buka galeri design system',
-                  variant: AppButtonVariant.secondary,
-                  size: AppButtonSize.small,
-                  onPressed: () => context.go(AppRoutes.designGallery),
-                )
-              : null,
-        ),
-      ),
-    );
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 }

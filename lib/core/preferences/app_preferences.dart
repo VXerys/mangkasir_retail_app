@@ -16,6 +16,10 @@ class AppPreferences {
 
   static const _themeModeKey = 'theme_mode';
 
+  static const _activeOutletKey = 'active_outlet_id';
+
+  static const _devRoleKey = 'dev_role';
+
   /// Membuka kotak preferensi. Wajib dipanggil (dan ditunggu) di `main()`
   /// sebelum `configureDependencies()`.
   static Future<void> open() => Hive.openBox(_boxName);
@@ -41,4 +45,24 @@ class AppPreferences {
     // berpindah sendiri setelah pembaruan.
     return _box.put(_themeModeKey, mode.name);
   }
+
+  /// Outlet yang terakhir dipilih di mesin ini.
+  ///
+  /// Melekat pada perangkat, bukan pada akun — dan memang seharusnya begitu:
+  /// mesin kasir di cabang selalu melayani cabang itu, siapa pun yang sedang
+  /// berjaga. Menyimpannya di sisi server justru membuat kasir pengganti
+  /// membuka aplikasi di outlet yang salah.
+  int? get activeOutletId => _box.get(_activeOutletKey) as int?;
+
+  Future<void> setActiveOutletId(int? id) => id == null
+      ? _box.delete(_activeOutletKey)
+      : _box.put(_activeOutletKey, id);
+
+  /// Peran yang sedang disamar selama autentikasi sungguhan belum ada.
+  ///
+  /// Hanya dibaca `DevSessionRepository`. Ikut hilang bersama berkas itu ketika
+  /// login asli terpasang.
+  String? get devRole => _box.get(_devRoleKey) as String?;
+
+  Future<void> setDevRole(String role) => _box.put(_devRoleKey, role);
 }

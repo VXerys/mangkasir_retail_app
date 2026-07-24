@@ -1,8 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../router/app_nav_tree.dart';
 import '../../scanner/barcode_input.dart';
 import '../../scanner/barcode_scanner_sheet.dart';
+import '../../session/app_role.dart';
+import '../../session/dev_session_repository.dart';
+import '../../session/session_scope.dart';
 import '../../utils/currency_formatter.dart';
 import '../../utils/date_formatter.dart';
 import '../../utils/number_formatter.dart';
@@ -156,6 +160,25 @@ class DesignGalleryPage extends StatelessWidget {
             note: 'Lambang pintasan hanya muncul bila papan ketik fisik '
                 'terdeteksi. Tekan F2 atau ESC untuk membuktikannya.',
             child: _ShortcutSection(),
+          ),
+          _Section(
+            title: 'Sesi & hak akses',
+            note: 'Ganti peran, lalu perhatikan navigasi menyusun ulang '
+                'dirinya. Izin tiap peran disalin apa adanya dari tabel '
+                'role_permissions di Supabase.',
+            child: _SessionSection(),
+          ),
+          _Section(
+            title: 'Jejak navigasi',
+            note: 'Ruas terakhir tidak bisa ditekan. Di layar sempit ruas '
+                'tengah menciut menjadi satu tombol.',
+            child: _BreadcrumbSection(),
+          ),
+          _Section(
+            title: 'Bilah global',
+            note: 'Slot Cari, Notifikasi, dan status sync sengaja kosong di '
+                'Phase UI-4 — tombol mati lebih buruk daripada tidak ada.',
+            child: _TopBarSection(),
           ),
           _Section(
             title: 'Lencana status',
@@ -1941,6 +1964,172 @@ class _ShortcutSection extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Memperlihatkan navigasi menyusun ulang dirinya menurut hak akses.
+///
+/// Inilah cara membuktikan RBAC tanpa autentikasi: himpunan izin tiap peran
+/// disalin apa adanya dari `role_permissions` di Supabase, jadi menu yang
+/// muncul di sini sama dengan menu yang nanti muncul setelah login sungguhan.
+class _SessionSection extends StatefulWidget {
+  const _SessionSection();
+
+  @override
+  State<_SessionSection> createState() => _SessionSectionState();
+}
+
+class _SessionSectionState extends State<_SessionSection> {
+  String _role = AppRole.owner;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final density = context.space;
+    final session = DevSessionRepository.sampleSession(_role);
+    final areas = AppNavTree.visibleAreas(session);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _Label('Peran'),
+        Wrap(
+          spacing: density.sm,
+          runSpacing: density.sm,
+          children: [
+            for (final role in AppRole.seeded)
+              AppFilterChip(
+                label: role,
+                selected: role == _role,
+                onTap: () => setState(() => _role = role),
+              ),
+          ],
+        ),
+        SizedBox(height: density.lg),
+        Row(
+          children: [
+            AppBadge(
+              label: '${areas.length} area',
+              color: colors.info,
+              icon: AppIcons.dashboard,
+            ),
+            SizedBox(width: density.sm),
+            AppBadge(
+              label: _role == AppRole.owner
+                  ? 'bypass Owner'
+                  : '${session.permissions.length} izin',
+              color: _role == AppRole.owner ? colors.warning : colors.success,
+              icon: AppIcons.role,
+            ),
+          ],
+        ),
+        SizedBox(height: density.lg),
+        const _Label('Navigasi yang dihasilkan'),
+        SizedBox(
+          height: 320,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border.all(color: colors.borderDefault),
+              borderRadius: AppRadius.rSm,
+            ),
+            child: SessionScope(
+              session: session,
+              child: AppSidebar(
+                mode: AppSidebarMode.extended,
+                sections: [
+                  for (final area in areas)
+                    AppNavSection(
+                      label: area.label,
+                      icon: area.icon,
+                      accentColor: area.accent.resolve(colors),
+                      onTap: () {},
+                      items: [
+                        for (final destination
+                            in area.visibleDestinations(session))
+                          AppNavItem(
+                            label: destination.label,
+                            icon: destination.icon,
+                            domainColor: area.accent.resolve(colors),
+                            onTap: () {},
+                          ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: density.md),
+        Text(
+          _role == AppRole.owner
+              ? 'Owner melewati seluruh pemeriksaan izin — begitu pula '
+                  'public.has_permission di sisi database.'
+              : 'Area dan butir yang tidak terlihat memang tidak dipegang '
+                  'peran ini di role_permissions.',
+          style: context.text.formHelper.copyWith(color: colors.textTertiary),
+        ),
+      ],
+    );
+  }
+}
+
+class _BreadcrumbSection extends StatelessWidget {
+  const _BreadcrumbSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final density = context.space;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _Label('Dua ruas'),
+        AppBreadcrumb(
+          items: [
+            AppBreadcrumbItem(label: 'Persediaan', onTap: () {}),
+            const AppBreadcrumbItem(label: 'Produk'),
+          ],
+        ),
+        SizedBox(height: density.lg),
+        const _Label('Empat ruas'),
+        AppBreadcrumb(
+          items: [
+            AppBreadcrumbItem(label: 'Persediaan', onTap: () {}),
+            AppBreadcrumbItem(label: 'Produk', onTap: () {}),
+            AppBreadcrumbItem(label: 'Detail produk', onTap: () {}),
+            const AppBreadcrumbItem(label: 'Riwayat harga'),
+          ],
+        ),
+        SizedBox(height: density.lg),
+        const _Label('Satu ruas — sengaja tidak menghasilkan apa pun'),
+        const AppBreadcrumb(items: [AppBreadcrumbItem(label: 'Dasbor')]),
+      ],
+    );
+  }
+}
+
+class _TopBarSection extends StatelessWidget {
+  const _TopBarSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(color: colors.borderDefault),
+        borderRadius: AppRadius.rSm,
+      ),
+      child: AppTopBar(
+        breadcrumbs: [
+          AppBreadcrumbItem(label: 'Penjualan', onTap: () {}),
+          const AppBreadcrumbItem(label: 'Transaksi'),
+        ],
+        outletName: 'Outlet Pusat',
+        onSwitchOutlet: () {},
+        onOpenAccount: () {},
       ),
     );
   }

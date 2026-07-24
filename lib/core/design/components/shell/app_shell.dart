@@ -13,12 +13,21 @@ import '../../design.dart';
 /// universal — batas berlakunya ditetapkan §16.4 setelah perangkat sasaran
 /// diperbaiki di §16.0. Di layar sempit navigasi utama turun ke bilah bawah:
 ///
-/// | Ukuran   | Navigasi utama | Inspector    | Bottom panel  |
-/// |----------|----------------|--------------|---------------|
-/// | compact  | **Bilah bawah**| Bottom sheet | Disembunyikan |
-/// | medium   | Rail ikon      | Laci kanan   | Disembunyikan |
-/// | expanded | Rail ikon      | Kolom tetap  | Ditampilkan   |
-/// | large    | Sidebar berlabel| Kolom tetap | Ditampilkan   |
+/// | Ukuran   | Navigasi utama   | Inspector    | Bottom panel  |
+/// |----------|------------------|--------------|---------------|
+/// | compact  | **Bilah bawah**  | Bottom sheet | Disembunyikan |
+/// | medium   | Rail ikon        | Laci kanan   | Disembunyikan |
+/// | expanded | Sidebar berlabel | Kolom tetap  | Ditampilkan   |
+/// | large    | Sidebar berlabel | Kolom tetap  | Ditampilkan   |
+///
+/// Baris `expanded` diperbaiki di Phase UI-4. Sebelumnya ia memakai rail, yang
+/// bertentangan dengan tabel §16.4 — dokumen itu menetapkan sidebar berlabel
+/// mulai 1024 px. Ketidakcocokan itu tidak terasa selama menu hanya berisi
+/// empat tujuan rata, tetapi menjadi merusak begitu menu dikelompokkan ke
+/// delapan area: rail hanya menampilkan ikon area, dan seluruh tujuan di
+/// dalamnya tidak bisa dicapai. Karena §16.0 menghapus PC dari daftar perangkat
+/// sasaran, ambang 1440 praktis tidak pernah tercapai — artinya sidebar
+/// berlabel nyaris tidak pernah muncul di perangkat sungguhan.
 ///
 /// Laci samping tetap ada di layar sempit, tetapi turun perannya menjadi menu
 /// sekunder — ganti outlet, setelan, keluar — dan hanya muncul bila
@@ -59,6 +68,15 @@ class AppShell extends StatelessWidget {
   /// pemakaian normal biarkan shell yang memutuskan.
   final AppDensity? densityOverride;
 
+  /// Kunci ke [ScaffoldState] milik shell.
+  ///
+  /// Diperlukan karena pemanggil membangun bilah atas dan bilah bawah dari
+  /// konteksnya sendiri, yang berada **di atas** Scaffold yang dibuat di sini.
+  /// `Scaffold.of(context)` dari sana tidak menemukan apa pun dan melempar —
+  /// dan melemparnya baru terjadi saat tombol ditekan, bukan saat dibangun,
+  /// sehingga lolos dari pandangan sampai seseorang menekannya.
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+
   const AppShell({
     super.key,
     required this.sidebarBuilder,
@@ -69,6 +87,7 @@ class AppShell extends StatelessWidget {
     this.bottomPanel,
     this.appBar,
     this.densityOverride,
+    this.scaffoldKey,
   });
 
   @override
@@ -84,9 +103,7 @@ class AppShell extends StatelessWidget {
         builder: (context) => switch (windowSize) {
           WindowSize.compact => _buildCompact(context),
           WindowSize.medium => _buildMedium(context),
-          WindowSize.expanded ||
-          WindowSize.large =>
-            _buildWide(context, windowSize),
+          WindowSize.expanded || WindowSize.large => _buildWide(context),
         },
       ),
     );
@@ -98,6 +115,7 @@ class AppShell extends StatelessWidget {
     final bottomNav = bottomNavBuilder;
 
     return Scaffold(
+      key: scaffoldKey,
       appBar: appBar,
       // Papan ketik layar tidak boleh mendorong bilah navigasi ke atas isian
       // yang sedang diketik. Scaffold mengubah ukuran body untuk isiannya, dan
@@ -130,7 +148,15 @@ class AppShell extends StatelessWidget {
     final colors = context.colors;
 
     return Scaffold(
+      key: scaffoldKey,
       appBar: appBar,
+      // Rail hanya memuat ikon area; seluruh tujuan di dalamnya tidak terlihat.
+      // Tanpa laci ini, tablet potret kehilangan akses ke sebagian besar
+      // halaman aplikasi — bukan menyembunyikannya, benar-benar memutusnya.
+      drawer: Drawer(
+        width: context.space.sidebarExtendedWidth,
+        child: sidebarBuilder(context, AppSidebarMode.drawer),
+      ),
       endDrawer: inspector == null
           ? null
           : Drawer(
@@ -148,16 +174,13 @@ class AppShell extends StatelessWidget {
     );
   }
 
-  /// Tablet lanskap dan desktop: semua panel terlihat bersamaan.
-  Widget _buildWide(BuildContext context, WindowSize windowSize) {
+  /// Tablet lanskap: semua panel terlihat bersamaan, navigasi berlabel penuh.
+  Widget _buildWide(BuildContext context) {
     final colors = context.colors;
     final density = context.space;
 
-    final mode = windowSize == WindowSize.large
-        ? AppSidebarMode.extended
-        : AppSidebarMode.rail;
-
     return Scaffold(
+      key: scaffoldKey,
       appBar: appBar,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -166,7 +189,7 @@ class AppShell extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                sidebarBuilder(context, mode),
+                sidebarBuilder(context, AppSidebarMode.extended),
                 AppDivider.vertical(color: colors.borderDefault),
                 Expanded(child: workspace),
                 if (inspector != null) ...[

@@ -36,7 +36,7 @@ void main() {
       ];
 
       return AppShell(
-        sidebarBuilder: (context, mode) => AppSidebar(
+        sidebarBuilder: (context, mode) => AppSidebar.flat(
           mode: mode,
           selectedIndex: 0,
           items: items,

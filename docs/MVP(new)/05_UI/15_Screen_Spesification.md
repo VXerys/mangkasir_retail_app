@@ -109,8 +109,14 @@ Dashboard
 Route
 
 ```
-/
+/dashboard
 ```
+
+`/` bukan alamat halaman ini, melainkan pengalihan: ia mengantar pengguna ke
+tujuan awal menurut perannya. Kasir mendarat di `/sales/pos`, peran lain di
+`/dashboard`. Alasannya ada di §13 Permission Navigation — kasir tidak mampir
+ke dasbor, dan memaksanya lewat sana menambah satu ketukan pada pekerjaan yang
+paling sering dilakukan di aplikasi ini.
 
 Component
 
@@ -133,19 +139,31 @@ Recent Transaction
 Permission
 
 ```
-DASHBOARD_VIEW
+(tanpa syarat)
 ```
+
+Diperbaiki 24 Juli 2026. `DASHBOARD_VIEW` **tidak ada** di tabel `permissions`
+— kamus izin berisi 26 kode dan tidak satu pun menyebut dasbor. Dasbor karena
+itu terbuka untuk siapa pun yang sudah masuk, sejalan dengan Permission Matrix
+di bawah yang memberi tanda ✓ pada keempat peran. Isi kartunya sendiri yang
+menyaring diri: kartu laba hanya muncul bagi pemegang `REPORTS_READ`, kartu kas
+bagi pemegang `CASH_VIEW`.
 
 ---
 
 # Product
+
+Produk berada **di dalam** area Inventory menurut §13, jadi jalurnya bersarang
+seperti tetangganya (`/inventory/stocks`). Jalur rata `/products` yang tertulis
+sebelumnya membuat satu-satunya entitas Inventory yang tidak bersarang, dan
+breadcrumb kehilangan induknya. Diperbaiki 24 Juli 2026.
 
 ## Product List
 
 Route
 
 ```
-/products
+/inventory/products
 ```
 
 Component
@@ -193,7 +211,7 @@ DELETE /products/{id}
 ## Product Detail
 
 ```
-/products/:id
+/inventory/products/:id
 ```
 
 Tabs
@@ -227,7 +245,7 @@ Duplicate
 ## Product Create
 
 ```
-/products/new
+/inventory/products/new
 ```
 
 Component
@@ -606,16 +624,72 @@ Responsive Behaviour
 
 # Permission Matrix
 
-| Screen    | Owner | Admin | Manager | Cashier |
-| --------- | ----- | ----- | ------- | ------- |
-| Dashboard | ✓     | ✓     | ✓       | ✓       |
-| Product   | ✓     | ✓     | ✓       | ✗       |
-| Inventory | ✓     | ✓     | ✓       | ✗       |
-| Purchase  | ✓     | ✓     | ✓       | ✗       |
-| POS       | ✓     | ✓     | ✓       | ✓       |
-| Finance   | ✓     | ✓     | ✓       | ✗       |
-| Reporting | ✓     | ✓     | ✓       | ✗       |
-| Settings  | ✓     | ✓     | ✗       | ✗       |
+> **Sumber kebenaran matriks ini adalah tabel `role_permissions` di database,
+> bukan tabel di dokumen ini.** RLS-lah yang benar-benar menolak atau
+> mengizinkan; tabel di sini hanya ringkasannya untuk dibaca manusia. Kalau
+> keduanya berbeda, database yang menang — UI yang menampilkan menu lalu
+> ditolak server lebih buruk daripada UI yang tidak menampilkannya sejak awal.
+
+Diperbaiki 24 Juli 2026 setelah dicocokkan dengan seed sungguhan. Ada **tujuh
+peran** yang di-seed, bukan empat, dan semuanya global lintas tenant
+(`roles.business_id` NULL). Empat sel pada versi lama bertentangan dengan
+database dan sudah dibetulkan; ditandai †.
+
+| Area      | Owner | Administrator | Manager | Kasir | Purchasing | Gudang | Finance |
+| --------- | ----- | ------------- | ------- | ----- | ---------- | ------ | ------- |
+| Dashboard | ✓     | ✓             | ✓       | ✓     | ✓          | ✓      | ✓       |
+| Product   | ✓     | ✓             | ✓       | ✓ †   | ✓          | ✓      | ✗       |
+| Inventory | ✓     | ✓             | ✓       | ✓ †   | ✓          | ✓      | ✗       |
+| Purchase  | ✓     | ✓             | ✓       | ✗     | ✓          | ✓      | ✓       |
+| POS       | ✓     | ✓             | ✓       | ✓     | ✗          | ✗      | ✗       |
+| Sales     | ✓     | ✓             | ✓       | ✓     | ✗          | ✗      | ✓       |
+| CRM       | ✓     | ✓             | ✓       | ✓     | ✓          | ✗      | ✗       |
+| Finance   | ✓     | ✓             | ✓       | ✓ †   | ✗          | ✗      | ✓       |
+| Reporting | ✓     | ✓             | ✓       | ✗     | ✗          | ✗      | ✓       |
+| Settings  | ✓     | ✓             | ✓ †     | ✗     | ✗          | ✗      | ✗       |
+
+Empat perbaikan itu bukan kelonggaran, melainkan gambaran kerja yang sebenarnya:
+
+- **Product × Kasir** dan **Inventory × Kasir** — kasir memegang `PRODUCT_READ`
+  dan `INVENTORY_VIEW`. Ia mustahil menjual tanpa membaca katalog, dan perlu
+  tahu sisa stok sebelum menjanjikan barang kepada pembeli.
+- **Finance × Kasir** — kasir memegang `CASH_VIEW` dan `CASH_CREATE`. Dialah
+  yang membuka dan menutup laci kas; sesi kas adalah pekerjaannya, bukan
+  pekerjaan pemilik.
+- **Settings × Manager** — manager memegang `SETTING_MANAGE`. Yang tidak ia
+  pegang adalah `USER_MANAGE`, dan itu hanya milik Owner.
+
+Izin per aksi (bukan per layar) tetap lebih sempit dari tabel ini. Contoh:
+Kasir melihat daftar produk lewat `PRODUCT_READ` tetapi tidak bisa menambah
+produk karena `PRODUCT_CREATE` tidak ada padanya, dan Manager tidak bisa
+menyetujui PO karena `PURCHASE_APPROVE` hanya dipegang Owner dan Administrator.
+
+## Kamus izin
+
+26 kode, dikelompokkan per domain:
+
+| Domain    | Kode                                                                  |
+| --------- | --------------------------------------------------------------------- |
+| Produk    | `PRODUCT_READ` `PRODUCT_CREATE` `PRODUCT_UPDATE` `PRODUCT_DELETE` `PRODUCT_MANAGE` |
+| Stok      | `STOCK_READ` `STOCK_ADJUST` `STOCK_TRANSFER` `INVENTORY_VIEW` `INVENTORY_ADJUST`   |
+| Penjualan | `SALE_CREATE` `SALE_READ` `SALE_VIEW` `SALE_VOID`                      |
+| Pembelian | `PURCHASE_READ` `PURCHASE_CREATE` `PURCHASE_APPROVE` `PURCHASE_RECEIVE` |
+| CRM       | `CRM_READ` `CRM_CREATE` `CRM_UPDATE`                                  |
+| Kas       | `CASH_VIEW` `CASH_CREATE`                                             |
+| Laporan   | `REPORTS_READ`                                                        |
+| Setelan   | `SETTING_MANAGE` `USER_MANAGE`                                        |
+
+**Owner mem-bypass seluruh pemeriksaan.** Fungsi `public.has_permission`
+mengembalikan TRUE untuk peran Owner tanpa melihat kode yang diminta, jadi
+klien wajib ikut mem-bypass — kalau tidak, UI menyembunyikan menu yang justru
+diizinkan server.
+
+**Catatan untuk tim backend.** Kamus ini memuat sinonim: `SALE_READ` dan
+`SALE_VIEW` berdeskripsi sama dan selalu di-seed berpasangan, sementara
+`STOCK_READ`/`INVENTORY_VIEW` dan `STOCK_ADJUST`/`INVENTORY_ADJUST` saling
+tumpang tindih. Aplikasi memilih satu dari tiap pasangan (`SALE_VIEW`,
+`STOCK_READ`, `STOCK_ADJUST`) dan memperlakukan sisanya sebagai sinonim.
+Merapikannya adalah pekerjaan database, bukan pekerjaan UI.
 
 ---
 

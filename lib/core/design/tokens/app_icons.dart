@@ -92,6 +92,32 @@ abstract final class AppIcons {
   static const cashIn = Icons.arrow_downward;
   static const cashOut = Icons.arrow_upward;
 
+  /// Pergerakan kas masuk dan keluar sepanjang periode.
+  static const cashFlow = Icons.swap_vert;
+
+  /// Selisih penjualan terhadap modal.
+  static const profit = Icons.trending_up;
+
+  // --- Setelan & organisasi -------------------------------------------------
+
+  /// Identitas badan usaha: nama, NPWP, mata uang.
+  static const business = Icons.business_outlined;
+
+  /// Peran beserta izin yang melekat padanya.
+  static const role = Icons.admin_panel_settings_outlined;
+
+  /// Pengguna sebagai objek yang dikelola, berbeda dari [account] yang berarti
+  /// "saya, yang sedang memakai aplikasi ini".
+  static const user = Icons.manage_accounts_outlined;
+
+  static const notification = Icons.notifications_outlined;
+  static const backup = Icons.backup_outlined;
+
+  /// Preferensi perangkat: tema, bahasa, kerapatan.
+  static const preference = Icons.settings_suggest_outlined;
+
+  static const help = Icons.help_outline;
+
   // --- Status sinkronisasi --------------------------------------------------
   //
   // Aplikasi ini offline-first, jadi status sync selalu terlihat dan ikonnya

@@ -23,12 +23,66 @@ class AppNavItem {
   /// Angka pada lencana, misalnya jumlah data yang belum tersinkron.
   final int? badgeCount;
 
+  /// Apakah tujuan ini yang sedang dibuka.
+  ///
+  /// Melekat pada item, bukan disimpulkan dari indeks. Sejak sidebar
+  /// dikelompokkan per area, "indeks ke-3" tidak lagi menunjuk apa pun yang
+  /// pasti — nomor yang sama berarti tujuan berbeda tergantung berapa area yang
+  /// terlihat oleh peran yang sedang masuk.
+  final bool isSelected;
+
   const AppNavItem({
     required this.label,
     required this.icon,
     required this.onTap,
     this.domainColor,
     this.badgeCount,
+    this.isSelected = false,
+  });
+
+  AppNavItem copyWith({bool? isSelected}) => AppNavItem(
+        label: label,
+        icon: icon,
+        onTap: onTap,
+        domainColor: domainColor,
+        badgeCount: badgeCount,
+        isSelected: isSelected ?? this.isSelected,
+      );
+}
+
+/// Sekelompok tujuan di bawah satu judul area.
+///
+/// Ada karena tabel rute penuh membawa delapan area dan lebih dari empat puluh
+/// tujuan. Daftar rata sepanjang itu tidak bisa dipindai mata — dan pada mode
+/// rail, yang hanya menampilkan ikon, empat puluh ikon tanpa pengelompokan
+/// tidak berarti apa-apa.
+@immutable
+class AppNavSection {
+  /// Judul kelompok. Null berarti kelompok tanpa judul: satu section tanpa
+  /// judul memulihkan persis perilaku daftar rata.
+  final String? label;
+
+  /// Ikon yang mewakili kelompok pada mode rail.
+  final IconData? icon;
+
+  /// Aksen domain kelompok, dipakai sebagai strip penanda.
+  final Color? accentColor;
+
+  final List<AppNavItem> items;
+
+  /// Apakah kelompok ini sedang memuat tujuan yang aktif.
+  final bool isSelected;
+
+  /// Ditekan pada mode rail, tempat butir-butirnya tidak terlihat.
+  final VoidCallback? onTap;
+
+  const AppNavSection({
+    required this.items,
+    this.label,
+    this.icon,
+    this.accentColor,
+    this.isSelected = false,
+    this.onTap,
   });
 }
 
@@ -51,10 +105,8 @@ enum AppSidebarMode {
 /// minimum yang besar dan tidak menyediakan mode berlabel penuh maupun strip
 /// aksen per domain.
 class AppSidebar extends StatelessWidget {
-  final List<AppNavItem> items;
-
-  /// Indeks item yang sedang aktif. `-1` berarti tidak ada.
-  final int selectedIndex;
+  /// Kelompok tujuan. Satu section tanpa judul menghasilkan daftar rata.
+  final List<AppNavSection> sections;
 
   final AppSidebarMode mode;
 
@@ -66,17 +118,44 @@ class AppSidebar extends StatelessWidget {
 
   const AppSidebar({
     super.key,
-    required this.items,
-    required this.selectedIndex,
+    required this.sections,
     required this.mode,
     this.header,
     this.footer,
   });
 
+  /// Sidebar berisi satu daftar rata tanpa pengelompokan.
+  ///
+  /// Dipakai galeri dan layar yang tujuannya sedikit.
+  factory AppSidebar.flat({
+    Key? key,
+    required List<AppNavItem> items,
+    required int selectedIndex,
+    required AppSidebarMode mode,
+    Widget? header,
+    Widget? footer,
+  }) {
+    return AppSidebar(
+      key: key,
+      mode: mode,
+      header: header,
+      footer: footer,
+      sections: [
+        AppNavSection(
+          items: [
+            for (final (index, item) in items.indexed)
+              item.copyWith(isSelected: index == selectedIndex),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final density = context.space;
+    final isRail = mode == AppSidebarMode.rail;
 
     final width = switch (mode) {
       AppSidebarMode.extended => density.sidebarExtendedWidth,
@@ -93,7 +172,7 @@ class AppSidebar extends StatelessWidget {
           if (header != null) ...[
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: mode == AppSidebarMode.rail ? density.xs : density.md,
+                horizontal: isRail ? density.xs : density.md,
                 vertical: density.md,
               ),
               child: header,
@@ -101,30 +180,114 @@ class AppSidebar extends StatelessWidget {
             AppDivider(color: colors.borderSubtle),
           ],
           Expanded(
-            child: ListView.builder(
+            child: ListView(
               padding: EdgeInsets.symmetric(
                 horizontal: density.xs,
                 vertical: density.sm,
               ),
-              itemCount: items.length,
-              itemBuilder: (context, index) => _SidebarTile(
-                item: items[index],
-                isSelected: index == selectedIndex,
-                mode: mode,
-              ),
+              children: [
+                for (final section in sections)
+                  // Pada mode rail sebuah kelompok menyusut menjadi satu ikon
+                  // areanya. Menampilkan seluruh isinya di kolom selebar 56 px
+                  // menghasilkan tumpukan ikon tanpa arti — dan menyembunyikan
+                  // judulnya, satu-satunya hal yang menjelaskannya.
+                  if (isRail)
+                    _RailAreaTile(section: section)
+                  else
+                    _SidebarSection(section: section, mode: mode),
+              ],
             ),
           ),
           if (footer != null) ...[
             AppDivider(color: colors.borderSubtle),
             Padding(
-              padding: EdgeInsets.all(
-                mode == AppSidebarMode.rail ? density.xs : density.md,
-              ),
+              padding: EdgeInsets.all(isRail ? density.xs : density.md),
               child: footer,
             ),
           ],
         ],
       ),
+    );
+  }
+}
+
+/// Satu kelompok berlabel beserta isinya.
+class _SidebarSection extends StatelessWidget {
+  final AppNavSection section;
+  final AppSidebarMode mode;
+
+  const _SidebarSection({required this.section, required this.mode});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final density = context.space;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (section.label != null)
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              density.sm,
+              density.sm,
+              density.sm,
+              density.xs,
+            ),
+            child: Row(
+              children: [
+                if (section.icon != null) ...[
+                  Icon(
+                    section.icon,
+                    size: 14,
+                    color: section.accentColor ?? colors.textTertiary,
+                  ),
+                  SizedBox(width: density.xs),
+                ],
+                Expanded(
+                  child: Text(
+                    section.label!.toUpperCase(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.text.badge.copyWith(
+                      color: colors.textTertiary,
+                      letterSpacing: 0.6,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        for (final item in section.items)
+          _SidebarTile(
+            item: item,
+            isSelected: item.isSelected,
+            mode: mode,
+          ),
+        SizedBox(height: density.xs),
+      ],
+    );
+  }
+}
+
+/// Kelompok yang menyusut menjadi satu ikon pada mode rail.
+class _RailAreaTile extends StatelessWidget {
+  final AppNavSection section;
+
+  const _RailAreaTile({required this.section});
+
+  @override
+  Widget build(BuildContext context) {
+    return _SidebarTile(
+      item: AppNavItem(
+        label: section.label ?? '',
+        icon: section.icon ?? AppIcons.more,
+        onTap: section.onTap ?? () {},
+        domainColor: section.accentColor,
+        isSelected: section.isSelected,
+      ),
+      isSelected: section.isSelected,
+      mode: AppSidebarMode.rail,
     );
   }
 }

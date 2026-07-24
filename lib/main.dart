@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -5,11 +7,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'core/design/design.dart';
 import 'core/design/theme/theme_cubit.dart';
 import 'core/di/injection.dart';
 import 'core/preferences/app_preferences.dart';
-import 'core/router/app_router.dart';
+import 'core/router/app_root.dart';
+import 'core/session/session_cubit.dart';
 import 'core/sync/connectivity_service.dart';
 import 'core/sync/sync_bloc/sync_bloc.dart';
 import 'core/sync/sync_bloc/sync_event.dart';
@@ -42,6 +44,12 @@ void main() async {
   // Load persisted cart on startup
   getIt<CartBloc>().add(const CartEvent.started());
 
+  // Memulihkan sesi tersimpan. Sengaja tidak ditunggu: menahan runApp sampai
+  // sesi selesai dibaca berarti layar putih selama pemulihan. SessionCubit
+  // memulai dari keadaan `unknown`, dan penjaga rute menahan pengguna di
+  // halaman boot sampai jawabannya tiba.
+  unawaited(getIt<SessionCubit>().restore());
+
   // Auto-sync when device goes online
   getIt<ConnectivityService>()
       .onOnline
@@ -50,24 +58,14 @@ void main() async {
   runApp(const MangRitelApp());
 }
 
-class MangRitelApp extends StatefulWidget {
+class MangRitelApp extends StatelessWidget {
   const MangRitelApp({super.key});
-
-  @override
-  State<MangRitelApp> createState() => _MangRitelAppState();
-}
-
-class _MangRitelAppState extends State<MangRitelApp> {
-  // Router dibuat sekali dan disimpan, bukan dibangun ulang di dalam build().
-  // GoRouter menyimpan riwayat navigasi; membangunnya ulang akan mengembalikan
-  // pengguna ke halaman awal setiap kali widget ini dibangun ulang.
-  final _router = AppRouter.build();
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Keduanya terdaftar sebagai @lazySingleton. Memakai
+        // Semuanya terdaftar sebagai @lazySingleton. Memakai
         // `BlocProvider(create: ...)` akan menyerahkan kepemilikan ke widget
         // tree dan men-dispose singleton saat widget dilepas — keranjang jadi
         // hilang dan sinkronisasi berhenti diam-diam.
@@ -76,13 +74,9 @@ class _MangRitelAppState extends State<MangRitelApp> {
         BlocProvider.value(value: getIt<ThemeCubit>()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
-        builder: (context, themeMode) => MaterialApp.router(
-          title: 'MangRitel',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
+        builder: (context, themeMode) => AppRoot(
+          session: getIt<SessionCubit>(),
           themeMode: themeMode,
-          routerConfig: _router,
         ),
       ),
     );

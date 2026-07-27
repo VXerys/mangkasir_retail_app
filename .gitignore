@@ -48,3 +48,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Sistem konteks-chat (tool/context) — cache Python.
+# context/ sendiri sengaja di-commit: roadmap.yaml adalah sumber kebenaran,
+# dan PROGRESS.md/SNAPSHOT.md dibiarkan terlihat di GitHub.
+__pycache__/
+*.pyc

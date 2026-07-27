@@ -57,6 +57,40 @@ def commit_exists(sha: str) -> bool:
         return False
 
 
+def _rel(path) -> str:
+    return str(path.relative_to(REPO_ROOT)).replace("\\", "/")
+
+
+def file_matches_head(path) -> bool:
+    """True kalau isi `path` di working tree sama persis dengan HEAD.
+
+    Dipakai untuk memutuskan apakah aman memakai waktu commit sebagai stempel:
+    kalau isinya sedang diedit dan belum di-commit, waktu commit terakhir akan
+    bohong soal kapan file itu sungguh berubah.
+    """
+    try:
+        _git("diff", "--quiet", "HEAD", "--", _rel(path))
+        return True
+    except GitError:
+        return False
+
+
+def last_commit_time(path) -> str | None:
+    """Waktu commit terakhir yang menyentuh `path`, format UTC ISO-8601.
+
+    Stabil lintas `checkout`/`clone`/`pull` — tidak seperti mtime, yang ditulis
+    ulang tiap kali git menaruh file ke disk, bukan hanya saat isinya berubah.
+    """
+    out = _git("log", "-1", "--format=%cI", "--", _rel(path)).strip()
+    if not out:
+        return None
+    # %cI: 2026-07-27T10:14:19+07:00 -> dinormalkan ke UTC.
+    import datetime as _dt
+
+    moment = _dt.datetime.fromisoformat(out).astimezone(_dt.timezone.utc)
+    return moment.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def log(since: str | None = None) -> list[dict]:
     fmt = FMT_FIELD_SEP.join(["%h", "%ad", "%s", "%b"]) + FMT_RECORD_SEP
     args = ["log", f"--format={fmt}", "--date=short"]

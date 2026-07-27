@@ -101,17 +101,35 @@ class Phase:
 
 
 def source_stamp(path=None) -> str:
-    """Kapan roadmap.yaml terakhir berubah, dibaca dari mtime file.
+    """Kapan roadmap.yaml terakhir benar-benar berubah.
 
-    Sengaja tidak disimpan sebagai field di YAML. Kalau disimpan, ia hanya ikut
-    terbarui saat mutasi lewat CLI dan diam-diam basi setiap kali file diedit
-    tangan — padahal mengedit langsung memang cara pakai yang didukung. Diambil
-    dari mtime, render tetap deterministik (file yang sama menghasilkan byte yang
-    sama) tapi stempelnya selalu jujur.
+    Sengaja tidak disimpan sebagai field di YAML — versi itu sempat dibuat dan
+    salah, karena hanya terbarui lewat mutasi CLI dan diam-diam basi tiap kali
+    file diedit tangan (cara pakai yang didukung).
+
+    mtime murni juga salah: `git checkout`/`clone`/`pull` menulis ulang file ke
+    disk dan membuat mtime melompat ke waktu checkout, bukan waktu isinya
+    sungguh berubah — sync pertama sesudah clone akan selalu terlihat "baru
+    saja berubah" walau tidak ada yang menyentuhnya.
+
+    Jadi: kalau file cocok persis dengan HEAD git, pakai waktu commit terakhir
+    yang menyentuhnya (stabil lintas checkout/clone). Kalau berbeda dari HEAD
+    (sedang diedit, belum di-commit) atau bukan repo git, baru pakai mtime.
     """
     path = path or ROADMAP_FILE
     if not path.exists():
         return "belum pernah"
+
+    try:
+        import gitlink
+
+        if gitlink.file_matches_head(path):
+            stamp = gitlink.last_commit_time(path)
+            if stamp:
+                return stamp
+    except gitlink.GitError:
+        pass
+
     moment = _dt.datetime.fromtimestamp(path.stat().st_mtime, _dt.timezone.utc)
     return moment.strftime("%Y-%m-%dT%H:%M:%SZ")
 

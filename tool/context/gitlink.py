@@ -179,6 +179,8 @@ def format_report(report: dict, since: str | None) -> str:
 
     if report["done_without_commit"]:
         L.append("  Task 'done' tanpa commit (fasenya juga tidak punya commit):")
+        L.append("  Wajar untuk pekerjaan yang tidak dilakukan di repo ini —")
+        L.append("  migrasi SQL di Supabase tidak meninggalkan commit di sini.")
         for phase, task in report["done_without_commit"]:
             L.append(f"    {task.key:<24} ({phase.id}) {task.title[:36]}")
         L.append("")

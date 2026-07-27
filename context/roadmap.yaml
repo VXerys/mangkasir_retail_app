@@ -1,0 +1,515 @@
+# Sumber kebenaran tunggal progres MangRitel.
+# Diedit langsung, atau lewat CLI: tool\context\ctx.bat --help
+# Semua file markdown di context/ dan di memory dir adalah hasil render
+# satu arah dari file ini. Jangan edit file hasil render.
+
+project: MangRitel
+
+# Label track. Tiap fase menyebut salah satu id di bawah lewat field 'track'.
+tracks:
+  ui: Aplikasi Flutter
+  be: Backend Supabase
+
+phases:
+
+  - id: UI-0
+    track: ui
+    name: Fondasi Design System
+    goal: Token, tema, primitive, dan shell dituntaskan sebelum satu halaman pun di-slice
+    status: done
+    started_at: 2026-07-23
+    completed_at: 2026-07-23
+    commits: [7c0616e]
+    verification: "Analyzer bersih; galeri /dev/design terbangun di desktop dan ponsel"
+    tasks:
+      - key: ui0-tokens
+        title: "Token: palette, warna semantik, tipografi, density adaptif, radius, shadow, motion, breakpoint, ikon domain"
+        status: done
+        files: [lib/core/design/tokens]
+      - key: ui0-theme-light
+        title: LightScheme lengkap + pemetaan token ke ColorScheme Material agar Dialog/SnackBar/Switch ikut sistem
+        status: done
+        files: [lib/core/design/theme/light_scheme.dart]
+      - key: ui0-primitives
+        title: "Delapan primitive stateless: button, text field, panel, badge, divider, empty state, error view, skeleton"
+        status: done
+        files: [lib/core/design/components]
+      - key: ui0-shell
+        title: AppShell 4 slot (sidebar/workspace/inspector/bottom-panel), memasang DensityScope untuk seluruh subtree
+        status: done
+        files: [lib/core/design/components/shell/app_shell.dart]
+      - key: ui0-router
+        title: GoRouter dengan transisi 220 ms, shell layout, dan galeri /dev/design
+        status: done
+        files: [lib/core/router]
+      - key: ui0-format
+        title: Formatter currency (Rp id_ID), number (qty, persen), date (id_ID + relatif)
+        status: done
+        files: [lib/core/utils]
+      - key: ui0-fonts
+        title: Inter + JetBrains Mono di-bundle lokal, varian 18pt, angka tabular dijamin di tiap style numerik
+        status: done
+        files: [assets/fonts]
+      - key: ui0-fix-imports
+        title: "Perbaiki import 5 model yang menunjuk file *table tak tersedia — proyek tidak bisa dikompilasi sebelumnya"
+        status: done
+      - key: ui0-tests
+        title: Tes invarian token (breakpoint, density, motion), ColorScheme memakai token, galeri terbangun
+        status: done
+        files: [test/core/design]
+    decisions:
+      - what: Tipografi disusun per peran, bukan per hierarki
+        why: "Layar POS padat; ukuran teks ditentukan tugasnya (harga, label, angka tabel), bukan kedalaman heading"
+      - what: Garis lebih diutamakan daripada bayangan
+        why: "Tampilan industrial/dense; bayangan menumpuk jadi kotor di layar yang penuh panel"
+      - what: Semua motion dibatasi 220 ms
+        why: "Kasir mengetuk cepat dan berulang; animasi lebih panjang terasa menghalangi"
+      - what: Font di-bundle lokal, bukan diunduh saat runtime
+        why: "Aplikasi offline-first; teks tidak boleh menunggu jaringan"
+    deferred:
+      - to: UI-1
+        what: Isi nilai dark_scheme.dart (saat ini masih kerangka berisi TODO)
+      - to: UI-2
+        what: AppDataTable (25-50 baris)
+      - to: UI-5
+        what: "Komponen bisnis: ProductCard, CartPanel, PaymentSummary, ReceiptPreview"
+      - to: UI-6
+        what: Keyboard shortcut F2/F4/ESC/Ctrl+P
+      - to: UI-6
+        what: Slicing halaman POS
+
+  - id: UI-1
+    track: ui
+    name: Tema Tuntas
+    goal: "Menuntaskan tema gelap dan tiga sistem tersimpan: preferensi, cubit, penyimpanan"
+    status: done
+    started_at: 2026-07-23
+    completed_at: 2026-07-23
+    commits: [280ba1b]
+    verification: 38 tes lolos, analyzer bersih
+    tasks:
+      - key: ui1-dark-ramp
+        title: "Ramp gelap d0..d900 di AppPalette: selisih antar lapisan rapat, trio semantik diturunkan saturasinya"
+        status: done
+        files: [lib/core/design/tokens/app_palette.dart]
+      - key: ui1-dark-scheme
+        title: DarkScheme terisi lengkap, tidak lagi alias LightScheme
+        status: done
+        files: [lib/core/design/theme/dark_scheme.dart]
+      - key: ui1-elevation
+        title: AppElevation sebagai ThemeExtension ketiga
+        status: done
+        files: [lib/core/design/tokens/app_elevation.dart]
+      - key: ui1-preferences
+        title: AppPreferences (Hive settings_box) + ThemeCubit untuk menyimpan ThemeMode antar sesi
+        status: done
+        files: [lib/core/preferences/app_preferences.dart, lib/core/design/theme/theme_cubit.dart]
+      - key: ui1-contrast-test
+        title: "Uji kontras WCAG kedua tema; dua perbaikan ditemukan di tema terang (n500 digelapkan)"
+        status: done
+        files: [test/core/design]
+      - key: ui1-theme-switch
+        title: Sakelar tema di galeri design system (Sistem/Terang/Gelap)
+        status: done
+    decisions:
+      - what: Bayangan tidak boleh sama di dua tema
+        why: "Bertinta biru di tema terang, hitam murni di tema gelap; bayangan biru di atas gelap terlihat berkabut"
+      - what: settings_box dibuka sinkron di main.dart sebelum runApp
+        why: Kalau dibuka asinkron, aplikasi sempat menggambar tema salah lalu berkedip saat preferensi tiba
+    risks:
+      - what: "Tema gelap belum pernah dilihat di perangkat asli; flutter build windows butuh Developer Mode"
+        severity: low
+
+  - id: UI-2
+    track: ui
+    name: Primitive Tuntas
+    goal: Melengkapi Component Inventory 15_Screen_Spesification.md dan memasang penegak aturannya selagi lib/features/ masih bersih
+    status: done
+    started_at: 2026-07-24
+    completed_at: 2026-07-24
+    commits: [06cb976]
+    verification: "Analyzer bersih; enforcer menguji polanya sendiri terhadap contoh positif dan negatif"
+    tasks:
+      - key: ui2-overlay
+        title: "AppDialog + showAppDialog + showAppConfirm; di layar compact masuk sebagai lembar dari tepi bawah"
+        status: done
+        files: [lib/core/design/components/overlay/app_dialog.dart]
+      - key: ui2-drawer-toast
+        title: showAppDrawer, AppToast (Overlay, bukan ScaffoldMessenger), AppTooltip, AppIconButton
+        status: done
+        files: [lib/core/design/components/overlay]
+      - key: ui2-form-toggle
+        title: AppCheckbox (tristate), AppRadio/AppRadioGroup, AppSwitch, fokus dan area sentuh dikumpulkan di ToggleShell
+        status: done
+        files: [lib/core/design/components/form]
+      - key: ui2-select
+        title: "AppSelect: popover menempel pada isian, membalik ke atas bila ruang sempit, bisa dicari dan dijelajahi panah"
+        status: done
+        files: [lib/core/design/components/form/app_select.dart]
+      - key: ui2-number-date
+        title: AppNumberInput, AppCurrencyInput, AppDateField/AppDateRangeField
+        status: done
+        files: [lib/core/design/components/form]
+      - key: ui2-table
+        title: "AppColumn dengan ColumnPriority + AppDataTable; di bawah 600 px berubah jadi daftar kartu"
+        status: done
+        files: [lib/core/design/components/table]
+      - key: ui2-pagination
+        title: AppPagination 25/50/100 baris
+        status: done
+        files: [lib/core/design/components/table/app_pagination.dart]
+      - key: ui2-search-filter-tabs
+        title: AppSearchField (jeda 300 ms, Enter melapor seketika untuk barcode), AppFilterChip/AppFilterBar, AppTabs beridentitas id
+        status: done
+      - key: ui2-style-enforcer
+        title: no_hardcoded_style_test.dart memindai lib/features/ untuk warna, gaya teks, spasi, radius, ikon, durasi mentah
+        status: done
+        files: [test/core/design/no_hardcoded_style_test.dart]
+    decisions:
+      - what: showGeneralDialog, bukan showDialog
+        why: Supaya tirai memakai colors.overlay dan durasinya tunduk pada plafon 220 ms
+      - what: Enter di dialog ditangani lewat FocusScope, bukan CallbackShortcuts di dalam panel
+        why: Peristiwa papan ketik merambat ke leluhur, dan scope milik rute berada di atas isi dialog
+      - what: Checkbox/Radio/Switch digambar sendiri
+        why: Versi Material mengambil warna dari ColorScheme, sehingga lepas dari token
+      - what: AppDataTable memakai ListView.builder ber-itemExtent
+        why: "DataTable Material membangun seluruh baris sekaligus; tabel produk bisa ribuan baris"
+      - what: Pengurutan dilaporkan ke pemanggil, tidak dikerjakan tabel sendiri
+        why: "Sumber data ada di bloc/DAO; tabel yang mengurut sendiri akan berbeda hasil dari yang di database"
+      - what: Ukuran halaman 10 baris ditolak, minimum 25
+        why: Sesuai penolakan eksplisit di 16_Design_System.md §16.3
+      - what: Enforcer dipasang justru selagi lib/features/ masih kosong dari widget
+        why: Kalau menunggu ada widget, daftar pengecualian akan tumbuh lebih dulu dan aturannya jadi tumpul
+
+  - id: UI-3
+    track: ui
+    name: Mobile-First
+    goal: Membereskan kontradiksi perangkat sasaran antar dokumen, lalu merancang ulang navigasi dan barcode di atas keputusan itu
+    status: done
+    started_at: 2026-07-24
+    completed_at: 2026-07-24
+    commits: [52cc009]
+    tasks:
+      - key: ui3-target-devices
+        title: Tambah §16.0 Perangkat Sasaran (ponsel Tingkat 1, tablet Tingkat 2, tablet + pemindai HID Tingkat 3, tanpa PC)
+        status: done
+        files: [docs/MVP(new)/05_UI/16_Design_System.md]
+      - key: ui3-nav-item
+        title: "AppSidebarItem jadi AppNavItem: model tujuan dipakai bersama sidebar dan bilah bawah supaya tidak menyimpang"
+        status: done
+        files: [lib/core/design/components/shell]
+      - key: ui3-bottom-nav
+        title: "AppBottomNav menggantikan Drawer di layar sempit; menghilang saat papan ketik layar terbuka"
+        status: done
+        files: [lib/core/design/components/shell/app_bottom_nav.dart]
+      - key: ui3-barcode-scope
+        title: "AppBarcodeScope sebagai titik masuk tunggal; kamera, wedge, dan ketik manual bermuara ke sana"
+        status: done
+        files: [lib/core/scanner]
+      - key: ui3-barcode-listener
+        title: AppBarcodeListener membedakan pemindai dari manusia lewat jeda antar tombol
+        status: done
+        files: [lib/core/scanner]
+      - key: ui3-mobile-scanner
+        title: mobile_scanner 7.4.0 + izin CAMERA + NSCameraUsageDescription, format dibatasi ke barcode ritel
+        status: done
+      - key: ui3-gesture
+        title: AppSwipeAction, AppRefreshView, AppBackGuard, AppKeyboardInset (juga dipasang di AppDialog dan AppDrawer sempit)
+        status: done
+        files: [lib/core/design/components/gesture]
+      - key: ui3-physical-keyboard
+        title: "PhysicalKeyboard menyimpulkan papan ketik fisik dari tombol yang mustahil ada di papan ketik layar; AppShortcutHint"
+        status: done
+        files: [lib/core/design/components/keyboard]
+    decisions:
+      - what: 01_Product_Vision_And_Scope.md menang atas 16_Design_System.md §16.1 soal perangkat sasaran
+        why: "Vision menetapkan Android/iOS/Web Admin; §16.1 menulis Desktop POS dengan layout ala VS Code. Tidak bisa dua-duanya"
+      - what: Heuristik pemindai memakai satu Timer, bukan DateTime.now()
+        why: Jam dinding tidak ikut dipercepat FakeAsync, jadi versi pertama mustahil diuji
+      - what: AppSwipeAction tidak memakai Dismissible
+        why: Dismissible menghapus widgetnya sendiri sebelum bloc sempat memutuskan apakah aksinya jadi
+      - what: PopScope, bukan WillPopScope
+        why: WillPopScope sudah usang
+      - what: Digit dan Enter tidak dihitung sebagai bukti papan ketik fisik
+        why: Justru itu yang dikirim pemindai HID, dan pemindai bukan papan ketik
+      - what: BarcodeFormat.all ditolak
+        why: Dibatasi ke format barcode ritel supaya pendeteksian tidak melambat dan salah baca
+
+  - id: UI-4
+    track: ui
+    name: Rangka Sesi/RBAC + Tabel Rute Penuh
+    goal: Aplikasi tahu siapa yang masuk, di outlet mana, boleh membuka apa, dan punya alamat untuk seluruh 45 layar IA
+    status: done
+    started_at: 2026-07-24
+    completed_at: 2026-07-24
+    commits: [4bc6111]
+    verification: 193 tes lulus, flutter analyze bersih
+    tasks:
+      - key: ui4-permissions
+        title: "AppPermissions: 26 kode persis seperti di server, plus peta sinonim dikumpulkan di satu tempat"
+        status: done
+        files: [lib/core/session/app_permissions.dart]
+      - key: ui4-session
+        title: "AppSession.can() dengan bypass Owner; SessionState tiga keadaan, unknown bukan signedOut"
+        status: done
+        files: [lib/core/session]
+      - key: ui4-session-repo
+        title: SessionRepository sebagai seam, DevSessionRepository sebagai satu-satunya implementasi hari ini
+        status: done
+        files: [lib/core/session/session_repository.dart]
+      - key: ui4-nav-tree
+        title: app_nav_tree.dart jadi sumber tunggal sidebar, bilah bawah, breadcrumb, tabel rute, dan penjaga izin
+        status: done
+        files: [lib/core/router/app_nav_tree.dart]
+      - key: ui4-routes
+        title: AppRoutes tumbuh dari 5 ke sekitar 45 konstanta, bersarang mengikuti area IA
+        status: done
+        files: [lib/core/router/app_router.dart]
+      - key: ui4-route-guard
+        title: "app_route_guard.dart: tujuan awal ditentukan izin, bukan nama peran"
+        status: done
+        files: [lib/core/router/app_route_guard.dart]
+      - key: ui4-breadcrumb-topbar
+        title: Komponen baru AppBreadcrumb, AppTopBar, AppNavSection (sidebar bergrup)
+        status: done
+        files: [lib/core/design/components/shell]
+      - key: ui4-doc-fix
+        title: Perbaiki matriks izin dan kamus izin di 15_Screen_Spesification.md serta area per peran di 13_Information_Architecture.md
+        status: done
+      - key: ui4-scaffold-fix
+        title: Ganti Scaffold.of(context) yang dipanggil dari konteks di atas Scaffold-nya dengan GlobalKey
+        status: done
+    decisions:
+      - what: Daftar izin dibaca langsung dari Supabase, tidak dikarang
+        why: 26 permission dan 7 peran disalin apa adanya dari tabel role_permissions
+      - what: AppSession.can() memegang bypass Owner
+        why: "public.has_permission di database mem-bypass Owner lebih dulu; klien yang tidak ikut akan menyembunyikan menu yang justru diizinkan server"
+      - what: DevSessionRepository akan dihapus, bukan dikembangkan, saat fase auth tiba
+        why: "Ia sengaja dibuat sebagai sekat sementara; mengembangkannya berarti menumpuk logika yang harus dibongkar lagi"
+      - what: "Permission Matrix di 15_Screen_Spesification.md salah di empat sel; database yang benar"
+        why: "Kasir dinyatakan tidak boleh membuka Product/Inventory/Finance padahal memegang PRODUCT_READ, INVENTORY_VIEW, CASH_VIEW; Manager dinyatakan tidak boleh Settings padahal memegang SETTING_MANAGE"
+      - what: DASHBOARD_VIEW yang dirujuk dokumen tidak pernah ada di tabel permissions
+    deferred:
+      - to: UI-7
+        what: Hapus DevSessionRepository dan sambungkan auth Supabase sungguhan
+    risks:
+      - what: "Guard, ganti outlet, dan laci tablet potret hanya terbukti lewat widget test; belum pernah dijalankan di Android atau iOS sungguhan"
+        severity: medium
+
+  - id: UI-5
+    track: ui
+    name: Komponen Bisnis
+    goal: Menutup sisa Component Inventory yang tertunda sejak UI-0, sebelum halaman pertama di-slice
+    status: pending
+    tasks:
+      - key: ui5-product-card
+        title: "ProductCard: kartu produk untuk grid kasir dan daftar katalog"
+        status: pending
+      - key: ui5-cart-panel
+        title: "CartPanel: daftar item keranjang, ubah qty, diskon per item, ringkasan"
+        status: pending
+      - key: ui5-payment-summary
+        title: "PaymentSummary: subtotal, diskon, pajak, bayar, kembalian"
+        status: pending
+      - key: ui5-receipt-preview
+        title: "ReceiptPreview: pratinjau struk sebelum cetak, mengikuti lebar kertas 58/80 mm"
+        status: pending
+      - key: ui5-features-tokens
+        title: Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian
+        status: pending
+    risks:
+      - what: "no_hardcoded_style_test.dart memindai lib/features/ dan gagal keras tanpa daftar pengecualian; komponen bisnis pertama yang masuk ke sana langsung diuji olehnya"
+        severity: low
+
+  - id: UI-6
+    track: ui
+    name: Layar Kasir
+    goal: "Layar fitur nyata pertama: slicing halaman POS di atas primitive dan komponen bisnis yang sudah tuntas"
+    status: pending
+    tasks:
+      - key: ui6-pos-layout
+        title: "Susunan halaman kasir: pencarian produk, grid, panel keranjang, aksi bawah"
+        status: pending
+      - key: ui6-cart-wiring
+        title: Sambungkan halaman ke CartBloc multi-tab yang sudah ada sejak commit d198cb0
+        status: pending
+      - key: ui6-scanner-wiring
+        title: Sambungkan AppBarcodeScope ke pencarian produk di halaman kasir
+        status: pending
+      - key: ui6-checkout-flow
+        title: Alur checkout dan pembayaran sampai struk, memakai PaymentSummary dan ReceiptPreview
+        status: pending
+      - key: ui6-shortcuts
+        title: Keyboard shortcut F2/F4/ESC/Ctrl+P, tertunda sejak UI-0, hanya aktif saat papan ketik fisik terdeteksi
+        status: pending
+    risks:
+      - what: Layar kasir adalah yang pertama akan memicu 8 trigger Supabase yang belum pernah dijalankan dengan data nyata. Sebaiknya BE-2 selesai lebih dulu, atau bug trigger akan muncul sebagai bug UI
+        severity: high
+
+  - id: UI-7
+    track: ui
+    name: Auth Asli
+    goal: Ganti sesi dev dengan auth Supabase sungguhan, lalu buktikan RBAC dan navigasi di perangkat asli
+    status: pending
+    tasks:
+      - key: ui7-supabase-auth
+        title: Sambungkan SessionRepository ke supabase_flutter auth, isi AppSession dari users + role_permissions
+        status: pending
+      - key: ui7-login-page
+        title: Halaman login sungguhan menggantikan login_page placeholder
+        status: pending
+      - key: ui7-session-persist
+        title: Sesi bertahan antar peluncuran aplikasi, termasuk saat offline
+        status: pending
+      - key: ui7-remove-dev-repo
+        title: Hapus DevSessionRepository sepenuhnya, sesuai keputusan UI-4
+        status: pending
+      - key: ui7-device-verify
+        title: Verifikasi guard, ganti outlet, dan laci tablet potret di Android/iOS sungguhan
+        status: pending
+
+  - id: BE-0
+    track: be
+    name: Skema, RLS, dan Trigger
+    goal: "Seluruh tahap implementasi di 11 spec Kiro: struktur tabel, RLS, RBAC, dan trigger otomatis"
+    status: done
+    completed_at: 2026-07-15
+    verification: "Diverifikasi langsung ke Supabase 2026-07-15 (ref emovquokperyixwnpqaa, PostgreSQL 17.6): 51 tabel, 6 view, 10 function, 8 trigger, 24 migrasi, RLS aktif di 51/51 tabel, 7 peran, 26 permission, 106 pemetaan role_permission"
+    tasks:
+      - key: be0-identity-rbac
+        title: "Spec 01 identity-rbac: permissions, roles, role_permissions, user_roles, has_permission(), hapus users.role legacy"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/01-identity-rbac]
+      - key: be0-product-catalog
+        title: "Spec 02 product-catalog: categories, brands, units, products, product_variants, product_prices + trigger histori harga"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/02-product-catalog]
+      - key: be0-crm
+        title: "Spec 03 crm: customers (DECIMAL + audit snake_case) dan suppliers dengan RLS"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/03-crm]
+      - key: be0-inventory-core
+        title: "Spec 04 inventory-core: warehouses, stock_movements, kuantitas desimal, trigger sinkronisasi stok"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/04-inventory-core]
+      - key: be0-purchase
+        title: "Spec 05 purchase: purchase order dan penerimaan barang"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/05-purchase]
+      - key: be0-sales-pos
+        title: "Spec 06 sales-pos: transactions dan transaction_details + 2 trigger"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/06-sales-pos]
+      - key: be0-finance
+        title: "Spec 07 finance: kas, jurnal, dan mutasi keuangan"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/07-finance]
+      - key: be0-reporting
+        title: "Spec 08 reporting: view dan agregasi laporan"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/08-reporting]
+      - key: be0-settings-misc
+        title: "Spec 09 settings-misc: tabel referensi dan pengaturan"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/09-settings-misc]
+      - key: be0-db-optimization
+        title: "Spec 10 database-optimization: index dan penyetelan kueri"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/10-database-optimization]
+      - key: be0-product-variants
+        title: "Spec 11 product-variants: model varian baru lewat tabel product_variants"
+        status: done
+        files: [docs/MVP(new)/.kiro/specs/11-product-variants]
+    decisions:
+      - what: Database dipakai sebagai backend langsung, tanpa lapisan API sendiri
+        why: Keamanan ditegakkan RLS di 51/51 tabel plus 26 permission, bukan oleh kode server yang harus ditulis dan dirawat terpisah. 0 Edge Function
+      - what: Model varian baru (tabel product_variants) yang dipakai, bukan products.parent_id warisan Mangkasir
+        why: "Keduanya masih hidup berdampingan hari ini; yang lama harus dicabut sebelum ada data varian nyata"
+    deferred:
+      - to: BE-1
+        what: "12 Quality Gate di spec 01, 02, dan 03 belum pernah dicentang — gate spec 04-11 sudah"
+      - to: BE-2
+        what: Seluruh trigger baru ditinjau baris demi baris, belum pernah dijalankan dengan data nyata
+
+  - id: BE-1
+    track: be
+    name: Quality Gate Terbuka
+    goal: Menutup 12 quality gate yang masih kosong di spec 01 identity-rbac, 02 product-catalog, dan 03 crm
+    status: pending
+    tasks:
+      - key: be1-gate-has-permission
+        title: Uji public.has_permission() untuk user global maupun user spesifik outlet, termasuk bypass Owner
+        status: pending
+      - key: be1-gate-rls-tenant
+        title: "Uji RLS lintas tenant: bisnis A tidak bisa membaca role, katalog, atau customer milik bisnis B"
+        status: pending
+      - key: be1-gate-price-trigger
+        title: Buktikan trigger histori harga menulis baris baru ke product_prices saat harga produk diubah
+        status: pending
+      - key: be1-gate-unit-migrasi
+        title: Verifikasi migrasi teks unit produk lama ke foreign key unit_id tanpa produk yang hilang
+        status: pending
+      - key: be1-gate-crud-crm
+        title: Jalankan CRUD customer dan supplier di schema terbaru sampai bersih dari error
+        status: pending
+      - key: be1-gate-centang
+        title: Centang gate yang sudah terbukti di tasks.md spec 01-03, samakan dengan gaya spec 04-11
+        status: pending
+
+  - id: BE-2
+    track: be
+    name: Data Nyata dan Pembuktian Trigger
+    goal: "Mengisi data operasional pertama dan menjalankan 8 trigger dengan data sungguhan — hari ini keduanya masih 0%"
+    status: pending
+    tasks:
+      - key: be2-seed-master
+        title: "Seed outlet, gudang, kategori, unit, dan produk pertama — businesses punya 1 baris tapi 0 outlet, jadi yatim"
+        status: pending
+      - key: be2-seed-wilayah
+        title: "Impor dataset wilayah Indonesia (T-05): provinces, cities, districts, villages semuanya 0 baris sehingga form alamat mati"
+        status: pending
+      - key: be2-e2e-penjualan
+        title: "Skenario end-to-end penjualan: transaksi jadi, stock_movements terisi, stocks dan products ikut tersinkron"
+        status: pending
+      - key: be2-e2e-void
+        title: "Uji void transaksi: trg_sync_void_transaction_stock benar-benar mengembalikan stok"
+        status: pending
+      - key: be2-e2e-pembelian
+        title: "Skenario end-to-end pembelian: purchase order sampai penerimaan barang menambah stok"
+        status: pending
+    risks:
+      - what: "T-01 Kritis: 8 trigger hanya ditinjau baris demi baris, belum sekalipun dijalankan dengan data nyata. Bug NULL handling, urutan trigger, atau RAISE EXCEPTION yang terlalu agresif belum ketahuan"
+        severity: high
+
+  - id: BE-3
+    track: be
+    name: Temuan Terbuka
+    goal: Menutup temuan T-02 sampai T-09 dari audit database 15 Juli 2026, dari kritis sampai rapi-rapi
+    status: pending
+    tasks:
+      - key: be3-t02-flag-check
+        title: "T-02 Kritis: tambah CHECK constraint pada transactions.flag — semua kolom status lain sudah punya"
+        status: pending
+      - key: be3-t03-rpc-anon
+        title: "T-03 Tinggi: cabut EXECUTE 8 trigger function SECURITY DEFINER dari role anon dan authenticated; uji di branch dulu"
+        status: pending
+      - key: be3-t04-parent-id
+        title: "T-04: hapus products.parent_id agar model varian tunggal — sekitar 30 menit sekarang, berhari-hari nanti"
+        status: pending
+      - key: be3-t06-audit-kolom
+        title: "T-06: samakan kolom audit legacy createdat/createdby/updatedat/updatedby dan users.isemailverified ke snake_case"
+        status: pending
+      - key: be3-t07-users-password
+        title: "T-07: hapus sisa kolom users.password, sekitar 5 menit"
+        status: pending
+      - key: be3-t08-guid-uuid
+        title: "T-08: ubah transactions.guid dari VARCHAR ke UUID — berisiko, perlu drop dan recreate FK"
+        status: pending
+      - key: be3-t09-otp-policy
+        title: "T-09: otp_verifications punya RLS aktif tapi 0 policy, artinya tertutup total"
+        status: pending
+    risks:
+      - what: "T-02: trigger void bergantung persis pada nilai 'done' dan 'void'. Nilai 'VOID' atau 'voided' membuat trigger diam-diam tidak jalan dan stok tidak dikembalikan, tanpa error apa pun"
+        severity: high
+      - what: "T-04: window-nya sedang terbuka. Selama belum ada data varian nyata, mencabut products.parent_id murah; setelah ada, mahal"
+        severity: medium

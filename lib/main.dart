@@ -15,6 +15,7 @@ import 'core/session/session_cubit.dart';
 import 'core/sync/connectivity_service.dart';
 import 'core/sync/sync_bloc/sync_bloc.dart';
 import 'core/sync/sync_bloc/sync_event.dart';
+import 'core/sync/sync_policy.dart';
 import 'features/cashier/presentation/bloc/cart/cart_bloc.dart';
 import 'features/cashier/presentation/bloc/cart/cart_event.dart';
 
@@ -50,10 +51,13 @@ void main() async {
   // halaman boot sampai jawabannya tiba.
   unawaited(getIt<SessionCubit>().restore());
 
-  // Auto-sync when device goes online
-  getIt<ConnectivityService>()
-      .onOnline
-      .listen((_) => getIt<SyncBloc>().add(const SyncEvent.triggered()));
+  // Mendorong data saat perangkat kembali online — bila fase saat ini memang
+  // sudah membolehkannya. Lihat [SyncPolicy.pushEnabled] untuk alasannya.
+  if (SyncPolicy.pushEnabled) {
+    getIt<ConnectivityService>()
+        .onOnline
+        .listen((_) => getIt<SyncBloc>().add(const SyncEvent.triggered()));
+  }
 
   runApp(const MangRitelApp());
 }
@@ -77,6 +81,7 @@ class MangRitelApp extends StatelessWidget {
         builder: (context, themeMode) => AppRoot(
           session: getIt<SessionCubit>(),
           themeMode: themeMode,
+          sync: getIt<SyncBloc>(),
         ),
       ),
     );

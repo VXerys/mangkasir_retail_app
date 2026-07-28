@@ -81,8 +81,9 @@ class AppDialog extends StatelessWidget {
                 SizedBox(height: density.xs),
                 Text(
                   subtitle!,
-                  style: typography.formHelper
-                      .copyWith(color: colors.textSecondary),
+                  style: typography.formHelper.copyWith(
+                    color: colors.textSecondary,
+                  ),
                 ),
               ],
             ],
@@ -100,52 +101,61 @@ class AppDialog extends StatelessWidget {
       ],
     );
 
-    final panel = DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.surfaceRaised,
-        borderRadius: radius,
-        border: Border.all(color: colors.borderDefault),
-        boxShadow: context.elevation.dialog,
-      ),
-      child: ClipRRect(
-        borderRadius: radius,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: density.lg,
-                vertical: density.md,
-              ),
-              child: header,
-            ),
-            AppDivider(color: colors.borderSubtle),
-            Flexible(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(density.lg),
-                child: content,
-              ),
-            ),
-            if (actions.isNotEmpty) ...[
-              AppDivider(color: colors.borderSubtle),
+    // Material transparan, bukan berwarna: permukaan dialog sudah digambar
+    // DecoratedBox di bawah ini dengan token design system. Yang dibutuhkan
+    // hanya *keberadaan* Material, karena TextField, InkWell, dan Tooltip
+    // Material menuntut leluhur bertipe itu — dan dialog yang berisi kolom
+    // isian (kategori baru, diskon, jumlah bayar) tanpa ini langsung ambruk
+    // dengan "No Material widget found".
+    final panel = Material(
+      type: MaterialType.transparency,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.surfaceRaised,
+          borderRadius: radius,
+          border: Border.all(color: colors.borderDefault),
+          boxShadow: context.elevation.dialog,
+        ),
+        child: ClipRRect(
+          borderRadius: radius,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: density.lg,
                   vertical: density.md,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    for (final (index, action) in actions.indexed) ...[
-                      if (index > 0) SizedBox(width: density.sm),
-                      action,
-                    ],
-                  ],
+                child: header,
+              ),
+              AppDivider(color: colors.borderSubtle),
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(density.lg),
+                  child: content,
                 ),
               ),
+              if (actions.isNotEmpty) ...[
+                AppDivider(color: colors.borderSubtle),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: density.lg,
+                    vertical: density.md,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      for (final (index, action) in actions.indexed) ...[
+                        if (index > 0) SizedBox(width: density.sm),
+                        action,
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -181,9 +191,7 @@ class AppDialog extends StatelessWidget {
       // Dialog di layar sempit menempel di tepi bawah — tepat di tempat papan
       // ketik layar muncul. Tanpa pengangkatan ini, isian di dalamnya tertutup
       // persis saat pengguna mulai mengetik.
-      return AppKeyboardInset(
-        child: SafeArea(top: false, child: shortcuts),
-      );
+      return AppKeyboardInset(child: SafeArea(top: false, child: shortcuts));
     }
 
     return ConstrainedBox(
@@ -222,7 +230,9 @@ Future<T?> showAppDialog<T>({
       return Align(
         alignment: isCompact ? Alignment.bottomCenter : Alignment.center,
         child: Padding(
-          padding: EdgeInsets.all(isCompact ? 0 : DensityScope.of(dialogContext).xl),
+          padding: EdgeInsets.all(
+            isCompact ? 0 : DensityScope.of(dialogContext).xl,
+          ),
           child: child,
         ),
       );
@@ -298,8 +308,9 @@ Future<bool> showAppConfirm({
         onSubmit: confirm,
         content: Text(
           message,
-          style: dialogContext.text.dialogBody
-              .copyWith(color: dialogContext.colors.textSecondary),
+          style: dialogContext.text.dialogBody.copyWith(
+            color: dialogContext.colors.textSecondary,
+          ),
         ),
         actions: [
           AppButton(

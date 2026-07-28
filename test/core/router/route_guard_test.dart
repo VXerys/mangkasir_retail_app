@@ -42,11 +42,6 @@ void main() {
       expect(AppRouteGuard.redirect(state, AppRoutes.login), isNull);
     });
 
-    test('galeri tetap terbuka tanpa sesi', () {
-      // Galeri hanya ada pada build debug, tidak menyentuh data, dan justru
-      // harus bisa dibuka tanpa sesi apa pun.
-      expect(AppRouteGuard.redirect(state, AppRoutes.designGallery), isNull);
-    });
   });
 
   group('sudah masuk', () {

@@ -1,122 +1,63 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:mangkasir_retail_app/core/constants/app_routes.dart';
 import 'package:mangkasir_retail_app/core/design/design.dart';
-import 'package:mangkasir_retail_app/core/design/gallery/design_gallery_page.dart';
+import 'package:mangkasir_retail_app/core/session/app_role.dart';
+import 'package:mangkasir_retail_app/features/products/domain/usecases/add_product_usecase.dart';
+import 'package:mangkasir_retail_app/features/products/domain/usecases/update_product_usecase.dart';
+import 'package:mangkasir_retail_app/features/products/domain/usecases/watch_products_usecase.dart';
+import 'package:mangkasir_retail_app/features/products/presentation/bloc/product/product_bloc.dart';
 
-/// Uji asap galeri design system.
+import 'support/app_harness.dart';
+import 'support/fake_product_repository.dart';
+
+/// Uji asap **aplikasi**, bukan design system.
 ///
-/// Galeri merender setiap token dan setiap primitive, jadi kalau halaman ini
-/// terbangun tanpa galat, seluruh permukaan design system ikut terbukti bisa
-/// dirender. Sengaja tidak menyentuh `main()`: aplikasi sesungguhnya
-/// memerlukan `.env`, Supabase, dan DI, sedangkan design system harus bisa
-/// diuji tanpa satu pun di antaranya.
+/// Sampai UI-5 berkas ini berisi uji galeri — yang sebenarnya tes design system
+/// dan kini tinggal di `test/core/design/design_gallery_smoke_test.dart`.
+/// Tempatnya yang benar adalah di sini: menaikkan rakitan yang sama dengan yang
+/// dijalankan perangkat, lalu membuktikan aplikasinya benar-benar berdiri.
 void main() {
-  setUpAll(() async {
-    await initializeDateFormatting('id_ID');
-  });
+  testWidgets('aplikasi berdiri dan mendarat sesuai peran', (tester) async {
+    await pumpApp(tester, role: AppRole.owner);
 
-  Widget wrap(Widget child, {ThemeData? theme}) => MaterialApp(
-        theme: theme ?? AppTheme.light,
-        home: child,
-      );
-
-  testWidgets('galeri terbangun pada lebar desktop', (tester) async {
-    tester.view.physicalSize = const Size(1600, 1200);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
-
-    await tester.pumpWidget(wrap(const DesignGalleryPage()));
-    await tester.pump();
-
-    expect(find.text('Design System — MangRitel'), findsOneWidget);
+    expect(find.byType(AppShell), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('galeri terbangun pada lebar ponsel tanpa overflow',
-      (tester) async {
-    tester.view.physicalSize = const Size(400, 900);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
+  testWidgets('rute produk terbuka tanpa galat', (tester) async {
+    final repository = FakeProductRepository();
+    addTearDown(repository.dispose);
 
-    await tester.pumpWidget(wrap(const DesignGalleryPage()));
-    await tester.pump();
-
-    expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('galeri terbangun pada tema gelap', (tester) async {
-    tester.view.physicalSize = const Size(1600, 1200);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
-
-    await tester.pumpWidget(
-      wrap(const DesignGalleryPage(), theme: AppTheme.dark),
-    );
-    await tester.pump();
-
-    expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('sakelar tema melaporkan pilihan ke pemanggilnya',
-      (tester) async {
-    tester.view.physicalSize = const Size(1600, 1200);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
-
-    ThemeMode? picked;
-
-    await tester.pumpWidget(
-      wrap(
-        DesignGalleryPage(
-          themeMode: ThemeMode.light,
-          onThemeModeChanged: (mode) => picked = mode,
-        ),
-      ),
-    );
-    await tester.pump();
-
-    await tester.tap(find.byIcon(AppIcons.themeDark));
-    await tester.pump();
-
-    expect(picked, ThemeMode.dark);
-  });
-
-  testWidgets('sakelar tema disembunyikan bila tidak dirangkai', (tester) async {
-    // Galeri harus tetap bisa dirender tanpa DI — itu yang membuat uji asap di
-    // atas tidak memerlukan Hive maupun get_it.
-    tester.view.physicalSize = const Size(1600, 1200);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
-
-    await tester.pumpWidget(wrap(const DesignGalleryPage()));
-    await tester.pump();
-
-    expect(find.byIcon(AppIcons.themeDark), findsNothing);
-  });
-
-  testWidgets('tombol nonaktif tidak memanggil onPressed', (tester) async {
-    var taps = 0;
-
-    await tester.pumpWidget(
-      wrap(
-        Scaffold(
-          body: Center(
-            child: AppButton(
-              label: 'Bayar',
-              isLoading: true,
-              onPressed: () => taps++,
-            ),
-          ),
-        ),
+    registerFake<ProductBloc>(
+      () => ProductBloc(
+        WatchProductsUseCase(repository),
+        AddProductUseCase(repository),
+        UpdateProductUseCase(repository),
       ),
     );
 
-    await tester.tap(find.text('Bayar'));
-    await tester.pump();
+    await pumpApp(tester, role: AppRole.owner);
+    await goTo(tester, AppRoutes.inventoryProducts);
 
-    // isLoading harus memblokir aksi. Kalau tidak, kasir yang menekan dua kali
-    // saat jaringan lambat bisa membuat transaksi ganda.
-    expect(taps, 0);
+    expect(find.byType(AppShell), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('aplikasi berdiri di ponsel', (tester) async {
+    await pumpApp(tester, role: AppRole.kasir, surface: phoneSurface);
+
+    expect(find.byType(AppShell), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('galeri sudah tidak punya alamat di dalam aplikasi',
+      (tester) async {
+    // Rute /dev/design dicabut di UI-5. Kalau seseorang memasangnya kembali,
+    // tes ini yang memberi tahu — galeri dijalankan lewat entrypoint
+    // tersendiri, `flutter run -t lib/design_gallery_main.dart`.
+    await pumpApp(tester, role: AppRole.owner);
+    await goTo(tester, '/dev/design');
+
+    expect(find.text('Design System — MangRitel'), findsNothing);
   });
 }

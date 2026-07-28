@@ -5,6 +5,8 @@ import '../design/theme/app_theme.dart';
 import '../session/session_cubit.dart';
 import '../session/session_scope.dart';
 import '../session/session_state.dart';
+import '../sync/sync_bloc/sync_bloc.dart';
+import '../sync/sync_failure_listener.dart';
 import 'app_router.dart';
 
 /// Merakit router, tema, dan sesi menjadi satu aplikasi.
@@ -18,10 +20,16 @@ class AppRoot extends StatefulWidget {
   final SessionCubit session;
   final ThemeMode themeMode;
 
+  /// Sumber kabar sinkronisasi. Null pada rakitan yang tidak memakainya —
+  /// tes widget menaikkan aplikasi tanpa DI penuh, dan `SyncBloc` menyeret
+  /// empat repositori beserta Drift di belakangnya.
+  final SyncBloc? sync;
+
   const AppRoot({
     super.key,
     required this.session,
     this.themeMode = ThemeMode.system,
+    this.sync,
   });
 
   @override
@@ -51,10 +59,16 @@ class _AppRootState extends State<AppRoot> {
         // berada di dalam scope-nya. Memasangnya di luar MaterialApp membuat
         // halaman berada di subtree yang berbeda dan `context.can()` selalu
         // menjawab tidak — menu kosong tanpa satu pun galat.
+        // Pendengar sinkronisasi dipasang di dalam `builder`, bukan di atas
+        // MaterialApp, karena toast menggambar dirinya di Overlay milik
+        // Navigator — dan Navigator baru ada mulai dari sini ke bawah.
         builder: (context, child) => BlocBuilder<SessionCubit, SessionState>(
           builder: (context, state) => SessionScope(
             session: state.sessionOrNull,
-            child: child ?? const SizedBox.shrink(),
+            child: SyncFailureListener(
+              bloc: widget.sync,
+              child: child ?? const SizedBox.shrink(),
+            ),
           ),
         ),
       ),

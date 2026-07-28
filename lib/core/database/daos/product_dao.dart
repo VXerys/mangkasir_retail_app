@@ -9,17 +9,31 @@ part 'product_dao.g.dart';
 class ProductDao extends DatabaseAccessor<AppDatabase> with _$ProductDaoMixin {
   ProductDao(super.db);
 
-  Stream<List<ProductTableData>> watchActiveByCategory({String? categoryId}) {
+  /// Katalog satu outlet.
+  ///
+  /// [storeId] wajib, bukan opsional. Satu perangkat bisa berpindah outlet
+  /// tanpa keluar dari aplikasi, dan penyaring yang boleh dilewatkan akan
+  /// menampilkan katalog kedua outlet tercampur — persis perilaku yang berlaku
+  /// sebelum UI-5, saat pengalih outlet hanya mengganti label di pojok layar.
+  Stream<List<ProductTableData>> watchActiveByCategory({
+    required String storeId,
+    String? categoryId,
+  }) {
     final query = select(productTable)
-      ..where((t) => t.status.equals('active'));
+      ..where((t) => t.status.equals('active'))
+      ..where((t) => t.storeId.equals(storeId));
     if (categoryId != null) {
       query.where((t) => t.categoryId.equals(categoryId));
     }
     return query.watch();
   }
 
-  Future<List<ProductTableData>> getAll({String? categoryId}) {
-    final query = select(productTable);
+  Future<List<ProductTableData>> getAll({
+    required String storeId,
+    String? categoryId,
+  }) {
+    final query = select(productTable)
+      ..where((t) => t.storeId.equals(storeId));
     if (categoryId != null) {
       query.where((t) => t.categoryId.equals(categoryId));
     }

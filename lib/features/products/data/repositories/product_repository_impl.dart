@@ -16,9 +16,15 @@ class ProductRepositoryImpl implements ProductRepository {
   const ProductRepositoryImpl(this._localDs, this._remoteDs);
 
   @override
-  Future<Either<Failure, List<Product>>> getAll({String? categoryId}) async {
+  Future<Either<Failure, List<Product>>> getAll({
+    required String storeId,
+    String? categoryId,
+  }) async {
     try {
-      final products = await _localDs.getAll(categoryId: categoryId);
+      final products = await _localDs.getAll(
+        storeId: storeId,
+        categoryId: categoryId,
+      );
       return Right(products);
     } on LocalException catch (e) {
       return Left(LocalFailure(e.message));
@@ -27,10 +33,11 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Stream<Either<Failure, List<Product>>> watchActiveByCategory({
+    required String storeId,
     String? categoryId,
   }) {
     return _localDs
-        .watchActiveByCategory(categoryId: categoryId)
+        .watchActiveByCategory(storeId: storeId, categoryId: categoryId)
         .map<Either<Failure, List<Product>>>(Right.new)
         .handleError(
           (e) => Left<Failure, List<Product>>(

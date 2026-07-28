@@ -10,7 +10,13 @@ class WatchProductsUseCase {
   final ProductRepository _repository;
   const WatchProductsUseCase(this._repository);
 
-  Stream<Either<Failure, List<Product>>> call({String? categoryId}) {
-    return _repository.watchActiveByCategory(categoryId: categoryId);
+  Stream<Either<Failure, List<Product>>> call({
+    required String storeId,
+    String? categoryId,
+  }) {
+    return _repository.watchActiveByCategory(
+      storeId: storeId,
+      categoryId: categoryId,
+    );
   }
 }

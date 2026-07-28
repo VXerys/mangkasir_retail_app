@@ -25,9 +25,6 @@ abstract final class AppRoutes {
   /// tautan dalam yang tidak berhak punya tempat mendarat.
   static const forbidden = '/403';
 
-  /// Galeri design system. Hanya terdaftar pada build debug.
-  static const designGallery = '/dev/design';
-
   // --- Dasbor & akun --------------------------------------------------------
 
   static const dashboard = '/dashboard';
@@ -131,6 +128,5 @@ abstract final class AppRoutes {
     root,
     login,
     forbidden,
-    designGallery,
   };
 }

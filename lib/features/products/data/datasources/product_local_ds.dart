@@ -6,8 +6,11 @@ import '../../domain/entities/product.dart';
 import '../models/product_model.dart';
 
 abstract class ProductLocalDs {
-  Future<List<Product>> getAll({String? categoryId});
-  Stream<List<Product>> watchActiveByCategory({String? categoryId});
+  Future<List<Product>> getAll({required String storeId, String? categoryId});
+  Stream<List<Product>> watchActiveByCategory({
+    required String storeId,
+    String? categoryId,
+  });
   Future<void> save(Product product);
   Future<List<Product>> getPending();
   Future<void> markSynced(String id, String? serverId);
@@ -24,9 +27,15 @@ class ProductLocalDsImpl implements ProductLocalDs {
   ProductLocalDsImpl(this._db);
 
   @override
-  Future<List<Product>> getAll({String? categoryId}) async {
+  Future<List<Product>> getAll({
+    required String storeId,
+    String? categoryId,
+  }) async {
     try {
-      final rows = await _db.productDao.getAll(categoryId: categoryId);
+      final rows = await _db.productDao.getAll(
+        storeId: storeId,
+        categoryId: categoryId,
+      );
       return rows.map((r) => ProductModel.fromDrift(r).toEntity()).toList();
     } catch (e) {
       throw LocalException('getAll failed: $e');
@@ -34,9 +43,12 @@ class ProductLocalDsImpl implements ProductLocalDs {
   }
 
   @override
-  Stream<List<Product>> watchActiveByCategory({String? categoryId}) {
+  Stream<List<Product>> watchActiveByCategory({
+    required String storeId,
+    String? categoryId,
+  }) {
     return _db.productDao
-        .watchActiveByCategory(categoryId: categoryId)
+        .watchActiveByCategory(storeId: storeId, categoryId: categoryId)
         .map((rows) => rows.map((r) => ProductModel.fromDrift(r).toEntity()).toList())
         .handleError((e) => throw LocalException('watch failed: $e'));
   }

@@ -19,19 +19,19 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ProductEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? categoryId) watchStarted,
+    required TResult Function(String storeId, String? categoryId) watchStarted,
     required TResult Function(Product product) added,
     required TResult Function(Product product) updated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? categoryId)? watchStarted,
+    TResult? Function(String storeId, String? categoryId)? watchStarted,
     TResult? Function(Product product)? added,
     TResult? Function(Product product)? updated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? categoryId)? watchStarted,
+    TResult Function(String storeId, String? categoryId)? watchStarted,
     TResult Function(Product product)? added,
     TResult Function(Product product)? updated,
     required TResult orElse(),
@@ -86,7 +86,7 @@ abstract class _$$ProductWatchStartedImplCopyWith<$Res> {
     $Res Function(_$ProductWatchStartedImpl) then,
   ) = __$$ProductWatchStartedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? categoryId});
+  $Res call({String storeId, String? categoryId});
 }
 
 /// @nodoc
@@ -102,9 +102,13 @@ class __$$ProductWatchStartedImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? categoryId = freezed}) {
+  $Res call({Object? storeId = null, Object? categoryId = freezed}) {
     return _then(
       _$ProductWatchStartedImpl(
+        storeId: null == storeId
+            ? _value.storeId
+            : storeId // ignore: cast_nullable_to_non_nullable
+                  as String,
         categoryId: freezed == categoryId
             ? _value.categoryId
             : categoryId // ignore: cast_nullable_to_non_nullable
@@ -117,14 +121,16 @@ class __$$ProductWatchStartedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProductWatchStartedImpl implements ProductWatchStarted {
-  const _$ProductWatchStartedImpl({this.categoryId});
+  const _$ProductWatchStartedImpl({required this.storeId, this.categoryId});
 
+  @override
+  final String storeId;
   @override
   final String? categoryId;
 
   @override
   String toString() {
-    return 'ProductEvent.watchStarted(categoryId: $categoryId)';
+    return 'ProductEvent.watchStarted(storeId: $storeId, categoryId: $categoryId)';
   }
 
   @override
@@ -132,12 +138,13 @@ class _$ProductWatchStartedImpl implements ProductWatchStarted {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProductWatchStartedImpl &&
+            (identical(other.storeId, storeId) || other.storeId == storeId) &&
             (identical(other.categoryId, categoryId) ||
                 other.categoryId == categoryId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, categoryId);
+  int get hashCode => Object.hash(runtimeType, storeId, categoryId);
 
   /// Create a copy of ProductEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -153,33 +160,33 @@ class _$ProductWatchStartedImpl implements ProductWatchStarted {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? categoryId) watchStarted,
+    required TResult Function(String storeId, String? categoryId) watchStarted,
     required TResult Function(Product product) added,
     required TResult Function(Product product) updated,
   }) {
-    return watchStarted(categoryId);
+    return watchStarted(storeId, categoryId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? categoryId)? watchStarted,
+    TResult? Function(String storeId, String? categoryId)? watchStarted,
     TResult? Function(Product product)? added,
     TResult? Function(Product product)? updated,
   }) {
-    return watchStarted?.call(categoryId);
+    return watchStarted?.call(storeId, categoryId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? categoryId)? watchStarted,
+    TResult Function(String storeId, String? categoryId)? watchStarted,
     TResult Function(Product product)? added,
     TResult Function(Product product)? updated,
     required TResult orElse(),
   }) {
     if (watchStarted != null) {
-      return watchStarted(categoryId);
+      return watchStarted(storeId, categoryId);
     }
     return orElse();
   }
@@ -220,9 +227,12 @@ class _$ProductWatchStartedImpl implements ProductWatchStarted {
 }
 
 abstract class ProductWatchStarted implements ProductEvent {
-  const factory ProductWatchStarted({final String? categoryId}) =
-      _$ProductWatchStartedImpl;
+  const factory ProductWatchStarted({
+    required final String storeId,
+    final String? categoryId,
+  }) = _$ProductWatchStartedImpl;
 
+  String get storeId;
   String? get categoryId;
 
   /// Create a copy of ProductEvent
@@ -314,7 +324,7 @@ class _$ProductAddedImpl implements ProductAdded {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? categoryId) watchStarted,
+    required TResult Function(String storeId, String? categoryId) watchStarted,
     required TResult Function(Product product) added,
     required TResult Function(Product product) updated,
   }) {
@@ -324,7 +334,7 @@ class _$ProductAddedImpl implements ProductAdded {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? categoryId)? watchStarted,
+    TResult? Function(String storeId, String? categoryId)? watchStarted,
     TResult? Function(Product product)? added,
     TResult? Function(Product product)? updated,
   }) {
@@ -334,7 +344,7 @@ class _$ProductAddedImpl implements ProductAdded {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? categoryId)? watchStarted,
+    TResult Function(String storeId, String? categoryId)? watchStarted,
     TResult Function(Product product)? added,
     TResult Function(Product product)? updated,
     required TResult orElse(),
@@ -478,7 +488,7 @@ class _$ProductUpdatedImpl implements ProductUpdated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? categoryId) watchStarted,
+    required TResult Function(String storeId, String? categoryId) watchStarted,
     required TResult Function(Product product) added,
     required TResult Function(Product product) updated,
   }) {
@@ -488,7 +498,7 @@ class _$ProductUpdatedImpl implements ProductUpdated {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? categoryId)? watchStarted,
+    TResult? Function(String storeId, String? categoryId)? watchStarted,
     TResult? Function(Product product)? added,
     TResult? Function(Product product)? updated,
   }) {
@@ -498,7 +508,7 @@ class _$ProductUpdatedImpl implements ProductUpdated {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? categoryId)? watchStarted,
+    TResult Function(String storeId, String? categoryId)? watchStarted,
     TResult Function(Product product)? added,
     TResult Function(Product product)? updated,
     required TResult orElse(),

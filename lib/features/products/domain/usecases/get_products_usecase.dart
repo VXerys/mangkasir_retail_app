@@ -10,7 +10,10 @@ class GetProductsUseCase {
   final ProductRepository _repository;
   const GetProductsUseCase(this._repository);
 
-  Future<Either<Failure, List<Product>>> call({String? categoryId}) {
-    return _repository.getAll(categoryId: categoryId);
+  Future<Either<Failure, List<Product>>> call({
+    required String storeId,
+    String? categoryId,
+  }) {
+    return _repository.getAll(storeId: storeId, categoryId: categoryId);
   }
 }

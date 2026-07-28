@@ -2,17 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_routes.dart';
 import '../design/design.dart';
-import '../design/gallery/design_gallery_page.dart';
-import '../design/theme/theme_cubit.dart';
 import '../session/session_cubit.dart';
 import '../session/session_state.dart';
 import 'app_nav_tree.dart';
 import 'app_navigation_shell.dart';
+import 'app_page_registry.dart';
 import 'app_route_guard.dart';
 import 'login_page.dart';
 import 'route_placeholder.dart';
@@ -62,25 +60,6 @@ abstract final class AppRouter {
             ),
           ],
         ),
-
-        // Galeri berada di luar shell agar bisa memakai seluruh lebar layar,
-        // dan hanya terdaftar pada build debug supaya tidak pernah ikut
-        // terkirim ke perangkat kasir.
-        if (kDebugMode)
-          GoRoute(
-            path: AppRoutes.designGallery,
-            // Sakelar tema dirakit di sini, bukan di dalam galeri: galeri harus
-            // tetap bisa dirender tanpa DI agar uji asapnya murah.
-            pageBuilder: (context, state) => _page(
-              state,
-              BlocBuilder<ThemeCubit, ThemeMode>(
-                builder: (context, mode) => DesignGalleryPage(
-                  themeMode: mode,
-                  onThemeModeChanged: context.read<ThemeCubit>().setMode,
-                ),
-              ),
-            ),
-          ),
       ],
     );
   }
@@ -96,10 +75,17 @@ abstract final class AppRouter {
       child: child,
     );
 
+    final path = (child ?? destination).route;
+    final builder = AppPageRegistry.lookup(path);
+
     return GoRoute(
-      path: (child ?? destination).route,
-      pageBuilder: (context, state) =>
-          _page(state, RoutePlaceholderPage(match: match)),
+      path: path,
+      // Rute selalu terdaftar; yang berbeda hanya isinya. Alamat yang belum
+      // punya halaman tetap membuktikan shell, izin, dan breadcrumb bekerja.
+      pageBuilder: (context, state) => _page(
+        state,
+        builder?.call(context, state) ?? RoutePlaceholderPage(match: match),
+      ),
     );
   }
 

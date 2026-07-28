@@ -154,6 +154,36 @@ void main() {
 
       expect(find.text('Detail transaksi'), findsNothing);
     });
+
+    testWidgets('kolom isian di dalam dialog bisa dirender dan diketik',
+        (tester) async {
+      // Sampai UI-5 dialog tidak punya leluhur Material, sehingga setiap
+      // AppTextField di dalamnya ambruk dengan "No Material widget found".
+      // Tidak pernah ketahuan karena seluruh dialog contoh hanya berisi teks —
+      // padahal dialog yang paling sering dipakai justru yang berisi isian:
+      // kategori baru, diskon, jumlah bayar.
+      final context = await _pumpHost(tester);
+      final controller = TextEditingController();
+      addTearDown(controller.dispose);
+
+      showAppDialog<void>(
+        context: context,
+        builder: (_) => AppDialog(
+          title: 'Kategori baru',
+          content: AppTextField(
+            label: 'Nama kategori',
+            controller: controller,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(AppTextField), 'Makanan instan');
+      await tester.pumpAndSettle();
+
+      expect(controller.text, 'Makanan instan');
+      expect(tester.takeException(), isNull);
+    });
   });
 
   group('showAppDrawer', () {

@@ -15,10 +15,6 @@ abstract final class AppRouteGuard {
   static String? redirect(SessionState state, String location) {
     final path = location.split('?').first;
 
-    // Galeri berdiri di luar seluruh aturan ini: ia hanya ada pada build debug,
-    // tidak menyentuh data, dan justru harus bisa dibuka tanpa sesi apa pun.
-    if (path == AppRoutes.designGallery) return null;
-
     // Sesi belum diketahui. Menahan pengguna di tempatnya, bukan melemparnya
     // ke layar masuk — kalau tidak, setiap start dingin berkedip lewat /login
     // sebelum menariknya kembali.

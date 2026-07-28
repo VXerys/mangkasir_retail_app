@@ -4,8 +4,12 @@ import '../../../../core/error/failures.dart';
 import '../entities/product.dart';
 
 abstract class ProductRepository {
-  Future<Either<Failure, List<Product>>> getAll({String? categoryId});
+  Future<Either<Failure, List<Product>>> getAll({
+    required String storeId,
+    String? categoryId,
+  });
   Stream<Either<Failure, List<Product>>> watchActiveByCategory({
+    required String storeId,
     String? categoryId,
   });
   Future<Either<Failure, Unit>> add(Product product);

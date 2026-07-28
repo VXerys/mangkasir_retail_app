@@ -30,7 +30,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     emit(const ProductState.loading());
     // emit.forEach auto-cancels subscription when BLoC is closed.
     await emit.forEach(
-      _watchProducts(categoryId: event.categoryId),
+      _watchProducts(
+        storeId: event.storeId,
+        categoryId: event.categoryId,
+      ),
       onData: (result) => result.fold(
         (failure) => ProductState.error(message: failure.message),
         (products) => ProductState.loaded(products: products),

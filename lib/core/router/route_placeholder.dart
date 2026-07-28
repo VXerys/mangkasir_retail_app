@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -38,14 +37,6 @@ class RoutePlaceholderPage extends StatelessWidget {
               : 'Halaman ${leaf.label} akan dibangun pada fase slicing. '
                   'Izin yang menjaganya: ${leaf.permissions.join(" atau ")}.',
           icon: leaf.icon,
-          action: kDebugMode
-              ? AppButton(
-                  label: 'Buka galeri design system',
-                  variant: AppButtonVariant.secondary,
-                  size: AppButtonSize.small,
-                  onPressed: () => context.go(AppRoutes.designGallery),
-                )
-              : null,
         ),
       ),
     );

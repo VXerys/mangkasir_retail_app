@@ -10,6 +10,14 @@ import 'package:mangkasir_retail_app/core/session/dev_session_repository.dart';
 import 'package:mangkasir_retail_app/core/session/session_cubit.dart';
 import 'package:mangkasir_retail_app/core/session/session_repository.dart';
 import 'package:mangkasir_retail_app/core/session/session_state.dart';
+import 'package:mangkasir_retail_app/core/di/injection.dart';
+import 'package:mangkasir_retail_app/features/products/domain/usecases/add_product_usecase.dart';
+import 'package:mangkasir_retail_app/features/products/domain/usecases/update_product_usecase.dart';
+import 'package:mangkasir_retail_app/features/products/domain/usecases/watch_products_usecase.dart';
+import 'package:mangkasir_retail_app/features/products/presentation/bloc/product/product_bloc.dart';
+
+import '../../support/app_harness.dart';
+import '../../support/fake_product_repository.dart';
 
 const _phone = Size(390, 844);
 const _tabletPortrait = Size(834, 1194);
@@ -53,6 +61,21 @@ Future<SessionCubit> _pumpAs(
   tester.view.physicalSize = surface;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
+  addTearDown(getIt.reset);
+
+  // Shell ini menavigasi lewat menu sungguhan, jadi begitu sebuah tujuan
+  // berhenti menjadi penanda tempat, halaman aslinya ikut dibangun — dan
+  // halaman meminta bloc-nya ke `getIt`. Ganda ini yang membuat tes navigasi
+  // tetap menguji navigasi, bukan ketersediaan DI.
+  final products = FakeProductRepository();
+  addTearDown(products.dispose);
+  registerFake<ProductBloc>(
+    () => ProductBloc(
+      WatchProductsUseCase(products),
+      AddProductUseCase(products),
+      UpdateProductUseCase(products),
+    ),
+  );
 
   final cubit = SessionCubit(
     _FakeSessionRepository(

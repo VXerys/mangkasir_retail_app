@@ -56,8 +56,8 @@ Roadmap dibagi jadi dua track yang jalan paralel, dideklarasikan di bagian
 
 | id | Label | Isi |
 |---|---|---|
-| `ui` | Aplikasi Flutter | UI-0…UI-7 — design system, navigasi, RBAC, layar |
-| `be` | Backend Supabase | BE-0…BE-3 — skema/RLS/trigger, quality gate, data nyata, temuan |
+| `ui` | Aplikasi Flutter | UI-0…UI-15 — fondasi, identity, master, operasi, laporan, release candidate |
+| `be` | Backend Supabase | BE-0…BE-5 — skema, quality gate, hardening, data nyata, sync, release |
 
 Tiap track punya "fase aktif" sendiri, jadi `next` dan snapshot menampilkan dua
 langkah berikutnya sekaligus. Menambah track ketiga cukup dengan menambah

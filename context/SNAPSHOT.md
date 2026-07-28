@@ -3,25 +3,25 @@
 
 # MangRitel — di mana proyek ini sekarang
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-07-27T10:16:37Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-07-28T06:57:26Z_
 
-## ⬜ Aplikasi Flutter — fase aktif UI-5 · Komponen Bisnis
+## 🔄 Aplikasi Flutter — fase aktif UI-5 · Halaman Produk
 
-`0/5` task selesai (0%)
+`7/9` task selesai (77%)
 
-> Menutup sisa Component Inventory yang tertunda sejak UI-0, sebelum halaman pertama di-slice
+> Halaman fitur nyata pertama, sekaligus memasang seluruh perkakas slicing — registry halaman, penyediaan bloc, dan uji asap aplikasi — di layar yang paling murah risikonya
 
 Berikutnya:
 
-1. `ui5-product-card` ProductCard: kartu produk untuk grid kasir dan daftar katalog _(UI-5)_
-2. `ui5-cart-panel` CartPanel: daftar item keranjang, ubah qty, diskon per item, ringkasan _(UI-5)_
-3. `ui5-payment-summary` PaymentSummary: subtotal, diskon, pajak, bayar, kembalian _(UI-5)_
+1. `ui5-offline-only` Tegaskan fase ini offline: baris tetap di syncStatus 'pending' dan kegagalan push tampil sebagai toast, bukan diam. SyncWorker berurutan ketat dan berhenti di langkah pertama yang gagal — satu produk yang FK-nya belum ada di server ikut menahan transaksi dan pembayaran, dan satu-satunya gejalanya adalah sinkronisasi yang tidak pernah selesai _(UI-5)_
+2. `ui5-features-tokens` Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian _(UI-5)_
+3. `ui6-auth-contract` Bekukan kontrak SessionRepository setelah BE-1 membuktikan has_permission dan isolasi tenant; petakan auth user, users, user_roles, role_permissions, business, dan outlet tanpa logika izin ganda di klien _(UI-6)_
 
-## ⬜ Backend Supabase — fase aktif BE-1 · Quality Gate Terbuka
+## ⬜ Backend Supabase — fase aktif BE-1 · Quality Gate Kontrak Inti
 
 `0/6` task selesai (0%)
 
-> Menutup 12 quality gate yang masih kosong di spec 01 identity-rbac, 02 product-catalog, dan 03 crm
+> Menutup 12 quality gate identity, product-catalog, dan CRM sebelum UI nyata mengikat kontrak auth, tenant, dan master data
 
 Berikutnya:
 
@@ -42,36 +42,46 @@ _Tidak ada task berstatus in_progress._
 - ✅ **UI-2** Primitive Tuntas — 9/9 (100%)
 - ✅ **UI-3** Mobile-First — 8/8 (100%)
 - ✅ **UI-4** Rangka Sesi/RBAC + Tabel Rute Penuh — 9/9 (100%)
-- ⬜ **UI-5** Komponen Bisnis — 0/5 (0%)
-- ⬜ **UI-6** Layar Kasir — 0/5 (0%)
-- ⬜ **UI-7** Auth Asli — 0/5 (0%)
+- 🔄 **UI-5** Halaman Produk — 7/9 (77%)
+- ⬜ **UI-6** Identity dan Organisasi Nyata — 0/9 (0%)
+- ⬜ **UI-7** Master Data Katalog — 0/7 (0%)
+- ⬜ **UI-8** CRM — 0/6 (0%)
+- ⬜ **UI-9** Inventory Core — 0/6 (0%)
+- ⬜ **UI-10** Pembelian — 0/7 (0%)
+- ⬜ **UI-11** POS dan Penjualan — 0/9 (0%)
+- ⬜ **UI-12** Keuangan — 0/7 (0%)
+- ⬜ **UI-13** Dasbor dan Laporan — 0/8 (0%)
+- ⬜ **UI-14** Setelan dan Perangkat — 0/6 (0%)
+- ⬜ **UI-15** Release Candidate — 0/8 (0%)
 
 **Backend Supabase**
 
 - ✅ **BE-0** Skema, RLS, dan Trigger — 11/11 (100%)
-- ⬜ **BE-1** Quality Gate Terbuka — 0/6 (0%)
-- ⬜ **BE-2** Data Nyata dan Pembuktian Trigger — 0/5 (0%)
-- ⬜ **BE-3** Temuan Terbuka — 0/7 (0%)
+- ⬜ **BE-1** Quality Gate Kontrak Inti — 0/6 (0%)
+- ⬜ **BE-2** Hardening Skema dan Keamanan — 0/7 (0%)
+- ⬜ **BE-3** Seed Operasional dan Pembuktian Trigger — 0/7 (0%)
+- ⬜ **BE-4** Kontrak Sinkronisasi Offline — 0/7 (0%)
+- ⬜ **BE-5** Release Backend — 0/6 (0%)
 
 ## Backlog tertunda
 
 _Diwariskan fase sebelumnya; belum ada di fase yang sudah selesai._
 
-- UI-0 → **UI-5**: Komponen bisnis: ProductCard, CartPanel, PaymentSummary, ReceiptPreview
-- UI-0 → **UI-6**: Keyboard shortcut F2/F4/ESC/Ctrl+P
-- UI-0 → **UI-6**: Slicing halaman POS
-- UI-4 → **UI-7**: Hapus DevSessionRepository dan sambungkan auth Supabase sungguhan
+- UI-0 → **UI-11**: Komponen bisnis: ProductCard, CartPanel, PaymentSummary, ReceiptPreview
+- UI-0 → **UI-11**: Keyboard shortcut F2/F4/ESC/Ctrl+P
+- UI-0 → **UI-11**: Slicing halaman POS
+- UI-4 → **UI-6**: Hapus DevSessionRepository dan sambungkan auth Supabase sungguhan
 - BE-0 → **BE-1**: 12 Quality Gate di spec 01, 02, dan 03 belum pernah dicentang — gate spec 04-11 sudah
-- BE-0 → **BE-2**: Seluruh trigger baru ditinjau baris demi baris, belum pernah dijalankan dengan data nyata
+- BE-0 → **BE-3**: Seluruh trigger baru ditinjau baris demi baris, belum pernah dijalankan dengan data nyata
 
 ## Risiko terbuka
 
-- **high** (UI-6) Layar kasir adalah yang pertama akan memicu 8 trigger Supabase yang belum pernah dijalankan dengan data nyata. Sebaiknya BE-2 selesai lebih dulu, atau bug trigger akan muncul sebagai bug UI
-- **high** (BE-2) T-01 Kritis: 8 trigger hanya ditinjau baris demi baris, belum sekalipun dijalankan dengan data nyata. Bug NULL handling, urutan trigger, atau RAISE EXCEPTION yang terlalu agresif belum ketahuan
-- **high** (BE-3) T-02: trigger void bergantung persis pada nilai 'done' dan 'void'. Nilai 'VOID' atau 'voided' membuat trigger diam-diam tidak jalan dan stok tidak dikembalikan, tanpa error apa pun
-- **medium** (UI-4) Guard, ganti outlet, dan laci tablet potret hanya terbukti lewat widget test; belum pernah dijalankan di Android atau iOS sungguhan
-- **medium** (BE-3) T-04: window-nya sedang terbuka. Selama belum ada data varian nyata, mencabut products.parent_id murah; setelah ada, mahal
-- _…2 lagi, lihat `project-progress.md`_
+- **high** (UI-6) Sesi offline dapat mempertahankan UI setelah token server kedaluwarsa; operasi tulis harus tetap diantrikan dan divalidasi ulang saat koneksi kembali
+- **high** (UI-7) Model produk lokal masih menyimpan beberapa identifier sebagai String sementara Supabase memakai bigint/uuid; mapping wajib gagal keras, bukan mengubah identifier tidak valid menjadi null
+- **high** (UI-9) Kesalahan idempotensi atau pembulatan kuantitas akan mengubah stok dua kali; semua command movement wajib memiliki identity stabil dan diuji saat retry
+- **high** (UI-10) Penerimaan parsial dan retry dapat menggandakan movement bila command tidak idempotent; backend BE-3 harus lulus sebelum sinkronisasi purchase diaktifkan
+- **high** (UI-11) Checkout menyalakan trigger paling berisiko; jangan aktifkan push produksi sebelum BE-2 memperbaiki schema dan BE-3 membuktikan semua trigger dengan data nyata
+- _…12 lagi, lihat `project-progress.md`_
 
 ## Catatan terakhir
 

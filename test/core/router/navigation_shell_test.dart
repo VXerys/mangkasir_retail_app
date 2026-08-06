@@ -11,6 +11,7 @@ import 'package:mangkasir_retail_app/core/session/session_cubit.dart';
 import 'package:mangkasir_retail_app/core/session/session_repository.dart';
 import 'package:mangkasir_retail_app/core/session/session_state.dart';
 import 'package:mangkasir_retail_app/core/di/injection.dart';
+import 'package:mangkasir_retail_app/features/identity/presentation/bloc/login/login_cubit.dart';
 import 'package:mangkasir_retail_app/features/products/domain/usecases/add_product_usecase.dart';
 import 'package:mangkasir_retail_app/features/products/domain/usecases/update_product_usecase.dart';
 import 'package:mangkasir_retail_app/features/products/domain/usecases/watch_products_usecase.dart';
@@ -89,6 +90,14 @@ Future<SessionCubit> _pumpAs(
       UpdateProductUseCase(products),
     ),
   );
+  // LoginPage memakai BlocProvider<LoginCubit>(create: _ => getIt<LoginCubit>())
+  // yang hanya tampil ketika sesi kosong atau pengguna keluar. Tanpa pendaftaran
+  // ini, getIt melempar StateError dan BlocProvider menyimpan null — lalu dispose
+  // gagal dengan TypeError. Fake ini cukup: tes di sini menguji routing, bukan
+  // alur autentikasi.
+  registerFake<LoginCubit>(
+    () => LoginCubit(_FakeSessionRepository(null)),
+  );
 
   final cubit = SessionCubit(
     _FakeSessionRepository(
@@ -99,6 +108,9 @@ Future<SessionCubit> _pumpAs(
 
   await tester.pumpWidget(AppRoot(session: cubit, themeMode: ThemeMode.light));
   await cubit.restore();
+  // pump() — GoRouter terima perubahan sesi dan antrekan redirect.
+  // pump(300ms) — redirect diterapkan + transisi 220ms selesai.
+  await tester.pump();
   await tester.pumpAndSettle();
 
   return cubit;
@@ -119,7 +131,7 @@ void main() {
 
     testWidgets('tanpa sesi mendarat di layar masuk', (tester) async {
       await _pumpAs(tester, null);
-      expect(find.text('Masuk ke MangRitel'), findsOneWidget);
+      expect(find.text('Masuk ke akun Anda'), findsOneWidget);
       expect(find.byType(AppShell), findsNothing);
     });
   });
@@ -324,7 +336,7 @@ void main() {
       await cubit.signOut();
       await tester.pumpAndSettle();
 
-      expect(find.text('Masuk ke MangRitel'), findsOneWidget);
+      expect(find.text('Masuk ke akun Anda'), findsOneWidget);
     });
   });
 }

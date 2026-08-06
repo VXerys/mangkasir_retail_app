@@ -65,6 +65,22 @@ class CategoryRepositoryImpl implements CategoryRepository {
   }
 
   @override
+  Future<Either<Failure, Unit>> archive(String id) async {
+    try {
+      final inUse = await _productLocalDs.categoryHasProducts(id);
+      if (inUse) {
+        return const Left(
+          LocalFailure('Kategori masih dipakai produk. Pindahkan produk tersebut terlebih dahulu.'),
+        );
+      }
+      await _localDs.archive(id);
+      return const Right(unit);
+    } on LocalException catch (e) {
+      return Left(LocalFailure(e.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, Unit>> syncPending() async {
     try {
       final pending = await _localDs.getPending();

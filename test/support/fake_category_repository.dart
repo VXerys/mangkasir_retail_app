@@ -40,6 +40,13 @@ class FakeCategoryRepository implements CategoryRepository {
   @override
   Future<Either<Failure, Unit>> syncPending() async => const Right(unit);
 
+  @override
+  Future<Either<Failure, Unit>> archive(String id) async {
+    categories.removeWhere((c) => c.id == id);
+    _controller.add(categories);
+    return const Right(unit);
+  }
+
   void dispose() => _controller.close();
 }
 

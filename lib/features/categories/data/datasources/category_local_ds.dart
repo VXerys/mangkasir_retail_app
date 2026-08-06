@@ -11,6 +11,7 @@ abstract class CategoryLocalDs {
   Future<void> save(Category category);
   Future<List<Category>> getPending();
   Future<void> markSynced(String id, String? serverId);
+  Future<void> archive(String id);
 }
 
 @LazySingleton(as: CategoryLocalDs)
@@ -64,6 +65,15 @@ class CategoryLocalDsImpl implements CategoryLocalDs {
       await _db.categoryDao.markSynced(id, serverId);
     } catch (e) {
       throw LocalException('markSynced failed: $e');
+    }
+  }
+
+  @override
+  Future<void> archive(String id) async {
+    try {
+      await _db.categoryDao.archive(id);
+    } catch (e) {
+      throw LocalException('archive failed: $e');
     }
   }
 }

@@ -11,4 +11,5 @@ sealed class CategoryEvent with _$CategoryEvent {
       CategoryAdded;
   const factory CategoryEvent.updated({required Category category}) =
       CategoryUpdated;
+  const factory CategoryEvent.archived({required String id}) = CategoryArchived;
 }

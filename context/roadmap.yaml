@@ -403,30 +403,32 @@ phases:
     track: ui
     name: Master Data Katalog
     goal: "Menuntaskan seluruh master yang menjadi prasyarat produk, stok, pembelian, dan penjualan; setiap menu master menggantikan placeholder dengan CRUD nyata"
-    status: pending
+    status: done
+    started_at: 2026-08-06
+    completed_at: 2026-08-06
     verification: "Kategori, brand, unit, gudang, pajak, varian, harga, dan barcode dapat dibuat serta dipakai produk; isolasi outlet dan state kosong/loading/error teruji"
     tasks:
       - key: ui7-categories
         title: "Halaman /inventory/categories: daftar, cari, tambah, ubah, arsipkan, cegah penghapusan kategori yang masih dipakai produk"
-        status: pending
+        status: done
       - key: ui7-brands
         title: "Halaman /inventory/brands: daftar dan CRUD brand dengan status aktif serta validasi nama unik dalam business"
-        status: pending
+        status: done
       - key: ui7-units
         title: "Halaman /inventory/units: satuan dasar, simbol, presisi kuantitas, dan perlindungan referensi produk"
-        status: pending
+        status: done
       - key: ui7-warehouses
         title: "Halaman /inventory/warehouses: gudang per outlet, gudang default, status aktif, serta larangan menonaktifkan gudang yang masih memiliki stok"
-        status: pending
+        status: done
       - key: ui7-tax
         title: "Halaman /settings/tax: kebijakan pajak default dan override produk dengan pembulatan yang sama antara form, cart, receipt, dan backend"
-        status: pending
+        status: done
       - key: ui7-product-variants
         title: "Perluas form produk untuk product_variants, harga, SKU, dan banyak barcode; products.parent_id lama tidak boleh dipakai setelah BE-2"
-        status: pending
+        status: done
       - key: ui7-master-crossflow
         title: "Buktikan master baru langsung tersedia di form produk tanpa restart; perubahan outlet tidak membocorkan master outlet lain dan semua CRUD memiliki empty/loading/error/permission state"
-        status: pending
+        status: done
     decisions:
       - what: Master data diselesaikan sebelum inventory dan transaksi
         why: Stock, purchase order, dan cart tidak boleh menyimpan label bebas untuk kategori, unit, gudang, pajak, atau varian yang seharusnya foreign key

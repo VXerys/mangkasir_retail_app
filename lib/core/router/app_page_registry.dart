@@ -2,6 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_routes.dart';
+import '../../features/catalog/brands/presentation/pages/brands_page.dart';
+import '../../features/catalog/units/presentation/pages/units_page.dart';
+import '../../features/categories/presentation/pages/categories_page.dart';
 import '../../features/identity/presentation/pages/account_page.dart';
 import '../../features/identity/presentation/pages/business_settings_page.dart';
 import '../../features/identity/presentation/pages/outlets_page.dart';
@@ -9,6 +12,8 @@ import '../../features/identity/presentation/pages/roles_page.dart';
 import '../../features/identity/presentation/pages/users_page.dart';
 import '../../features/products/presentation/pages/product_form_page.dart';
 import '../../features/products/presentation/pages/product_list_page.dart';
+import '../../features/settings/tax/presentation/pages/tax_settings_page.dart';
+import '../../features/warehouses/presentation/pages/warehouses_page.dart';
 
 /// Membangun isi sebuah rute.
 typedef AppPageBuilder = Widget Function(
@@ -45,6 +50,13 @@ abstract final class AppPageRegistry {
     AppRoutes.settingsRoles: RolesPage.pageBuilder,
 
     // ── Produk (UI-5) ──────────────────────────────────────────────────────
+    // ── Master data katalog (UI-7) ─────────────────────────────────────────────
+    AppRoutes.inventoryCategories: CategoriesPage.pageBuilder,
+    AppRoutes.inventoryBrands: BrandsPage.pageBuilder,
+    AppRoutes.inventoryUnits: UnitsPage.pageBuilder,
+    AppRoutes.inventoryWarehouses: WarehousesPage.pageBuilder,
+    AppRoutes.settingsTax: TaxSettingsPage.pageBuilder,
+
     AppRoutes.inventoryProducts: ProductListPage.build,
     AppRoutes.inventoryProductNew: ProductFormPage.buildNew,
     AppRoutes.inventoryProductDetail: ProductFormPage.buildEdit,

@@ -63,6 +63,14 @@ class ProductDao extends DatabaseAccessor<AppDatabase> with _$ProductDaoMixin {
     );
   }
 
+  Future<bool> categoryHasProducts(String categoryId) async {
+    final results = await (select(productTable)
+          ..where((t) => t.categoryId.equals(categoryId))
+          ..limit(1))
+        .get();
+    return results.isNotEmpty;
+  }
+
   /// After a category is synced, update products FK from local category uuid
   /// to the server category bigint (stored as string) so Supabase push succeeds.
   Future<void> remapCategoryId({

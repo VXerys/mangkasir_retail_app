@@ -3,7 +3,7 @@
 
 # MangRitel — di mana proyek ini sekarang
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T07:37:58Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:06:01Z_
 
 ## 🔄 Aplikasi Flutter — fase aktif UI-6 · Identity dan Organisasi Nyata
 
@@ -14,8 +14,8 @@ _Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T07:37:58Z_
 Berikutnya:
 
 1. `ui6-device-rbac` Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS _(UI-6)_
-2. `ui7-categories` Halaman /inventory/categories: daftar, cari, tambah, ubah, arsipkan, cegah penghapusan kategori yang masih dipakai produk _(UI-7)_
-3. `ui7-brands` Halaman /inventory/brands: daftar dan CRUD brand dengan status aktif serta validasi nama unik dalam business _(UI-7)_
+2. `ui8-customer-list` Halaman /crm/customers: pencarian, filter status, pagination, saldo/ringkasan transaksi, dan empty/loading/error state _(UI-8)_
+3. `ui8-customer-detail` Halaman /crm/customers/:id: profil, alamat, riwayat transaksi, edit, dan deep link kembali ke transaksi terkait _(UI-8)_
 
 ## ⬜ Backend Supabase — fase aktif BE-1 · Quality Gate Kontrak Inti
 
@@ -44,7 +44,7 @@ _Tidak ada task berstatus in_progress._
 - ✅ **UI-4** Rangka Sesi/RBAC + Tabel Rute Penuh — 9/9 (100%)
 - ✅ **UI-5** Halaman Produk — 9/9 (100%)
 - 🔄 **UI-6** Identity dan Organisasi Nyata — 8/9 (88%)
-- ⬜ **UI-7** Master Data Katalog — 0/7 (0%)
+- ✅ **UI-7** Master Data Katalog — 7/7 (100%)
 - ⬜ **UI-8** CRM — 0/6 (0%)
 - ⬜ **UI-9** Inventory Core — 0/6 (0%)
 - ⬜ **UI-10** Pembelian — 0/7 (0%)

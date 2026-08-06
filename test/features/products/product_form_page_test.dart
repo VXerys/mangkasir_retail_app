@@ -3,6 +3,7 @@ import 'package:mangkasir_retail_app/core/constants/app_routes.dart';
 import 'package:mangkasir_retail_app/core/design/design.dart';
 import 'package:mangkasir_retail_app/core/session/app_role.dart';
 import 'package:mangkasir_retail_app/features/categories/domain/usecases/add_category_usecase.dart';
+import 'package:mangkasir_retail_app/features/categories/domain/usecases/archive_category_usecase.dart';
 import 'package:mangkasir_retail_app/features/categories/domain/usecases/get_categories_usecase.dart';
 import 'package:mangkasir_retail_app/features/categories/domain/usecases/update_category_usecase.dart';
 import 'package:mangkasir_retail_app/features/categories/presentation/bloc/category/category_bloc.dart';
@@ -40,6 +41,7 @@ Future<void> _pumpForm(
       GetCategoriesUseCase(categories),
       AddCategoryUseCase(categories),
       UpdateCategoryUseCase(categories),
+      ArchiveCategoryUseCase(categories),
     ),
   );
 

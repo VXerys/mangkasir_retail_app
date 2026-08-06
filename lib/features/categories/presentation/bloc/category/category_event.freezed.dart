@@ -22,18 +22,21 @@ mixin _$CategoryEvent {
     required TResult Function() watchStarted,
     required TResult Function(Category category) added,
     required TResult Function(Category category) updated,
+    required TResult Function(String id) archived,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? watchStarted,
     TResult? Function(Category category)? added,
     TResult? Function(Category category)? updated,
+    TResult? Function(String id)? archived,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? watchStarted,
     TResult Function(Category category)? added,
     TResult Function(Category category)? updated,
+    TResult Function(String id)? archived,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,18 +44,21 @@ mixin _$CategoryEvent {
     required TResult Function(CategoryWatchStarted value) watchStarted,
     required TResult Function(CategoryAdded value) added,
     required TResult Function(CategoryUpdated value) updated,
+    required TResult Function(CategoryArchived value) archived,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(CategoryWatchStarted value)? watchStarted,
     TResult? Function(CategoryAdded value)? added,
     TResult? Function(CategoryUpdated value)? updated,
+    TResult? Function(CategoryArchived value)? archived,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(CategoryWatchStarted value)? watchStarted,
     TResult Function(CategoryAdded value)? added,
     TResult Function(CategoryUpdated value)? updated,
+    TResult Function(CategoryArchived value)? archived,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -126,6 +132,7 @@ class _$CategoryWatchStartedImpl implements CategoryWatchStarted {
     required TResult Function() watchStarted,
     required TResult Function(Category category) added,
     required TResult Function(Category category) updated,
+    required TResult Function(String id) archived,
   }) {
     return watchStarted();
   }
@@ -136,6 +143,7 @@ class _$CategoryWatchStartedImpl implements CategoryWatchStarted {
     TResult? Function()? watchStarted,
     TResult? Function(Category category)? added,
     TResult? Function(Category category)? updated,
+    TResult? Function(String id)? archived,
   }) {
     return watchStarted?.call();
   }
@@ -146,6 +154,7 @@ class _$CategoryWatchStartedImpl implements CategoryWatchStarted {
     TResult Function()? watchStarted,
     TResult Function(Category category)? added,
     TResult Function(Category category)? updated,
+    TResult Function(String id)? archived,
     required TResult orElse(),
   }) {
     if (watchStarted != null) {
@@ -160,6 +169,7 @@ class _$CategoryWatchStartedImpl implements CategoryWatchStarted {
     required TResult Function(CategoryWatchStarted value) watchStarted,
     required TResult Function(CategoryAdded value) added,
     required TResult Function(CategoryUpdated value) updated,
+    required TResult Function(CategoryArchived value) archived,
   }) {
     return watchStarted(this);
   }
@@ -170,6 +180,7 @@ class _$CategoryWatchStartedImpl implements CategoryWatchStarted {
     TResult? Function(CategoryWatchStarted value)? watchStarted,
     TResult? Function(CategoryAdded value)? added,
     TResult? Function(CategoryUpdated value)? updated,
+    TResult? Function(CategoryArchived value)? archived,
   }) {
     return watchStarted?.call(this);
   }
@@ -180,6 +191,7 @@ class _$CategoryWatchStartedImpl implements CategoryWatchStarted {
     TResult Function(CategoryWatchStarted value)? watchStarted,
     TResult Function(CategoryAdded value)? added,
     TResult Function(CategoryUpdated value)? updated,
+    TResult Function(CategoryArchived value)? archived,
     required TResult orElse(),
   }) {
     if (watchStarted != null) {
@@ -279,6 +291,7 @@ class _$CategoryAddedImpl implements CategoryAdded {
     required TResult Function() watchStarted,
     required TResult Function(Category category) added,
     required TResult Function(Category category) updated,
+    required TResult Function(String id) archived,
   }) {
     return added(category);
   }
@@ -289,6 +302,7 @@ class _$CategoryAddedImpl implements CategoryAdded {
     TResult? Function()? watchStarted,
     TResult? Function(Category category)? added,
     TResult? Function(Category category)? updated,
+    TResult? Function(String id)? archived,
   }) {
     return added?.call(category);
   }
@@ -299,6 +313,7 @@ class _$CategoryAddedImpl implements CategoryAdded {
     TResult Function()? watchStarted,
     TResult Function(Category category)? added,
     TResult Function(Category category)? updated,
+    TResult Function(String id)? archived,
     required TResult orElse(),
   }) {
     if (added != null) {
@@ -313,6 +328,7 @@ class _$CategoryAddedImpl implements CategoryAdded {
     required TResult Function(CategoryWatchStarted value) watchStarted,
     required TResult Function(CategoryAdded value) added,
     required TResult Function(CategoryUpdated value) updated,
+    required TResult Function(CategoryArchived value) archived,
   }) {
     return added(this);
   }
@@ -323,6 +339,7 @@ class _$CategoryAddedImpl implements CategoryAdded {
     TResult? Function(CategoryWatchStarted value)? watchStarted,
     TResult? Function(CategoryAdded value)? added,
     TResult? Function(CategoryUpdated value)? updated,
+    TResult? Function(CategoryArchived value)? archived,
   }) {
     return added?.call(this);
   }
@@ -333,6 +350,7 @@ class _$CategoryAddedImpl implements CategoryAdded {
     TResult Function(CategoryWatchStarted value)? watchStarted,
     TResult Function(CategoryAdded value)? added,
     TResult Function(CategoryUpdated value)? updated,
+    TResult Function(CategoryArchived value)? archived,
     required TResult orElse(),
   }) {
     if (added != null) {
@@ -444,6 +462,7 @@ class _$CategoryUpdatedImpl implements CategoryUpdated {
     required TResult Function() watchStarted,
     required TResult Function(Category category) added,
     required TResult Function(Category category) updated,
+    required TResult Function(String id) archived,
   }) {
     return updated(category);
   }
@@ -454,6 +473,7 @@ class _$CategoryUpdatedImpl implements CategoryUpdated {
     TResult? Function()? watchStarted,
     TResult? Function(Category category)? added,
     TResult? Function(Category category)? updated,
+    TResult? Function(String id)? archived,
   }) {
     return updated?.call(category);
   }
@@ -464,6 +484,7 @@ class _$CategoryUpdatedImpl implements CategoryUpdated {
     TResult Function()? watchStarted,
     TResult Function(Category category)? added,
     TResult Function(Category category)? updated,
+    TResult Function(String id)? archived,
     required TResult orElse(),
   }) {
     if (updated != null) {
@@ -478,6 +499,7 @@ class _$CategoryUpdatedImpl implements CategoryUpdated {
     required TResult Function(CategoryWatchStarted value) watchStarted,
     required TResult Function(CategoryAdded value) added,
     required TResult Function(CategoryUpdated value) updated,
+    required TResult Function(CategoryArchived value) archived,
   }) {
     return updated(this);
   }
@@ -488,6 +510,7 @@ class _$CategoryUpdatedImpl implements CategoryUpdated {
     TResult? Function(CategoryWatchStarted value)? watchStarted,
     TResult? Function(CategoryAdded value)? added,
     TResult? Function(CategoryUpdated value)? updated,
+    TResult? Function(CategoryArchived value)? archived,
   }) {
     return updated?.call(this);
   }
@@ -498,6 +521,7 @@ class _$CategoryUpdatedImpl implements CategoryUpdated {
     TResult Function(CategoryWatchStarted value)? watchStarted,
     TResult Function(CategoryAdded value)? added,
     TResult Function(CategoryUpdated value)? updated,
+    TResult Function(CategoryArchived value)? archived,
     required TResult orElse(),
   }) {
     if (updated != null) {
@@ -517,5 +541,163 @@ abstract class CategoryUpdated implements CategoryEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CategoryUpdatedImplCopyWith<_$CategoryUpdatedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CategoryArchivedImplCopyWith<$Res> {
+  factory _$$CategoryArchivedImplCopyWith(
+    _$CategoryArchivedImpl value,
+    $Res Function(_$CategoryArchivedImpl) then,
+  ) = __$$CategoryArchivedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String id});
+}
+
+/// @nodoc
+class __$$CategoryArchivedImplCopyWithImpl<$Res>
+    extends _$CategoryEventCopyWithImpl<$Res, _$CategoryArchivedImpl>
+    implements _$$CategoryArchivedImplCopyWith<$Res> {
+  __$$CategoryArchivedImplCopyWithImpl(
+    _$CategoryArchivedImpl _value,
+    $Res Function(_$CategoryArchivedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of CategoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? id = null}) {
+    return _then(
+      _$CategoryArchivedImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$CategoryArchivedImpl implements CategoryArchived {
+  const _$CategoryArchivedImpl({required this.id});
+
+  @override
+  final String id;
+
+  @override
+  String toString() {
+    return 'CategoryEvent.archived(id: $id)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CategoryArchivedImpl &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  /// Create a copy of CategoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CategoryArchivedImplCopyWith<_$CategoryArchivedImpl> get copyWith =>
+      __$$CategoryArchivedImplCopyWithImpl<_$CategoryArchivedImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() watchStarted,
+    required TResult Function(Category category) added,
+    required TResult Function(Category category) updated,
+    required TResult Function(String id) archived,
+  }) {
+    return archived(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? watchStarted,
+    TResult? Function(Category category)? added,
+    TResult? Function(Category category)? updated,
+    TResult? Function(String id)? archived,
+  }) {
+    return archived?.call(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? watchStarted,
+    TResult Function(Category category)? added,
+    TResult Function(Category category)? updated,
+    TResult Function(String id)? archived,
+    required TResult orElse(),
+  }) {
+    if (archived != null) {
+      return archived(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CategoryWatchStarted value) watchStarted,
+    required TResult Function(CategoryAdded value) added,
+    required TResult Function(CategoryUpdated value) updated,
+    required TResult Function(CategoryArchived value) archived,
+  }) {
+    return archived(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CategoryWatchStarted value)? watchStarted,
+    TResult? Function(CategoryAdded value)? added,
+    TResult? Function(CategoryUpdated value)? updated,
+    TResult? Function(CategoryArchived value)? archived,
+  }) {
+    return archived?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CategoryWatchStarted value)? watchStarted,
+    TResult Function(CategoryAdded value)? added,
+    TResult Function(CategoryUpdated value)? updated,
+    TResult Function(CategoryArchived value)? archived,
+    required TResult orElse(),
+  }) {
+    if (archived != null) {
+      return archived(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CategoryArchived implements CategoryEvent {
+  const factory CategoryArchived({required final String id}) =
+      _$CategoryArchivedImpl;
+
+  String get id;
+
+  /// Create a copy of CategoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CategoryArchivedImplCopyWith<_$CategoryArchivedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

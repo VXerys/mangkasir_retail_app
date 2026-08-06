@@ -14,6 +14,7 @@ abstract class ProductLocalDs {
   Future<void> save(Product product);
   Future<List<Product>> getPending();
   Future<void> markSynced(String id, String? serverId);
+  Future<bool> categoryHasProducts(String categoryId);
   Future<void> remapCategoryId({
     required String localCategoryId,
     required String serverCategoryId,
@@ -80,6 +81,15 @@ class ProductLocalDsImpl implements ProductLocalDs {
       await _db.productDao.markSynced(id, serverId);
     } catch (e) {
       throw LocalException('markSynced failed: $e');
+    }
+  }
+
+  @override
+  Future<bool> categoryHasProducts(String categoryId) async {
+    try {
+      return await _db.productDao.categoryHasProducts(categoryId);
+    } catch (e) {
+      throw LocalException('categoryHasProducts failed: $e');
     }
   }
 

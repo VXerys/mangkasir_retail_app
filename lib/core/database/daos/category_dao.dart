@@ -11,11 +11,24 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
   CategoryDao(super.db);
 
   Stream<List<CategoryTableData>> watchAll() {
-    return select(categoryTable).watch();
+    return (select(categoryTable)
+          ..where((t) => t.syncStatus.isIn(const ['pending', 'synced'])))
+        .watch();
   }
 
   Future<List<CategoryTableData>> getAll() {
-    return select(categoryTable).get();
+    return (select(categoryTable)
+          ..where((t) => t.syncStatus.isIn(const ['pending', 'synced'])))
+        .get();
+  }
+
+  Future<void> archive(String id) {
+    return (update(categoryTable)..where((t) => t.id.equals(id))).write(
+      CategoryTableCompanion(
+        syncStatus: const Value('archived'),
+        updatedAt: Value(DateTime.now()),
+      ),
+    );
   }
 
   Future<void> upsert(CategoryTableCompanion companion) {

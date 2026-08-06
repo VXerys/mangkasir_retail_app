@@ -9,4 +9,5 @@ abstract class CategoryRepository {
   Future<Either<Failure, Unit>> add(Category category);
   Future<Either<Failure, Unit>> update(Category category);
   Future<Either<Failure, Unit>> syncPending();
+  Future<Either<Failure, Unit>> archive(String id);
 }

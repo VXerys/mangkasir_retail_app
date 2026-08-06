@@ -21,6 +21,22 @@ import '../../features/cashier/domain/usecases/checkout_usecase.dart' as _i997;
 import '../../features/cashier/presentation/bloc/cart/cart_bloc.dart' as _i666;
 import '../../features/cashier/presentation/bloc/payment/payment_cubit.dart'
     as _i384;
+import '../../features/catalog/brands/data/datasources/brand_remote_ds.dart'
+    as _i367;
+import '../../features/catalog/brands/data/repositories/brand_repository_impl.dart'
+    as _i343;
+import '../../features/catalog/brands/domain/repositories/brand_repository.dart'
+    as _i396;
+import '../../features/catalog/brands/presentation/bloc/brand_cubit.dart'
+    as _i140;
+import '../../features/catalog/units/data/datasources/unit_remote_ds.dart'
+    as _i353;
+import '../../features/catalog/units/data/repositories/unit_repository_impl.dart'
+    as _i195;
+import '../../features/catalog/units/domain/repositories/unit_repository.dart'
+    as _i921;
+import '../../features/catalog/units/presentation/bloc/unit_cubit.dart'
+    as _i726;
 import '../../features/categories/data/datasources/category_local_ds.dart'
     as _i713;
 import '../../features/categories/data/datasources/category_remote_ds.dart'
@@ -31,6 +47,8 @@ import '../../features/categories/domain/repositories/category_repository.dart'
     as _i266;
 import '../../features/categories/domain/usecases/add_category_usecase.dart'
     as _i374;
+import '../../features/categories/domain/usecases/archive_category_usecase.dart'
+    as _i197;
 import '../../features/categories/domain/usecases/get_categories_usecase.dart'
     as _i76;
 import '../../features/categories/domain/usecases/update_category_usecase.dart'
@@ -88,6 +106,13 @@ import '../../features/products/domain/usecases/watch_products_usecase.dart'
     as _i622;
 import '../../features/products/presentation/bloc/product/product_bloc.dart'
     as _i426;
+import '../../features/settings/tax/data/datasources/tax_remote_ds.dart'
+    as _i192;
+import '../../features/settings/tax/data/repositories/tax_repository_impl.dart'
+    as _i642;
+import '../../features/settings/tax/domain/repositories/tax_repository.dart'
+    as _i544;
+import '../../features/settings/tax/presentation/bloc/tax_cubit.dart' as _i110;
 import '../../features/transactions/data/datasources/transaction_local_ds.dart'
     as _i1013;
 import '../../features/transactions/data/datasources/transaction_remote_ds.dart'
@@ -96,6 +121,14 @@ import '../../features/transactions/data/repositories/transaction_repository_imp
     as _i443;
 import '../../features/transactions/domain/repositories/transaction_repository.dart'
     as _i421;
+import '../../features/warehouses/data/datasources/warehouse_remote_ds.dart'
+    as _i705;
+import '../../features/warehouses/data/repositories/warehouse_repository_impl.dart'
+    as _i95;
+import '../../features/warehouses/domain/repositories/warehouse_repository.dart'
+    as _i163;
+import '../../features/warehouses/presentation/bloc/warehouse_cubit.dart'
+    as _i425;
 import '../database/app_database.dart' as _i982;
 import '../design/theme/theme_cubit.dart' as _i104;
 import '../network/connectivity_module.dart' as _i154;
@@ -170,20 +203,41 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i312.ConnectivityService>(
       () => _i312.ConnectivityService(gh<_i895.Connectivity>()),
     );
+    gh.lazySingleton<_i192.TaxRemoteDs>(
+      () => _i192.TaxRemoteDsImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i890.UserRepository>(
       () => _i920.UserRepositoryImpl(gh<_i301.UserRemoteDs>()),
     );
     gh.lazySingleton<_i971.PaymentLocalDs>(
       () => _i971.PaymentLocalDsImpl(gh<_i982.AppDatabase>()),
     );
+    gh.lazySingleton<_i367.BrandRemoteDs>(
+      () => _i367.BrandRemoteDsImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i353.UnitRemoteDs>(
+      () => _i353.UnitRemoteDsImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i474.ProductRemoteDs>(
       () => _i474.ProductRemoteDsImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i544.TaxRepository>(
+      () => _i642.TaxRepositoryImpl(gh<_i192.TaxRemoteDs>()),
+    );
+    gh.lazySingleton<_i705.WarehouseRemoteDs>(
+      () => _i705.WarehouseRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i666.CartBloc>(
       () => _i666.CartBloc(gh<_i669.CartStorage>()),
     );
+    gh.lazySingleton<_i396.BrandRepository>(
+      () => _i343.BrandRepositoryImpl(gh<_i367.BrandRemoteDs>()),
+    );
     gh.lazySingleton<_i28.OutletRepository>(
       () => _i73.OutletRepositoryImpl(gh<_i1062.OutletRemoteDs>()),
+    );
+    gh.factory<_i140.BrandCubit>(
+      () => _i140.BrandCubit(gh<_i396.BrandRepository>()),
     );
     gh.factory<_i1046.OutletCubit>(
       () => _i1046.OutletCubit(gh<_i28.OutletRepository>()),
@@ -200,6 +254,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i710.PaymentRemoteDs>(),
       ),
     );
+    gh.lazySingleton<_i163.WarehouseRepository>(
+      () => _i95.WarehouseRepositoryImpl(gh<_i705.WarehouseRemoteDs>()),
+    );
     gh.lazySingleton<_i266.CategoryRepository>(
       () => _i894.CategoryRepositoryImpl(
         gh<_i713.CategoryLocalDs>(),
@@ -214,8 +271,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i561.CalculateCartTotals>(),
       ),
     );
+    gh.factory<_i110.TaxCubit>(() => _i110.TaxCubit(gh<_i544.TaxRepository>()));
     gh.lazySingleton<_i971.BusinessRepository>(
       () => _i307.BusinessRepositoryImpl(gh<_i620.BusinessRemoteDs>()),
+    );
+    gh.lazySingleton<_i921.UnitRepository>(
+      () => _i195.UnitRepositoryImpl(gh<_i353.UnitRemoteDs>()),
     );
     gh.factory<_i337.UserCubit>(
       () => _i337.UserCubit(gh<_i890.UserRepository>()),
@@ -226,6 +287,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i474.ProductRemoteDs>(),
       ),
     );
+    gh.factory<_i425.WarehouseCubit>(
+      () => _i425.WarehouseCubit(gh<_i163.WarehouseRepository>()),
+    );
+    gh.factory<_i726.UnitCubit>(
+      () => _i726.UnitCubit(gh<_i921.UnitRepository>()),
+    );
     gh.factory<_i374.AddCategoryUseCase>(
       () => _i374.AddCategoryUseCase(gh<_i266.CategoryRepository>()),
     );
@@ -234,6 +301,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i656.UpdateCategoryUseCase>(
       () => _i656.UpdateCategoryUseCase(gh<_i266.CategoryRepository>()),
+    );
+    gh.factory<_i197.ArchiveCategoryUseCase>(
+      () => _i197.ArchiveCategoryUseCase(gh<_i266.CategoryRepository>()),
     );
     gh.factory<_i513.BusinessCubit>(
       () => _i513.BusinessCubit(gh<_i971.BusinessRepository>()),
@@ -258,6 +328,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i76.GetCategoriesUseCase>(),
         gh<_i374.AddCategoryUseCase>(),
         gh<_i656.UpdateCategoryUseCase>(),
+        gh<_i197.ArchiveCategoryUseCase>(),
       ),
     );
     gh.factory<_i570.AddProductUseCase>(

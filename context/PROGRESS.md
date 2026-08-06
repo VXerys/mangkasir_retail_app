@@ -3,11 +3,11 @@
 
 # Progres MangRitel
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T07:37:58Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:06:01Z_
 
-**Total: 69/167 task selesai (41%) di 22 fase.**
+**Total: 76/167 task selesai (45%) di 22 fase.**
 
-# Track Aplikasi Flutter — 58/123 (47%)
+# Track Aplikasi Flutter — 65/123 (52%)
 
 ## ✅ UI-0 — Fondasi Design System (9/9 · 100%)
 
@@ -209,17 +209,19 @@ _mulai 2026-08-06_
 
 **Verifikasi:** BE-1 lulus; login, pemulihan sesi, ganti outlet, RBAC, dan logout lolos integration test; halaman identity/organization teruji di Android dan iOS
 
-## ⬜ UI-7 — Master Data Katalog (0/7 · 0%)
+## ✅ UI-7 — Master Data Katalog (7/7 · 100%)
+
+_mulai 2026-08-06 · selesai 2026-08-06_
 
 > Menuntaskan seluruh master yang menjadi prasyarat produk, stok, pembelian, dan penjualan; setiap menu master menggantikan placeholder dengan CRUD nyata
 
-- ⬜ `ui7-categories` Halaman /inventory/categories: daftar, cari, tambah, ubah, arsipkan, cegah penghapusan kategori yang masih dipakai produk
-- ⬜ `ui7-brands` Halaman /inventory/brands: daftar dan CRUD brand dengan status aktif serta validasi nama unik dalam business
-- ⬜ `ui7-units` Halaman /inventory/units: satuan dasar, simbol, presisi kuantitas, dan perlindungan referensi produk
-- ⬜ `ui7-warehouses` Halaman /inventory/warehouses: gudang per outlet, gudang default, status aktif, serta larangan menonaktifkan gudang yang masih memiliki stok
-- ⬜ `ui7-tax` Halaman /settings/tax: kebijakan pajak default dan override produk dengan pembulatan yang sama antara form, cart, receipt, dan backend
-- ⬜ `ui7-product-variants` Perluas form produk untuk product_variants, harga, SKU, dan banyak barcode; products.parent_id lama tidak boleh dipakai setelah BE-2
-- ⬜ `ui7-master-crossflow` Buktikan master baru langsung tersedia di form produk tanpa restart; perubahan outlet tidak membocorkan master outlet lain dan semua CRUD memiliki empty/loading/error/permission state
+- ✅ `ui7-categories` Halaman /inventory/categories: daftar, cari, tambah, ubah, arsipkan, cegah penghapusan kategori yang masih dipakai produk
+- ✅ `ui7-brands` Halaman /inventory/brands: daftar dan CRUD brand dengan status aktif serta validasi nama unik dalam business
+- ✅ `ui7-units` Halaman /inventory/units: satuan dasar, simbol, presisi kuantitas, dan perlindungan referensi produk
+- ✅ `ui7-warehouses` Halaman /inventory/warehouses: gudang per outlet, gudang default, status aktif, serta larangan menonaktifkan gudang yang masih memiliki stok
+- ✅ `ui7-tax` Halaman /settings/tax: kebijakan pajak default dan override produk dengan pembulatan yang sama antara form, cart, receipt, dan backend
+- ✅ `ui7-product-variants` Perluas form produk untuk product_variants, harga, SKU, dan banyak barcode; products.parent_id lama tidak boleh dipakai setelah BE-2
+- ✅ `ui7-master-crossflow` Buktikan master baru langsung tersedia di form produk tanpa restart; perubahan outlet tidak membocorkan master outlet lain dan semua CRUD memiliki empty/loading/error/permission state
 
 **Keputusan**
 

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../features/categories/domain/usecases/add_category_usecase.dart';
+import '../../../../../features/categories/domain/usecases/archive_category_usecase.dart';
 import '../../../../../features/categories/domain/usecases/get_categories_usecase.dart';
 import '../../../../../features/categories/domain/usecases/update_category_usecase.dart';
 import 'category_event.dart';
@@ -12,15 +13,18 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final GetCategoriesUseCase _getCategories;
   final AddCategoryUseCase _addCategory;
   final UpdateCategoryUseCase _updateCategory;
+  final ArchiveCategoryUseCase _archiveCategory;
 
   CategoryBloc(
     this._getCategories,
     this._addCategory,
     this._updateCategory,
+    this._archiveCategory,
   ) : super(const CategoryState.initial()) {
     on<CategoryWatchStarted>(_onWatchStarted);
     on<CategoryAdded>(_onAdded);
     on<CategoryUpdated>(_onUpdated);
+    on<CategoryArchived>(_onArchived);
   }
 
   Future<void> _onWatchStarted(
@@ -54,6 +58,17 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     Emitter<CategoryState> emit,
   ) async {
     final result = await _updateCategory(event.category);
+    result.fold(
+      (failure) => emit(CategoryState.error(message: failure.message)),
+      (_) => add(const CategoryEvent.watchStarted()),
+    );
+  }
+
+  Future<void> _onArchived(
+    CategoryArchived event,
+    Emitter<CategoryState> emit,
+  ) async {
+    final result = await _archiveCategory(event.id);
     result.fold(
       (failure) => emit(CategoryState.error(message: failure.message)),
       (_) => add(const CategoryEvent.watchStarted()),

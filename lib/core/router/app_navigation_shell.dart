@@ -7,6 +7,8 @@ import '../design/design.dart';
 import '../session/app_session.dart';
 import '../session/session_cubit.dart';
 import '../session/session_scope.dart';
+import '../sync/sync_bloc/sync_bloc.dart';
+import '../sync/sync_failure_listener.dart';
 import 'app_nav_tree.dart';
 
 /// Kerangka navigasi aplikasi: mengisi slot [AppShell] dengan menu sebenarnya.
@@ -24,7 +26,13 @@ class AppNavigationShell extends StatefulWidget {
   /// Halaman yang sedang aktif, disediakan oleh `ShellRoute`.
   final Widget child;
 
-  const AppNavigationShell({super.key, required this.child});
+  /// Sumber kabar sinkronisasi. Ditempatkan di sini — bukan di AppRoot.builder
+  /// — karena ShellRoute berada di dalam Navigator sehingga konteksnya punya
+  /// Overlay. AppRoot.builder berada di atas Navigator dan konteksnya tidak
+  /// mempunyai Overlay, sehingga AppToast tidak bisa menggambar di sana.
+  final SyncBloc? sync;
+
+  const AppNavigationShell({super.key, required this.child, this.sync});
 
   @override
   State<AppNavigationShell> createState() => _AppNavigationShellState();
@@ -52,32 +60,35 @@ class _AppNavigationShellState extends State<AppNavigationShell> {
     final match = AppNavTree.match(location);
     final areas = AppNavTree.visibleAreas(session);
 
-    return AppShell(
-      scaffoldKey: _scaffoldKey,
-      appBar: _buildTopBar(context, session, match),
-      sidebarBuilder: (context, mode) => AppSidebar(
-        mode: mode,
-        header: _ShellHeader(mode: mode, session: session),
-        // Keluar hidup di kaki sidebar, bukan hanya di laci ponsel. Tanpa ini
-        // tablet — yang tidak punya laci sekunder — tidak punya jalan keluar
-        // sama sekali sampai halaman Akun dibangun.
-        footer: session == null
-            ? null
-            : _ShellFooter(mode: mode, scaffoldKey: _scaffoldKey),
-        sections: [
-          for (final area in areas)
-            _sectionFor(context, area, match, session),
-        ],
-      ),
-      bottomNavBuilder: (context) =>
-          _buildBottomNav(context, areas, match, session),
-      secondaryMenuBuilder: (context) => _SecondaryMenu(
-        areas: areas,
-        match: match,
-        session: session,
+    return SyncFailureListener(
+      bloc: widget.sync,
+      child: AppShell(
         scaffoldKey: _scaffoldKey,
+        appBar: _buildTopBar(context, session, match),
+        sidebarBuilder: (context, mode) => AppSidebar(
+          mode: mode,
+          header: _ShellHeader(mode: mode, session: session),
+          // Keluar hidup di kaki sidebar, bukan hanya di laci ponsel. Tanpa ini
+          // tablet — yang tidak punya laci sekunder — tidak punya jalan keluar
+          // sama sekali sampai halaman Akun dibangun.
+          footer: session == null
+              ? null
+              : _ShellFooter(mode: mode, scaffoldKey: _scaffoldKey),
+          sections: [
+            for (final area in areas)
+              _sectionFor(context, area, match, session),
+          ],
+        ),
+        bottomNavBuilder: (context) =>
+            _buildBottomNav(context, areas, match, session),
+        secondaryMenuBuilder: (context) => _SecondaryMenu(
+          areas: areas,
+          match: match,
+          session: session,
+          scaffoldKey: _scaffoldKey,
+        ),
+        workspace: widget.child,
       ),
-      workspace: widget.child,
     );
   }
 

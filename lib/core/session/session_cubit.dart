@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import 'dev_session_repository.dart';
+import '../error/failures.dart';
 import 'session_repository.dart';
 import 'session_state.dart';
 
@@ -17,13 +17,28 @@ class SessionCubit extends Cubit<SessionState> {
 
   SessionCubit(this._repository) : super(const SessionState.unknown());
 
+  /// Masuk dengan email dan kata sandi.
+  ///
+  /// Mengembalikan [Failure] bila gagal sehingga halaman login bisa menampilkan
+  /// pesan yang tepat, atau null bila berhasil. Keadaan cubit bertransisi ke
+  /// [SessionState.active] saat berhasil — GoRouter redirect mengambil alih dari
+  /// situ.
+  Future<Failure?> signIn(String email, String password) async {
+    final result = await _repository.signIn(email, password);
+    return result.fold(
+      (failure) => failure,
+      (session) {
+        emit(SessionState.active(session));
+        return null;
+      },
+    );
+  }
+
   /// Memulihkan sesi tersimpan. Dipanggil sekali dari `main()`.
   Future<void> restore() async {
     final result = await _repository.restore();
     emit(
       result.fold(
-        // Gagal memulihkan bukan kesalahan yang perlu ditampilkan: pengguna
-        // baru dan pengguna yang keluar kemarin sama-sama sampai di sini.
         (_) => const SessionState.signedOut(),
         SessionState.active,
       ),
@@ -33,8 +48,6 @@ class SessionCubit extends Cubit<SessionState> {
   /// Berpindah outlet. Himpunan izin ikut dihitung ulang oleh repository.
   ///
   /// Kegagalan **tidak** mengakhiri sesi — pengguna tetap di outlet lamanya.
-  /// Melempar orang keluar karena satu outlet tidak bisa dibuka akan
-  /// menghentikan pekerjaan yang sedang berjalan di outlet yang lain.
   Future<void> selectOutlet(int outletId) async {
     final result = await _repository.selectOutlet(outletId);
     result.fold((_) {}, (session) => emit(SessionState.active(session)));
@@ -43,18 +56,5 @@ class SessionCubit extends Cubit<SessionState> {
   Future<void> signOut() async {
     await _repository.signOut();
     emit(const SessionState.signedOut());
-  }
-
-  /// Masuk sebagai peran tertentu tanpa autentikasi.
-  ///
-  /// Hanya berfungsi selama [DevSessionRepository] yang terpasang. Ketika fase
-  /// auth mengganti implementasinya, method ini berhenti melakukan apa pun dan
-  /// ikut dihapus bersama layar pemilih peran — bukan menjadi pintu belakang
-  /// yang tertinggal di produksi.
-  Future<void> signInAsDev(String role) async {
-    final repository = _repository;
-    if (repository is! DevSessionRepository) return;
-
-    emit(SessionState.active(await repository.signInAs(role)));
   }
 }

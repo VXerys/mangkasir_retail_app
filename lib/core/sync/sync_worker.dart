@@ -38,28 +38,27 @@ class SyncWorker {
   );
 
   /// Yields progress per entity in strict order.
-  /// Throws SyncAbortedException if any step fails — downstream must stop.
+  ///
+  /// Throws [SyncAbortedException] directly from this generator (not via
+  /// yield* delegation) so that the outer stream terminates immediately on
+  /// failure. With yield*, Dart forwards the inner error but then resumes the
+  /// outer generator — meaning subsequent entities would still run despite the
+  /// failure, and emit.forEach would not receive onDone until the whole stream
+  /// finished naturally.
   Stream<SyncProgress> run() async* {
-    yield* _syncEntity(SyncEntity.category, _categoryRepo.syncPending);
-    yield* _syncEntity(SyncEntity.product, _productRepo.syncPending);
-    yield* _syncEntity(SyncEntity.transaction, _transactionRepo.syncPending);
-    yield* _syncEntity(SyncEntity.payment, _paymentRepo.syncPending);
-  }
+    final steps = [
+      (SyncEntity.category, _categoryRepo.syncPending),
+      (SyncEntity.product, _productRepo.syncPending),
+      (SyncEntity.transaction, _transactionRepo.syncPending),
+      (SyncEntity.payment, _paymentRepo.syncPending),
+    ];
 
-  Stream<SyncProgress> _syncEntity(
-    SyncEntity entity,
-    Future<Either<Failure, Unit>> Function() sync,
-  ) async* {
-    yield SyncProgress.started(entity);
-    final result = await sync();
-    String? errorMessage;
-    result.fold(
-      (failure) => errorMessage = failure.message,
-      (_) {},
-    );
-    if (errorMessage != null) {
-      throw SyncAbortedException(entity, errorMessage!);
+    for (final (entity, sync) in steps) {
+      yield SyncProgress.started(entity);
+      final result = await sync();
+      final String? error = result.fold((f) => f.message, (_) => null);
+      if (error != null) throw SyncAbortedException(entity, error);
+      yield SyncProgress.done(entity);
     }
-    yield SyncProgress.done(entity);
   }
 }

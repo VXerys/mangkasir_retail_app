@@ -2,6 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_routes.dart';
+import '../../features/identity/presentation/pages/account_page.dart';
+import '../../features/identity/presentation/pages/business_settings_page.dart';
+import '../../features/identity/presentation/pages/outlets_page.dart';
+import '../../features/identity/presentation/pages/roles_page.dart';
+import '../../features/identity/presentation/pages/users_page.dart';
 import '../../features/products/presentation/pages/product_form_page.dart';
 import '../../features/products/presentation/pages/product_list_page.dart';
 
@@ -32,6 +37,14 @@ typedef AppPageBuilder = Widget Function(
 /// mendapat bilah atas ganda dan bilah bawah yang rusak.
 abstract final class AppPageRegistry {
   static final Map<String, AppPageBuilder> _pages = <String, AppPageBuilder>{
+    // ── Identitas & organisasi (UI-6) ──────────────────────────────────────
+    AppRoutes.account: AccountPage.pageBuilder,
+    AppRoutes.settingsBusiness: BusinessSettingsPage.pageBuilder,
+    AppRoutes.settingsOutlets: OutletsPage.pageBuilder,
+    AppRoutes.settingsUsers: UsersPage.pageBuilder,
+    AppRoutes.settingsRoles: RolesPage.pageBuilder,
+
+    // ── Produk (UI-5) ──────────────────────────────────────────────────────
     AppRoutes.inventoryProducts: ProductListPage.build,
     AppRoutes.inventoryProductNew: ProductFormPage.buildNew,
     AppRoutes.inventoryProductDetail: ProductFormPage.buildEdit,

@@ -3,11 +3,11 @@
 
 # Progres MangRitel
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-07-28T06:57:26Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T03:08:52Z_
 
-**Total: 59/167 task selesai (35%) di 22 fase.**
+**Total: 67/167 task selesai (40%) di 22 fase.**
 
-# Track Aplikasi Flutter — 48/123 (39%)
+# Track Aplikasi Flutter — 56/123 (45%)
 
 ## ✅ UI-0 — Fondasi Design System (9/9 · 100%)
 
@@ -182,18 +182,20 @@ _mulai 2026-07-27_
 
 **Verifikasi:** Daftar/tambah/edit produk terbuka dari AppRoot, terikat outlet aktif, menyimpan pending secara offline, menampilkan kegagalan sync, lolos style enforcer, widget test, dan flutter analyze
 
-## ⬜ UI-6 — Identity dan Organisasi Nyata (0/9 · 0%)
+## 🔄 UI-6 — Identity dan Organisasi Nyata (8/9 · 88%)
+
+_mulai 2026-08-06_
 
 > Mengganti sesi pengembangan dengan identitas Supabase dan menuntaskan konteks business, outlet, pengguna, serta peran sebelum modul operasional bergantung kepadanya
 
-- ⬜ `ui6-auth-contract` Bekukan kontrak SessionRepository setelah BE-1 membuktikan has_permission dan isolasi tenant; petakan auth user, users, user_roles, role_permissions, business, dan outlet tanpa logika izin ganda di klien
-- ⬜ `ui6-login` Halaman /login sungguhan: validasi, loading, kredensial salah, koneksi terputus, dan pemulihan password; tidak ada rute gallery atau sesi dev sebagai jalan pintas
-- ⬜ `ui6-session-persist` Sesi bertahan antar peluncuran, memulihkan outlet aktif, dan memiliki keadaan offline yang eksplisit tanpa menganggap token kedaluwarsa sebagai sesi sah
-- ⬜ `ui6-account` Halaman /account nyata untuk profil, business, outlet aktif, peran, status sinkronisasi, ganti outlet, dan logout
-- ⬜ `ui6-business` Halaman /settings/business membaca dan memperbarui identitas usaha dengan validasi serta audit actor
-- ⬜ `ui6-outlets` Halaman /settings/outlets untuk daftar dan formulir outlet; perubahan outlet aktif menyegarkan seluruh query terikat tenant tanpa membangun ulang router
-- ⬜ `ui6-users-roles` Halaman /settings/users dan /settings/roles untuk undangan/status pengguna serta assignment peran per outlet; Owner bypass dan larangan eskalasi hak diuji
-- ⬜ `ui6-remove-dev-session` Hapus DevSessionRepository dari rakitan produksi; fake hanya boleh hidup di test/support dan tidak dapat dipilih lewat konfigurasi release
+- ✅ `ui6-auth-contract` Bekukan kontrak SessionRepository setelah BE-1 membuktikan has_permission dan isolasi tenant; petakan auth user, users, user_roles, role_permissions, business, dan outlet tanpa logika izin ganda di klien
+- ✅ `ui6-login` Halaman /login sungguhan: validasi, loading, kredensial salah, koneksi terputus, dan pemulihan password; tidak ada rute gallery atau sesi dev sebagai jalan pintas
+- ✅ `ui6-session-persist` Sesi bertahan antar peluncuran, memulihkan outlet aktif, dan memiliki keadaan offline yang eksplisit tanpa menganggap token kedaluwarsa sebagai sesi sah
+- ✅ `ui6-account` Halaman /account nyata untuk profil, business, outlet aktif, peran, status sinkronisasi, ganti outlet, dan logout
+- ✅ `ui6-business` Halaman /settings/business membaca dan memperbarui identitas usaha dengan validasi serta audit actor
+- ✅ `ui6-outlets` Halaman /settings/outlets untuk daftar dan formulir outlet; perubahan outlet aktif menyegarkan seluruh query terikat tenant tanpa membangun ulang router
+- ✅ `ui6-users-roles` Halaman /settings/users dan /settings/roles untuk undangan/status pengguna serta assignment peran per outlet; Owner bypass dan larangan eskalasi hak diuji
+- ✅ `ui6-remove-dev-session` Hapus DevSessionRepository dari rakitan produksi; fake hanya boleh hidup di test/support dan tidak dapat dipilih lewat konfigurasi release
 - ⬜ `ui6-device-rbac` Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS
 
 **Keputusan**

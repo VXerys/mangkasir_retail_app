@@ -86,12 +86,19 @@ void main() {
     await pumpApp(tester, role: AppRole.owner, sync: sync);
 
     sync.add(const SyncEvent.requested());
-    await tester.pumpAndSettle();
+    // pumpAndSettle() tidak dipakai di sini karena widget pohon aplikasi penuh
+    // menyimpan animasi berulang (mis. AppSkeleton pada AppBootPage selama
+    // transisi GoRouter), sehingga ia tidak pernah berhenti. Maju waktu secara
+    // eksplisit sudah cukup: animasi masuk toast 150 ms selesai dalam 200 ms.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
 
     expect(sync.state, isA<SyncFailed>());
     expect(find.textContaining('Sinkronisasi berhenti di produk'),
         findsOneWidget);
 
-    await settleToasts(tester);
+    // settleToasts memakai pumpAndSettle — sama-sama macet. Maju 5 detik sudah
+    // mencakup timer 4 detik auto-dismiss beserta animasi balik 150 ms-nya.
+    await tester.pump(const Duration(seconds: 5));
   });
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +21,8 @@ class AppPreferences {
   static const _activeOutletKey = 'active_outlet_id';
 
   static const _devRoleKey = 'dev_role';
+
+  static const _sessionCacheKey = 'session_cache';
 
   /// Membuka kotak preferensi. Wajib dipanggil (dan ditunggu) di `main()`
   /// sebelum `configureDependencies()`.
@@ -65,4 +69,25 @@ class AppPreferences {
   String? get devRole => _box.get(_devRoleKey) as String?;
 
   Future<void> setDevRole(String role) => _box.put(_devRoleKey, role);
+
+  /// Snapshot sesi terakhir yang berhasil, disimpan sebagai JSON string.
+  ///
+  /// Dipakai `SupabaseSessionRepository` untuk mengembalikan sesi saat aplikasi
+  /// berjalan offline: token Supabase masih valid tetapi server tidak bisa
+  /// dihubungi. Bukan pengganti token — data profil, outlet, dan izin bisa basi
+  /// setelah pengguna diubah di server, tetapi lebih baik dari tidak ada sesi.
+  Map<String, dynamic>? get cachedSession {
+    final raw = _box.get(_sessionCacheKey) as String?;
+    if (raw == null) return null;
+    try {
+      return jsonDecode(raw) as Map<String, dynamic>;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> setCachedSession(Map<String, dynamic>? data) {
+    if (data == null) return _box.delete(_sessionCacheKey);
+    return _box.put(_sessionCacheKey, jsonEncode(data));
+  }
 }

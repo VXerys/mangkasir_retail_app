@@ -37,6 +37,31 @@ import '../../features/categories/domain/usecases/update_category_usecase.dart'
     as _i656;
 import '../../features/categories/presentation/bloc/category/category_bloc.dart'
     as _i366;
+import '../../features/identity/data/datasources/business_remote_ds.dart'
+    as _i620;
+import '../../features/identity/data/datasources/outlet_remote_ds.dart'
+    as _i1062;
+import '../../features/identity/data/datasources/user_remote_ds.dart' as _i301;
+import '../../features/identity/data/repositories/business_repository_impl.dart'
+    as _i307;
+import '../../features/identity/data/repositories/outlet_repository_impl.dart'
+    as _i73;
+import '../../features/identity/data/repositories/user_repository_impl.dart'
+    as _i920;
+import '../../features/identity/domain/repositories/business_repository.dart'
+    as _i971;
+import '../../features/identity/domain/repositories/outlet_repository.dart'
+    as _i28;
+import '../../features/identity/domain/repositories/user_repository.dart'
+    as _i890;
+import '../../features/identity/presentation/bloc/business/business_cubit.dart'
+    as _i513;
+import '../../features/identity/presentation/bloc/login/login_cubit.dart'
+    as _i615;
+import '../../features/identity/presentation/bloc/outlet/outlet_cubit.dart'
+    as _i1046;
+import '../../features/identity/presentation/bloc/user/user_cubit.dart'
+    as _i337;
 import '../../features/payments/data/datasources/payment_local_ds.dart'
     as _i971;
 import '../../features/payments/data/datasources/payment_remote_ds.dart'
@@ -76,9 +101,9 @@ import '../design/theme/theme_cubit.dart' as _i104;
 import '../network/connectivity_module.dart' as _i154;
 import '../network/supabase_module.dart' as _i374;
 import '../preferences/app_preferences.dart' as _i597;
-import '../session/dev_session_repository.dart' as _i765;
 import '../session/session_cubit.dart' as _i796;
 import '../session/session_repository.dart' as _i77;
+import '../session/supabase_session_repository.dart' as _i833;
 import '../sync/connectivity_service.dart' as _i312;
 import '../sync/sync_bloc/sync_bloc.dart' as _i547;
 import '../sync/sync_worker.dart' as _i987;
@@ -100,8 +125,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i454.SupabaseClient>(() => supabaseModule.supabaseClient);
     gh.lazySingleton<_i597.AppPreferences>(() => _i597.AppPreferences());
     gh.lazySingleton<_i669.CartStorage>(() => _i669.CartStorage());
+    gh.lazySingleton<_i77.SessionRepository>(
+      () => _i833.SupabaseSessionRepository(
+        gh<_i454.SupabaseClient>(),
+        gh<_i597.AppPreferences>(),
+      ),
+    );
+    gh.factory<_i615.LoginCubit>(
+      () => _i615.LoginCubit(gh<_i77.SessionRepository>()),
+    );
+    gh.lazySingleton<_i796.SessionCubit>(
+      () => _i796.SessionCubit(gh<_i77.SessionRepository>()),
+    );
     gh.lazySingleton<_i104.ThemeCubit>(
       () => _i104.ThemeCubit(gh<_i597.AppPreferences>()),
+    );
+    gh.lazySingleton<_i1062.OutletRemoteDs>(
+      () => _i1062.OutletRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i214.ProductLocalDs>(
       () => _i214.ProductLocalDsImpl(gh<_i982.AppDatabase>()),
@@ -109,8 +149,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i713.CategoryLocalDs>(
       () => _i713.CategoryLocalDsImpl(gh<_i982.AppDatabase>()),
     );
-    gh.lazySingleton<_i77.SessionRepository>(
-      () => _i765.DevSessionRepository(gh<_i597.AppPreferences>()),
+    gh.lazySingleton<_i301.UserRemoteDs>(
+      () => _i301.UserRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i325.CategoryRemoteDs>(
       () => _i325.CategoryRemoteDsImpl(gh<_i454.SupabaseClient>()),
@@ -124,8 +164,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1013.TransactionLocalDs>(
       () => _i1013.TransactionLocalDsImpl(gh<_i982.AppDatabase>()),
     );
+    gh.lazySingleton<_i620.BusinessRemoteDs>(
+      () => _i620.BusinessRemoteDsImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i312.ConnectivityService>(
       () => _i312.ConnectivityService(gh<_i895.Connectivity>()),
+    );
+    gh.lazySingleton<_i890.UserRepository>(
+      () => _i920.UserRepositoryImpl(gh<_i301.UserRemoteDs>()),
     );
     gh.lazySingleton<_i971.PaymentLocalDs>(
       () => _i971.PaymentLocalDsImpl(gh<_i982.AppDatabase>()),
@@ -136,14 +182,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i666.CartBloc>(
       () => _i666.CartBloc(gh<_i669.CartStorage>()),
     );
+    gh.lazySingleton<_i28.OutletRepository>(
+      () => _i73.OutletRepositoryImpl(gh<_i1062.OutletRemoteDs>()),
+    );
+    gh.factory<_i1046.OutletCubit>(
+      () => _i1046.OutletCubit(gh<_i28.OutletRepository>()),
+    );
     gh.lazySingleton<_i421.TransactionRepository>(
       () => _i443.TransactionRepositoryImpl(
         gh<_i1013.TransactionLocalDs>(),
         gh<_i131.TransactionRemoteDs>(),
       ),
-    );
-    gh.lazySingleton<_i796.SessionCubit>(
-      () => _i796.SessionCubit(gh<_i77.SessionRepository>()),
     );
     gh.lazySingleton<_i315.PaymentRepository>(
       () => _i842.PaymentRepositoryImpl(
@@ -165,6 +214,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i561.CalculateCartTotals>(),
       ),
     );
+    gh.lazySingleton<_i971.BusinessRepository>(
+      () => _i307.BusinessRepositoryImpl(gh<_i620.BusinessRemoteDs>()),
+    );
+    gh.factory<_i337.UserCubit>(
+      () => _i337.UserCubit(gh<_i890.UserRepository>()),
+    );
     gh.lazySingleton<_i963.ProductRepository>(
       () => _i764.ProductRepositoryImpl(
         gh<_i214.ProductLocalDs>(),
@@ -179,6 +234,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i656.UpdateCategoryUseCase>(
       () => _i656.UpdateCategoryUseCase(gh<_i266.CategoryRepository>()),
+    );
+    gh.factory<_i513.BusinessCubit>(
+      () => _i513.BusinessCubit(gh<_i971.BusinessRepository>()),
     );
     gh.lazySingleton<_i987.SyncWorker>(
       () => _i987.SyncWorker(

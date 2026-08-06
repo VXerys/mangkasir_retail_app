@@ -38,6 +38,13 @@ class FakeSessionRepository implements SessionRepository {
   FakeSessionRepository(this.session);
 
   @override
+  Future<Either<Failure, AppSession>> signIn(
+    String email,
+    String password,
+  ) async =>
+      session == null ? const Left(AuthFailure('kosong')) : Right(session!);
+
+  @override
   Future<Either<Failure, AppSession>> restore() async =>
       session == null ? const Left(AuthFailure('kosong')) : Right(session!);
 
@@ -52,6 +59,10 @@ class FakeSessionRepository implements SessionRepository {
     );
     return Right(session!);
   }
+
+  @override
+  Future<Either<Failure, void>> forgotPassword(String email) async =>
+      const Right(null);
 
   @override
   Future<void> signOut() async => session = null;

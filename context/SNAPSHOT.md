@@ -3,7 +3,7 @@
 
 # MangRitel — di mana proyek ini sekarang
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-07-28T06:57:26Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T03:08:52Z_
 
 ## 🔄 Aplikasi Flutter — fase aktif UI-5 · Halaman Produk
 
@@ -15,7 +15,7 @@ Berikutnya:
 
 1. `ui5-offline-only` Tegaskan fase ini offline: baris tetap di syncStatus 'pending' dan kegagalan push tampil sebagai toast, bukan diam. SyncWorker berurutan ketat dan berhenti di langkah pertama yang gagal — satu produk yang FK-nya belum ada di server ikut menahan transaksi dan pembayaran, dan satu-satunya gejalanya adalah sinkronisasi yang tidak pernah selesai _(UI-5)_
 2. `ui5-features-tokens` Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian _(UI-5)_
-3. `ui6-auth-contract` Bekukan kontrak SessionRepository setelah BE-1 membuktikan has_permission dan isolasi tenant; petakan auth user, users, user_roles, role_permissions, business, dan outlet tanpa logika izin ganda di klien _(UI-6)_
+3. `ui6-device-rbac` Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS _(UI-6)_
 
 ## ⬜ Backend Supabase — fase aktif BE-1 · Quality Gate Kontrak Inti
 
@@ -43,7 +43,7 @@ _Tidak ada task berstatus in_progress._
 - ✅ **UI-3** Mobile-First — 8/8 (100%)
 - ✅ **UI-4** Rangka Sesi/RBAC + Tabel Rute Penuh — 9/9 (100%)
 - 🔄 **UI-5** Halaman Produk — 7/9 (77%)
-- ⬜ **UI-6** Identity dan Organisasi Nyata — 0/9 (0%)
+- 🔄 **UI-6** Identity dan Organisasi Nyata — 8/9 (88%)
 - ⬜ **UI-7** Master Data Katalog — 0/7 (0%)
 - ⬜ **UI-8** CRM — 0/6 (0%)
 - ⬜ **UI-9** Inventory Core — 0/6 (0%)

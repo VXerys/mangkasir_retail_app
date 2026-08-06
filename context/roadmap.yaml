@@ -302,7 +302,7 @@ phases:
     goal: "Halaman fitur nyata pertama, sekaligus memasang seluruh perkakas slicing — registry halaman, penyediaan bloc, dan uji asap aplikasi — di layar yang paling murah risikonya"
     status: in_progress
     started_at: 2026-07-27
-    verification: "Daftar/tambah/edit produk terbuka dari AppRoot, terikat outlet aktif, menyimpan pending secara offline, menampilkan kegagalan sync, lolos style enforcer, widget test, dan flutter analyze"
+    verification: Daftar/tambah/edit produk terbuka dari AppRoot, terikat outlet aktif, menyimpan pending secara offline, menampilkan kegagalan sync, lolos style enforcer, widget test, dan flutter analyze
     tasks:
       - key: ui5-drop-gallery-route
         title: "Cabut /dev/design dari tabel rute dan tombol galeri dari setiap penanda tempat; galeri tetap hidup lewat entrypoint lib/design_gallery_main.dart, karena nilainya ada pada uji asapnya, bukan pada pintunya di dalam aplikasi"
@@ -357,36 +357,37 @@ phases:
   - id: UI-6
     track: ui
     name: Identity dan Organisasi Nyata
-    goal: "Mengganti sesi pengembangan dengan identitas Supabase dan menuntaskan konteks business, outlet, pengguna, serta peran sebelum modul operasional bergantung kepadanya"
-    status: pending
+    goal: Mengganti sesi pengembangan dengan identitas Supabase dan menuntaskan konteks business, outlet, pengguna, serta peran sebelum modul operasional bergantung kepadanya
+    status: in_progress
+    started_at: 2026-08-06
     verification: "BE-1 lulus; login, pemulihan sesi, ganti outlet, RBAC, dan logout lolos integration test; halaman identity/organization teruji di Android dan iOS"
     tasks:
       - key: ui6-auth-contract
         title: "Bekukan kontrak SessionRepository setelah BE-1 membuktikan has_permission dan isolasi tenant; petakan auth user, users, user_roles, role_permissions, business, dan outlet tanpa logika izin ganda di klien"
-        status: pending
+        status: done
       - key: ui6-login
         title: "Halaman /login sungguhan: validasi, loading, kredensial salah, koneksi terputus, dan pemulihan password; tidak ada rute gallery atau sesi dev sebagai jalan pintas"
-        status: pending
+        status: done
       - key: ui6-session-persist
-        title: "Sesi bertahan antar peluncuran, memulihkan outlet aktif, dan memiliki keadaan offline yang eksplisit tanpa menganggap token kedaluwarsa sebagai sesi sah"
-        status: pending
+        title: Sesi bertahan antar peluncuran, memulihkan outlet aktif, dan memiliki keadaan offline yang eksplisit tanpa menganggap token kedaluwarsa sebagai sesi sah
+        status: done
       - key: ui6-account
-        title: "Halaman /account nyata untuk profil, business, outlet aktif, peran, status sinkronisasi, ganti outlet, dan logout"
-        status: pending
+        title: Halaman /account nyata untuk profil, business, outlet aktif, peran, status sinkronisasi, ganti outlet, dan logout
+        status: done
       - key: ui6-business
-        title: "Halaman /settings/business membaca dan memperbarui identitas usaha dengan validasi serta audit actor"
-        status: pending
+        title: Halaman /settings/business membaca dan memperbarui identitas usaha dengan validasi serta audit actor
+        status: done
       - key: ui6-outlets
         title: "Halaman /settings/outlets untuk daftar dan formulir outlet; perubahan outlet aktif menyegarkan seluruh query terikat tenant tanpa membangun ulang router"
-        status: pending
+        status: done
       - key: ui6-users-roles
         title: "Halaman /settings/users dan /settings/roles untuk undangan/status pengguna serta assignment peran per outlet; Owner bypass dan larangan eskalasi hak diuji"
-        status: pending
+        status: done
       - key: ui6-remove-dev-session
         title: "Hapus DevSessionRepository dari rakitan produksi; fake hanya boleh hidup di test/support dan tidak dapat dipilih lewat konfigurasi release"
-        status: pending
+        status: done
       - key: ui6-device-rbac
-        title: "Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS"
+        title: Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS
         status: pending
     decisions:
       - what: BE-1 adalah entry gate UI-6
@@ -427,7 +428,7 @@ phases:
         status: pending
     decisions:
       - what: Master data diselesaikan sebelum inventory dan transaksi
-        why: "Stock, purchase order, dan cart tidak boleh menyimpan label bebas untuk kategori, unit, gudang, pajak, atau varian yang seharusnya foreign key"
+        why: Stock, purchase order, dan cart tidak boleh menyimpan label bebas untuk kategori, unit, gudang, pajak, atau varian yang seharusnya foreign key
     risks:
       - what: "Model produk lokal masih menyimpan beberapa identifier sebagai String sementara Supabase memakai bigint/uuid; mapping wajib gagal keras, bukan mengubah identifier tidak valid menjadi null"
         severity: high
@@ -435,9 +436,9 @@ phases:
   - id: UI-8
     track: ui
     name: CRM
-    goal: "Menyediakan customer, supplier, dan employee nyata karena purchase dan sales membutuhkan pihak transaksi yang konsisten"
+    goal: Menyediakan customer, supplier, dan employee nyata karena purchase dan sales membutuhkan pihak transaksi yang konsisten
     status: pending
-    verification: "CRUD customer/supplier/employee, pencarian, detail, validasi kontak/alamat, cross-navigation, dan isolasi tenant lolos widget serta integration test"
+    verification: CRUD customer/supplier/employee, pencarian, detail, validasi kontak/alamat, cross-navigation, dan isolasi tenant lolos widget serta integration test
     tasks:
       - key: ui8-customer-list
         title: "Halaman /crm/customers: pencarian, filter status, pagination, saldo/ringkasan transaksi, dan empty/loading/error state"
@@ -455,7 +456,7 @@ phases:
         title: "Halaman /crm/employees: data pegawai bisnis terpisah dari akun auth; tautkan akun hanya bila pegawai memang dapat masuk aplikasi"
         status: pending
       - key: ui8-crm-quality
-        title: "Normalisasi nomor telepon/email/alamat, cegah duplikat yang jelas, dan uji permission serta isolasi business/outlet untuk seluruh CRM"
+        title: Normalisasi nomor telepon/email/alamat, cegah duplikat yang jelas, dan uji permission serta isolasi business/outlet untuk seluruh CRM
         status: pending
     decisions:
       - what: CRM mendahului purchase dan sales
@@ -464,7 +465,7 @@ phases:
   - id: UI-9
     track: ui
     name: Inventory Core
-    goal: "Menjadikan stok sebagai ledger yang dapat ditelusuri sebelum purchase dan sales mulai menghasilkan pergerakan otomatis"
+    goal: Menjadikan stok sebagai ledger yang dapat ditelusuri sebelum purchase dan sales mulai menghasilkan pergerakan otomatis
     status: pending
     verification: "Saldo stok cocok dengan ledger movement pada skenario adjustment, transfer, dan opname; seluruh screen inventory terikat outlet/gudang dan teruji offline"
     tasks:
@@ -484,7 +485,7 @@ phases:
         title: "Halaman /inventory/opname: snapshot hitungan, input scan/manual, selisih, approval, dan adjustment yang dapat diaudit"
         status: pending
       - key: ui9-inventory-integrity
-        title: "Uji kuantitas desimal, larangan stok negatif sesuai aturan bisnis, transaksi atomik, retry offline, dan rekonsiliasi ledger terhadap saldo"
+        title: Uji kuantitas desimal, larangan stok negatif sesuai aturan bisnis, transaksi atomik, retry offline, dan rekonsiliasi ledger terhadap saldo
         status: pending
     risks:
       - what: "Kesalahan idempotensi atau pembulatan kuantitas akan mengubah stok dua kali; semua command movement wajib memiliki identity stabil dan diuji saat retry"
@@ -493,7 +494,7 @@ phases:
   - id: UI-10
     track: ui
     name: Pembelian
-    goal: "Menyelesaikan alur supplier sampai penerimaan barang yang menambah stok melalui mekanisme inventory, bukan mutasi saldo langsung dari UI"
+    goal: Menyelesaikan alur supplier sampai penerimaan barang yang menambah stok melalui mekanisme inventory, bukan mutasi saldo langsung dari UI
     status: pending
     verification: "Purchase order dapat dibuat, disetujui, diterima sebagian/penuh, diretur, dan ditelusuri; stok serta histori pembelian konsisten"
     tasks:
@@ -525,12 +526,12 @@ phases:
   - id: UI-11
     track: ui
     name: POS dan Penjualan
-    goal: "Menyelesaikan alur jual nyata dari pencarian produk sampai transaksi, pembayaran, receipt, sinkronisasi, dan retur setelah inventory terbukti benar"
+    goal: Menyelesaikan alur jual nyata dari pencarian produk sampai transaksi, pembayaran, receipt, sinkronisasi, dan retur setelah inventory terbukti benar
     status: pending
     verification: "Skenario scan → cart → bayar → receipt → transaksi/detail → void/return lulus lokal dan Supabase; stok, pembayaran, serta retry tetap konsisten"
     tasks:
       - key: ui11-pos-catalog
-        title: "Halaman /sales/pos responsif dengan ProductCard, pencarian/scan, filter kategori, harga-varian, stok tersedia, dan katalog outlet aktif"
+        title: Halaman /sales/pos responsif dengan ProductCard, pencarian/scan, filter kategori, harga-varian, stok tersedia, dan katalog outlet aktif
         status: pending
       - key: ui11-cart
         title: "Sambungkan CartBloc multi-tab ke CartPanel dan PaymentSummary; qty, diskon item/transaksi, pajak, hold/resume, dan total hanya dihitung domain service"
@@ -539,7 +540,7 @@ phases:
         title: "Satukan scanner kamera, HID wedge, dan input manual melalui AppBarcodeScope; barcode tidak dikenal menawarkan pencarian atau pembuatan produk sesuai izin"
         status: pending
       - key: ui11-checkout-local
-        title: "Checkout lokal atomik memakai outlet/cashier dari AppSession, idempotency key stabil, payment tervalidasi, dan transaksi berstatus pending sebelum sinkron"
+        title: Checkout lokal atomik memakai outlet/cashier dari AppSession, idempotency key stabil, payment tervalidasi, dan transaksi berstatus pending sebelum sinkron
         status: pending
       - key: ui11-transactions
         title: "Halaman /sales/transactions dan /sales/transactions/:id membaca transaksi lokal/server, memuat item, pembayaran, status sync, audit, serta aksi yang sah"
@@ -548,7 +549,7 @@ phases:
         title: "Push transaksi setelah BE-3 lulus; retry tidak boleh menggandakan transaksi, pembayaran, stock movement, atau pengurangan stok"
         status: pending
       - key: ui11-payments-invoices
-        title: "Halaman /sales/payments dan /sales/invoices untuk histori pembayaran, metode, kembalian/piutang yang didukung, status, dan dokumen penjualan"
+        title: Halaman /sales/payments dan /sales/invoices untuk histori pembayaran, metode, kembalian/piutang yang didukung, status, dan dokumen penjualan
         status: pending
       - key: ui11-returns
         title: "Halaman /sales/returns: pilih transaksi asal, batas qty, alasan, refund, state void/return kanonik, dan pengembalian stok yang terbukti"
@@ -566,9 +567,9 @@ phases:
   - id: UI-12
     track: ui
     name: Keuangan
-    goal: "Menyediakan sesi kas dan arus kas yang direkonsiliasi dengan transaksi, bukan pencatatan terpisah yang dapat menyimpang"
+    goal: Menyediakan sesi kas dan arus kas yang direkonsiliasi dengan transaksi, bukan pencatatan terpisah yang dapat menyimpang
     status: pending
-    verification: "Saldo buka/tutup kas, cash in/out, kategori, arus kas, dan histori cocok dengan pembayaran penjualan pada skenario normal, refund, serta koreksi"
+    verification: Saldo buka/tutup kas, cash in/out, kategori, arus kas, dan histori cocok dengan pembayaran penjualan pada skenario normal, refund, serta koreksi
     tasks:
       - key: ui12-cash-sessions
         title: "Halaman /finance/cash-sessions: buka/tutup shift, saldo awal, expected versus actual, selisih, actor, dan larangan dua sesi aktif untuk kasir/outlet yang sama"
@@ -589,7 +590,7 @@ phases:
         title: "Halaman /finance/history: ledger kas immutable dengan filter, referensi dokumen, actor, dan ekspor terbatas izin"
         status: pending
       - key: ui12-reconciliation
-        title: "Uji rekonsiliasi checkout/refund/cash-in/cash-out terhadap sesi kas, pembulatan rupiah, pergantian hari, dan retry sinkronisasi"
+        title: Uji rekonsiliasi checkout/refund/cash-in/cash-out terhadap sesi kas, pembulatan rupiah, pergantian hari, dan retry sinkronisasi
         status: pending
 
   - id: UI-13
@@ -597,7 +598,7 @@ phases:
     name: Dasbor dan Laporan
     goal: "Mengubah data operasional yang sudah stabil menjadi informasi keputusan; laporan tidak boleh mendahului sumber datanya"
     status: pending
-    verification: "Dasbor dan seluruh laporan cocok dengan fixture transaksi/purchase/inventory/finance, filter konsisten, empty/loading/error tersedia, dan kueri memenuhi anggaran performa"
+    verification: Dasbor dan seluruh laporan cocok dengan fixture transaksi/purchase/inventory/finance, filter konsisten, empty/loading/error tersedia, dan kueri memenuhi anggaran performa
     tasks:
       - key: ui13-dashboard
         title: "Halaman /dashboard: KPI sesuai izin, penjualan hari ini, stok rendah, aktivitas penting, periode/outlet aktif, dan deep link ke sumber"
@@ -621,7 +622,7 @@ phases:
         title: "Halaman /reports/export: ekspor CSV/PDF sesuai filter dan permission, nama file stabil, proses besar tidak memblokir UI, dan data sensitif tidak bocor"
         status: pending
       - key: ui13-report-performance
-        title: "Tetapkan satu model filter lintas laporan, zona waktu Asia/Jakarta, batas pagination, serta uji angka terhadap query/view Supabase dan dataset acuan"
+        title: Tetapkan satu model filter lintas laporan, zona waktu Asia/Jakarta, batas pagination, serta uji angka terhadap query/view Supabase dan dataset acuan
         status: pending
     risks:
       - what: "Laporan dapat terlihat benar tetapi berbeda akibat zona waktu, refund, atau pembulatan; setiap KPI wajib memiliki fixture acuan dan formula terdokumentasi"
@@ -630,7 +631,7 @@ phases:
   - id: UI-14
     track: ui
     name: Setelan dan Perangkat
-    goal: "Menuntaskan konfigurasi operasional yang tersisa serta integrasi perangkat setelah transaksi dan laporan stabil"
+    goal: Menuntaskan konfigurasi operasional yang tersisa serta integrasi perangkat setelah transaksi dan laporan stabil
     status: pending
     verification: "Seluruh rute settings tidak lagi placeholder; preferensi bertahan, printer/receipt teruji pada target yang didukung, dan backup/restore melewati uji pemulihan"
     tasks:
@@ -650,7 +651,7 @@ phases:
         title: "Halaman /settings/preference: tema, locale, density yang didukung, perilaku scanner, dan preferensi tersimpan per pengguna/perangkat sesuai jenisnya"
         status: pending
       - key: ui14-settings-audit
-        title: "Audit seluruh halaman settings untuk scope business/outlet/user yang benar, permission, validasi, state offline, dan konfirmasi perubahan berisiko"
+        title: Audit seluruh halaman settings untuk scope business/outlet/user yang benar, permission, validasi, state offline, dan konfirmasi perubahan berisiko
         status: pending
     risks:
       - what: "Printer dan backup bergantung kemampuan platform; dukungan harus dinyatakan per Android/iOS/Web dan fitur yang tidak tersedia harus disabled dengan penjelasan"
@@ -659,7 +660,7 @@ phases:
   - id: UI-15
     track: ui
     name: Release Candidate
-    goal: "Membuktikan aplikasi sebagai satu sistem utuh, menghapus placeholder, dan menutup kualitas lintas fitur sebelum distribusi"
+    goal: Membuktikan aplikasi sebagai satu sistem utuh, menghapus placeholder, dan menutup kualitas lintas fitur sebelum distribusi
     status: pending
     verification: "Tidak ada placeholder pada rute MVP; analyzer dan seluruh test hijau; critical journey lulus di perangkat target; tidak ada defect severity tinggi terbuka"
     tasks:
@@ -670,22 +671,22 @@ phases:
         title: "Integration test login → master → purchase → receiving → POS → payment → return → finance → report pada business dan outlet nyata"
         status: pending
       - key: ui15-offline-recovery
-        title: "Uji airplane mode, restart saat antrean pending, koneksi putus di tengah push/pull, retry, konflik, dan pemulihan tanpa duplikasi atau kehilangan data"
+        title: Uji airplane mode, restart saat antrean pending, koneksi putus di tengah push/pull, retry, konflik, dan pemulihan tanpa duplikasi atau kehilangan data
         status: pending
       - key: ui15-security
-        title: "Uji lintas role, business, outlet, deep link, cache lokal setelah logout, screenshot/log sensitif, dan kegagalan RLS sebagai bagian threat model"
+        title: Uji lintas role, business, outlet, deep link, cache lokal setelah logout, screenshot/log sensitif, dan kegagalan RLS sebagai bagian threat model
         status: pending
       - key: ui15-performance
         title: "Profil cold start, katalog besar, scroll tabel, pencarian, checkout, sinkronisasi, dan laporan; tetapkan anggaran terukur serta perbaiki regresi"
         status: pending
       - key: ui15-accessibility
-        title: "Audit ukuran sentuh, screen reader, urutan fokus, kontras, text scale, keyboard, reduced motion, orientasi, dan keadaan error"
+        title: Audit ukuran sentuh, screen reader, urutan fokus, kontras, text scale, keyboard, reduced motion, orientasi, dan keadaan error
         status: pending
       - key: ui15-device-matrix
-        title: "Uji Android/iOS pada ponsel dan tablet sasaran, kamera barcode, HID scanner, printer yang didukung, lifecycle background/foreground, dan upgrade aplikasi"
+        title: Uji Android/iOS pada ponsel dan tablet sasaran, kamera barcode, HID scanner, printer yang didukung, lifecycle background/foreground, dan upgrade aplikasi
         status: pending
       - key: ui15-release-checklist
-        title: "Kunci konfigurasi production, migration/rollback, privacy/permission copy, observability, versi, changelog, backup, support runbook, dan keputusan go/no-go"
+        title: Kunci konfigurasi production, migration/rollback, privacy/permission copy, observability, versi, changelog, backup, support runbook, dan keputusan go/no-go
         status: pending
 
   - id: BE-0
@@ -754,7 +755,7 @@ phases:
   - id: BE-1
     track: be
     name: Quality Gate Kontrak Inti
-    goal: "Menutup 12 quality gate identity, product-catalog, dan CRM sebelum UI nyata mengikat kontrak auth, tenant, dan master data"
+    goal: Menutup 12 quality gate identity, product-catalog, dan CRM sebelum UI nyata mengikat kontrak auth, tenant, dan master data
     status: pending
     verification: "Seluruh gate spec 01-03 dicentang dengan bukti SQL/test; has_permission, RLS lintas tenant, trigger harga, migrasi unit, dan CRUD CRM lulus"
     tasks:
@@ -778,7 +779,7 @@ phases:
         status: pending
     decisions:
       - what: BE-1 adalah release gate untuk UI-6
-        why: "Kontrak auth dan organisasi tidak boleh dibekukan sebelum permission serta isolasi tenant terbukti dengan user dan business berbeda"
+        why: Kontrak auth dan organisasi tidak boleh dibekukan sebelum permission serta isolasi tenant terbukti dengan user dan business berbeda
     risks:
       - what: "Centang dokumentasi tanpa bukti executable menghasilkan rasa aman palsu; setiap gate harus menunjuk test, query, atau hasil verifikasi yang dapat diulang"
         severity: high
@@ -786,7 +787,7 @@ phases:
   - id: BE-2
     track: be
     name: Hardening Skema dan Keamanan
-    goal: "Menutup temuan struktural dan keamanan sebelum data operasional tumbuh sehingga migrasi masih murah, dapat dibalik, dan mudah diverifikasi"
+    goal: Menutup temuan struktural dan keamanan sebelum data operasional tumbuh sehingga migrasi masih murah, dapat dibalik, dan mudah diverifikasi
     status: pending
     verification: "Semua migrasi apply dari baseline dan rollback di branch; constraint, grant, RLS, model varian, kolom audit, UUID, dan OTP policy terverifikasi"
     tasks:
@@ -820,15 +821,15 @@ phases:
   - id: BE-3
     track: be
     name: Seed Operasional dan Pembuktian Trigger
-    goal: "Mengisi data acuan yang repeatable lalu membuktikan purchase, sales, void, stok, dan finance pada database yang sudah di-hardening"
+    goal: Mengisi data acuan yang repeatable lalu membuktikan purchase, sales, void, stok, dan finance pada database yang sudah di-hardening
     status: pending
     verification: "Seed idempotent; seluruh skenario E2E dan 8 trigger lulus dua kali tanpa duplikasi; invariant stok/finance diverifikasi setelah setiap transisi"
     tasks:
       - key: be3-seed-organization
-        title: "Seed idempotent business, outlet, warehouse, role, dan user uji dengan identifier stabil yang tidak bergantung pada DevSessionRepository"
+        title: Seed idempotent business, outlet, warehouse, role, dan user uji dengan identifier stabil yang tidak bergantung pada DevSessionRepository
         status: pending
       - key: be3-seed-master
-        title: "Seed kategori, brand, unit, pajak, produk, varian, harga, barcode, customer, dan supplier yang cukup untuk seluruh skenario E2E"
+        title: Seed kategori, brand, unit, pajak, produk, varian, harga, barcode, customer, dan supplier yang cukup untuk seluruh skenario E2E
         status: pending
       - key: be3-seed-region
         title: "Impor dataset wilayah Indonesia dengan sumber/version/checksum tercatat; loader repeatable dan tidak menggandakan provinces/cities/districts/villages"
@@ -843,7 +844,7 @@ phases:
         title: "E2E void dan return dengan state kanonik: stok kembali tepat sekali, refund tercatat, dan request retry tidak menggandakan kompensasi"
         status: pending
       - key: be3-invariant-suite
-        title: "Bangun suite invariant executable untuk saldo stok versus movement, total transaksi versus detail/payment, serta saldo finance versus mutasi"
+        title: Bangun suite invariant executable untuk saldo stok versus movement, total transaksi versus detail/payment, serta saldo finance versus mutasi
         status: pending
     risks:
       - what: "T-01 Kritis: 8 trigger belum pernah dijalankan dengan data nyata; NULL, urutan trigger, locking, atau RAISE EXCEPTION dapat mematahkan alur E2E"
@@ -852,7 +853,7 @@ phases:
   - id: BE-4
     track: be
     name: Kontrak Sinkronisasi Offline
-    goal: "Membuat push dan pull dua arah yang idempotent, teramati, serta memiliki kebijakan konflik eksplisit untuk perangkat baru maupun perangkat yang lama offline"
+    goal: Membuat push dan pull dua arah yang idempotent, teramati, serta memiliki kebijakan konflik eksplisit untuk perangkat baru maupun perangkat yang lama offline
     status: pending
     verification: "Dua perangkat bertukar master dan transaksi tanpa duplikasi; restart/koneksi putus/retry/konflik lulus; queue dan cursor dapat didiagnosis"
     tasks:
@@ -860,19 +861,19 @@ phases:
         title: "Tetapkan envelope sync: entity, operation, idempotency_key, business/outlet, actor, client timestamp, server version, tombstone, retry class, dan error code"
         status: pending
       - key: be4-pull-master
-        title: "Tarik organization, category, brand, unit, warehouse, tax, product, variant, price, dan barcode ke Drift dengan cursor per scope"
+        title: Tarik organization, category, brand, unit, warehouse, tax, product, variant, price, dan barcode ke Drift dengan cursor per scope
         status: pending
       - key: be4-pull-operational
         title: "Tarik customer, supplier, inventory balance/movement, purchase, sales, payment, dan finance sesuai ownership; instalasi baru tidak boleh kosong setelah bootstrap"
         status: pending
       - key: be4-push-idempotent
-        title: "Push antrean lokal dengan idempotency key server-side, ordering dependency, exponential backoff, dead-letter state, dan retry manual yang aman"
+        title: Push antrean lokal dengan idempotency key server-side, ordering dependency, exponential backoff, dead-letter state, dan retry manual yang aman
         status: pending
       - key: be4-conflicts-deletes
         title: "Tentukan kebijakan konflik per entity dan dukung tombstone/arsip; jangan memakai last-write-wins universal untuk stok, pembayaran, atau status dokumen"
         status: pending
       - key: be4-observability
-        title: "Sediakan status last sync, queue depth, cursor, error terstruktur, correlation id, dan diagnostic export tanpa membocorkan token atau data sensitif"
+        title: Sediakan status last sync, queue depth, cursor, error terstruktur, correlation id, dan diagnostic export tanpa membocorkan token atau data sensitif
         status: pending
       - key: be4-two-device-test
         title: "Uji dua perangkat: create/update/delete, offline lama, jam perangkat salah, restart di tengah batch, duplicate delivery, perubahan outlet, dan schema upgrade"
@@ -887,9 +888,9 @@ phases:
   - id: BE-5
     track: be
     name: Release Backend
-    goal: "Membuktikan database dapat dipasang, dimigrasikan, diamankan, dipantau, dicadangkan, dan dipulihkan sebagai layanan produksi"
+    goal: Membuktikan database dapat dipasang, dimigrasikan, diamankan, dipantau, dicadangkan, dan dipulihkan sebagai layanan produksi
     status: pending
-    verification: "Baseline-to-head migration, RLS matrix, load test, backup/restore, observability, dan rollback rehearsal lulus di environment release candidate"
+    verification: Baseline-to-head migration, RLS matrix, load test, backup/restore, observability, dan rollback rehearsal lulus di environment release candidate
     tasks:
       - key: be5-migration-rehearsal
         title: "Jalankan seluruh migration dari database kosong dan upgrade dari snapshot versi sebelumnya; dokumentasikan rollback/roll-forward setiap perubahan berisiko"
@@ -904,10 +905,10 @@ phases:
         title: "Buktikan backup terjadwal dan point-in-time/restore yang tersedia ke environment terpisah; ukur RPO/RTO dan verifikasi integritas"
         status: pending
       - key: be5-observability
-        title: "Aktifkan monitoring error, slow query, failed auth, RLS denial abnormal, trigger failure, queue sync, storage, dan alert runbook"
+        title: Aktifkan monitoring error, slow query, failed auth, RLS denial abnormal, trigger failure, queue sync, storage, dan alert runbook
         status: pending
       - key: be5-release-gate
-        title: "Kunci migration checksum, seed non-production, secret/config inventory, retention, incident contacts, dan keputusan go/no-go bersama UI-15"
+        title: Kunci migration checksum, seed non-production, secret/config inventory, retention, incident contacts, dan keputusan go/no-go bersama UI-15
         status: pending
     risks:
       - what: "Backup yang belum pernah direstore bukan backup yang terbukti; release gate gagal bila pemulihan hanya diasumsikan"

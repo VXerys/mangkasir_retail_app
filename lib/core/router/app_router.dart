@@ -8,6 +8,7 @@ import '../constants/app_routes.dart';
 import '../design/design.dart';
 import '../session/session_cubit.dart';
 import '../session/session_state.dart';
+import '../sync/sync_bloc/sync_bloc.dart';
 import 'app_nav_tree.dart';
 import 'app_navigation_shell.dart';
 import 'app_page_registry.dart';
@@ -22,7 +23,7 @@ import 'route_placeholder.dart';
 /// menunjuk rute yang tidak terdaftar, atau rute yang terdaftar tapi tak
 /// terjangkau menu mana pun. Dengan satu sumber, keduanya mustahil.
 abstract final class AppRouter {
-  static GoRouter build({required SessionCubit session}) {
+  static GoRouter build({required SessionCubit session, SyncBloc? sync}) {
     return GoRouter(
       initialLocation: AppRoutes.root,
       debugLogDiagnostics: kDebugMode,
@@ -41,7 +42,8 @@ abstract final class AppRouter {
           pageBuilder: (context, state) => _page(state, const LoginPage()),
         ),
         ShellRoute(
-          builder: (context, state, child) => AppNavigationShell(child: child),
+          builder: (context, state, child) =>
+              AppNavigationShell(sync: sync, child: child),
           routes: [
             // Urutannya mengikuti pohon, dan itu penting: anak didaftarkan
             // sesudah induknya, dan `/inventory/products/new` sebelum

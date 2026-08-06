@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 import '../error/failures.dart';
 import '../preferences/app_preferences.dart';
@@ -8,21 +7,19 @@ import 'app_role.dart';
 import 'app_session.dart';
 import 'session_repository.dart';
 
-/// Sumber sesi sementara, dipakai selama layar masuk belum dibangun.
+/// Pembangun sesi palsu — **hanya untuk tes dan galeri**.
 ///
-/// Alasan berkas ini ada: navigasi berbasis izin tidak bisa dibuktikan benar
-/// tanpa sesi. Menunda seluruh RBAC sampai autentikasi selesai berarti menulis
-/// pohon navigasi, guard, dan menu tanpa pernah menjalankannya — dan
-/// menemukannya salah setelah empat puluh halaman berdiri di atasnya.
+/// Kelas ini **tidak** terdaftar di GetIt produksi. `SupabaseSessionRepository`
+/// menggantikannya sebagai implementasi `SessionRepository` di build sungguhan.
 ///
-/// Yang **dipalsukan** hanya asal datanya. Bentuk sesi, aturan izin, bypass
-/// Owner, dan penghitungan ulang saat ganti outlet semuanya nyata dan diuji.
-/// Himpunan izin per peran disalin apa adanya dari `role_permissions`
-/// (lihat [AppRole.seededPermissions]), sehingga menu yang muncul di sini sama
-/// dengan menu yang nanti muncul setelah login sungguhan.
+/// Yang masih boleh dipanggil dari luar:
+/// - [sampleSession] — membangun sesi contoh dengan izin sesuai peran, dipakai
+///   `FakeSessionRepository` di `test/support/app_harness.dart`.
+/// - [sessionWith] — sesi dengan himpunan izin kustom, untuk tes izin tunggal.
+/// - [sampleOutlets] — outlet contoh, dipakai galeri.
 ///
-/// Berkas ini **dihapus**, bukan dikembangkan, saat fase auth tiba.
-@LazySingleton(as: SessionRepository)
+/// Method [signInAs] bersifat private bagi kelas ini; tidak ada jalur masuk
+/// ke implementasi ini dari kode produksi.
 class DevSessionRepository implements SessionRepository {
   final AppPreferences _preferences;
 
@@ -41,6 +38,21 @@ class DevSessionRepository implements SessionRepository {
     username: 'demo',
     email: 'demo@mangritel.test',
   );
+
+  @override
+  Future<Either<Failure, AppSession>> signIn(
+    String email,
+    String password,
+  ) async {
+    // Dalam mode dev, login dianggap selalu berhasil sebagai Owner.
+    final role = AppRole.owner;
+    await _preferences.setDevRole(role);
+    return Right(_build(role, _preferences.activeOutletId ?? _outlets.first.id));
+  }
+
+  @override
+  Future<Either<Failure, void>> forgotPassword(String email) async =>
+      const Right(null);
 
   @override
   Future<Either<Failure, AppSession>> restore() async {

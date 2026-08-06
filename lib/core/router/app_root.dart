@@ -6,7 +6,6 @@ import '../session/session_cubit.dart';
 import '../session/session_scope.dart';
 import '../session/session_state.dart';
 import '../sync/sync_bloc/sync_bloc.dart';
-import '../sync/sync_failure_listener.dart';
 import 'app_router.dart';
 
 /// Merakit router, tema, dan sesi menjadi satu aplikasi.
@@ -41,7 +40,7 @@ class _AppRootState extends State<AppRoot> {
   // GoRouter menyimpan riwayat navigasi; membangunnya ulang akan mengembalikan
   // pengguna ke halaman awal setiap kali widget ini dibangun ulang — termasuk
   // setiap kali tema berganti.
-  late final _router = AppRouter.build(session: widget.session);
+  late final _router = AppRouter.build(session: widget.session, sync: widget.sync);
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +64,7 @@ class _AppRootState extends State<AppRoot> {
         builder: (context, child) => BlocBuilder<SessionCubit, SessionState>(
           builder: (context, state) => SessionScope(
             session: state.sessionOrNull,
-            child: SyncFailureListener(
-              bloc: widget.sync,
-              child: child ?? const SizedBox.shrink(),
-            ),
+            child: child ?? const SizedBox.shrink(),
           ),
         ),
       ),

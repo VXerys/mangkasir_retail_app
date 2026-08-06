@@ -238,6 +238,14 @@ class _ToastCardState extends State<_ToastCard>
     duration: AppMotion.normal,
   )..forward();
 
+  // Harus disimpan sebagai field — jika dibuat ulang di build() setiap frame
+  // akan menumpuk listener pada _controller tanpa dilepas, sehingga
+  // pumpAndSettle() di widget test tidak pernah settle setelah dismiss manual.
+  late final CurvedAnimation _curved = CurvedAnimation(
+    parent: _controller,
+    curve: AppMotion.standard,
+  );
+
   @override
   void didUpdateWidget(_ToastCard oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -250,6 +258,7 @@ class _ToastCardState extends State<_ToastCard>
 
   @override
   void dispose() {
+    _curved.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -268,18 +277,13 @@ class _ToastCardState extends State<_ToastCard>
     final density = context.space;
     final (semantic, icon) = _resolve(colors);
 
-    final curved = CurvedAnimation(
-      parent: _controller,
-      curve: AppMotion.standard,
-    );
-
     return FadeTransition(
-      opacity: curved,
+      opacity: _curved,
       child: SlideTransition(
         position: Tween(
           begin: const Offset(0, 0.2),
           end: Offset.zero,
-        ).animate(curved),
+        ).animate(_curved),
         child: Material(
           color: Colors.transparent,
           child: Container(

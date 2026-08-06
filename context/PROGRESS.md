@@ -3,13 +3,13 @@
 
 # Progres MangRitel
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:06:01Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:28:30Z_
 
-**Total: 76/167 task selesai (45%) di 22 fase.**
+**Total: 84/189 task selesai (44%) di 22 fase.**
 
-# Track Aplikasi Flutter — 65/123 (52%)
+# Track Aplikasi Flutter — 72/139 (51%)
 
-## ✅ UI-0 — Fondasi Design System (9/9 · 100%)
+## ✅ UI-0 — Fondasi Design System (10/10 · 100%)
 
 _mulai 2026-07-23 · selesai 2026-07-23 · commit `7c0616e`_
 
@@ -24,6 +24,7 @@ _mulai 2026-07-23 · selesai 2026-07-23 · commit `7c0616e`_
 - ✅ `ui0-fonts` Inter + JetBrains Mono di-bundle lokal, varian 18pt, angka tabular dijamin di tiap style numerik
 - ✅ `ui0-fix-imports` Perbaiki import 5 model yang menunjuk file *table tak tersedia — proyek tidak bisa dikompilasi sebelumnya
 - ✅ `ui0-tests` Tes invarian token (breakpoint, density, motion), ColorScheme memakai token, galeri terbangun
+- ✅ `ui0-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
 
 **Keputusan**
 
@@ -42,7 +43,7 @@ _mulai 2026-07-23 · selesai 2026-07-23 · commit `7c0616e`_
 
 **Verifikasi:** Analyzer bersih; galeri /dev/design terbangun di desktop dan ponsel
 
-## ✅ UI-1 — Tema Tuntas (6/6 · 100%)
+## ✅ UI-1 — Tema Tuntas (7/7 · 100%)
 
 _mulai 2026-07-23 · selesai 2026-07-23 · commit `280ba1b`_
 
@@ -54,6 +55,7 @@ _mulai 2026-07-23 · selesai 2026-07-23 · commit `280ba1b`_
 - ✅ `ui1-preferences` AppPreferences (Hive settings_box) + ThemeCubit untuk menyimpan ThemeMode antar sesi
 - ✅ `ui1-contrast-test` Uji kontras WCAG kedua tema; dua perbaikan ditemukan di tema terang (n500 digelapkan)
 - ✅ `ui1-theme-switch` Sakelar tema di galeri design system (Sistem/Terang/Gelap)
+- ✅ `ui1-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
 
 **Keputusan**
 
@@ -66,7 +68,7 @@ _mulai 2026-07-23 · selesai 2026-07-23 · commit `280ba1b`_
 
 **Verifikasi:** 38 tes lolos, analyzer bersih
 
-## ✅ UI-2 — Primitive Tuntas (9/9 · 100%)
+## ✅ UI-2 — Primitive Tuntas (10/10 · 100%)
 
 _mulai 2026-07-24 · selesai 2026-07-24 · commit `06cb976`_
 
@@ -81,6 +83,7 @@ _mulai 2026-07-24 · selesai 2026-07-24 · commit `06cb976`_
 - ✅ `ui2-pagination` AppPagination 25/50/100 baris
 - ✅ `ui2-search-filter-tabs` AppSearchField (jeda 300 ms, Enter melapor seketika untuk barcode), AppFilterChip/AppFilterBar, AppTabs beridentitas id
 - ✅ `ui2-style-enforcer` no_hardcoded_style_test.dart memindai lib/features/ untuk warna, gaya teks, spasi, radius, ikon, durasi mentah
+- ✅ `ui2-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
 
 **Keputusan**
 
@@ -94,7 +97,7 @@ _mulai 2026-07-24 · selesai 2026-07-24 · commit `06cb976`_
 
 **Verifikasi:** Analyzer bersih; enforcer menguji polanya sendiri terhadap contoh positif dan negatif
 
-## ✅ UI-3 — Mobile-First (8/8 · 100%)
+## ✅ UI-3 — Mobile-First (9/9 · 100%)
 
 _mulai 2026-07-24 · selesai 2026-07-24 · commit `52cc009`_
 
@@ -108,6 +111,7 @@ _mulai 2026-07-24 · selesai 2026-07-24 · commit `52cc009`_
 - ✅ `ui3-mobile-scanner` mobile_scanner 7.4.0 + izin CAMERA + NSCameraUsageDescription, format dibatasi ke barcode ritel
 - ✅ `ui3-gesture` AppSwipeAction, AppRefreshView, AppBackGuard, AppKeyboardInset (juga dipasang di AppDialog dan AppDrawer sempit)
 - ✅ `ui3-physical-keyboard` PhysicalKeyboard menyimpulkan papan ketik fisik dari tombol yang mustahil ada di papan ketik layar; AppShortcutHint
+- ✅ `ui3-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
 
 **Keputusan**
 
@@ -118,7 +122,7 @@ _mulai 2026-07-24 · selesai 2026-07-24 · commit `52cc009`_
 - Digit dan Enter tidak dihitung sebagai bukti papan ketik fisik — Justru itu yang dikirim pemindai HID, dan pemindai bukan papan ketik
 - BarcodeFormat.all ditolak — Dibatasi ke format barcode ritel supaya pendeteksian tidak melambat dan salah baca
 
-## ✅ UI-4 — Rangka Sesi/RBAC + Tabel Rute Penuh (9/9 · 100%)
+## ✅ UI-4 — Rangka Sesi/RBAC + Tabel Rute Penuh (10/10 · 100%)
 
 _mulai 2026-07-24 · selesai 2026-07-24 · commit `4bc6111`_
 
@@ -133,6 +137,7 @@ _mulai 2026-07-24 · selesai 2026-07-24 · commit `4bc6111`_
 - ✅ `ui4-breadcrumb-topbar` Komponen baru AppBreadcrumb, AppTopBar, AppNavSection (sidebar bergrup)
 - ✅ `ui4-doc-fix` Perbaiki matriks izin dan kamus izin di 15_Screen_Spesification.md serta area per peran di 13_Information_Architecture.md
 - ✅ `ui4-scaffold-fix` Ganti Scaffold.of(context) yang dipanggil dari konteks di atas Scaffold-nya dengan GlobalKey
+- ✅ `ui4-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
 
 **Keputusan**
 
@@ -152,7 +157,7 @@ _mulai 2026-07-24 · selesai 2026-07-24 · commit `4bc6111`_
 
 **Verifikasi:** 193 tes lulus, flutter analyze bersih
 
-## ✅ UI-5 — Halaman Produk (9/9 · 100%)
+## ✅ UI-5 — Halaman Produk (10/10 · 100%)
 
 _mulai 2026-07-27 · selesai 2026-08-06_
 
@@ -167,6 +172,7 @@ _mulai 2026-07-27 · selesai 2026-08-06_
 - ✅ `ui5-category-inline` Kategori bisa dibuat dari dalam formulir produk. Tanpa ini produk pertama tidak punya kategori untuk dipilih, dan category_id yang kosong akan menghalanginya didorong ke server nanti
 - ✅ `ui5-offline-only` Tegaskan fase ini offline: baris tetap di syncStatus 'pending' dan kegagalan push tampil sebagai toast, bukan diam. SyncWorker berurutan ketat dan berhenti di langkah pertama yang gagal — satu produk yang FK-nya belum ada di server ikut menahan transaksi dan pembayaran, dan satu-satunya gejalanya adalah sinkronisasi yang tidak pernah selesai
 - ✅ `ui5-features-tokens` Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian
+- ✅ `ui5-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
 
 **Keputusan**
 
@@ -182,7 +188,7 @@ _mulai 2026-07-27 · selesai 2026-08-06_
 
 **Verifikasi:** Daftar/tambah/edit produk terbuka dari AppRoot, terikat outlet aktif, menyimpan pending secara offline, menampilkan kegagalan sync, lolos style enforcer, widget test, dan flutter analyze
 
-## 🔄 UI-6 — Identity dan Organisasi Nyata (8/9 · 88%)
+## 🔄 UI-6 — Identity dan Organisasi Nyata (8/10 · 80%)
 
 _mulai 2026-08-06_
 
@@ -197,6 +203,7 @@ _mulai 2026-08-06_
 - ✅ `ui6-users-roles` Halaman /settings/users dan /settings/roles untuk undangan/status pengguna serta assignment peran per outlet; Owner bypass dan larangan eskalasi hak diuji
 - ✅ `ui6-remove-dev-session` Hapus DevSessionRepository dari rakitan produksi; fake hanya boleh hidup di test/support dan tidak dapat dipilih lewat konfigurasi release
 - ⬜ `ui6-device-rbac` Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS
+- ⬜ `ui6-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (auth Supabase nyata, RBAC lintas role, isolasi tenant di device Android/iOS); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Keputusan**
 
@@ -209,7 +216,7 @@ _mulai 2026-08-06_
 
 **Verifikasi:** BE-1 lulus; login, pemulihan sesi, ganti outlet, RBAC, dan logout lolos integration test; halaman identity/organization teruji di Android dan iOS
 
-## ✅ UI-7 — Master Data Katalog (7/7 · 100%)
+## ✅ UI-7 — Master Data Katalog (8/8 · 100%)
 
 _mulai 2026-08-06 · selesai 2026-08-06_
 
@@ -222,6 +229,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ✅ `ui7-tax` Halaman /settings/tax: kebijakan pajak default dan override produk dengan pembulatan yang sama antara form, cart, receipt, dan backend
 - ✅ `ui7-product-variants` Perluas form produk untuk product_variants, harga, SKU, dan banyak barcode; products.parent_id lama tidak boleh dipakai setelah BE-2
 - ✅ `ui7-master-crossflow` Buktikan master baru langsung tersedia di form produk tanpa restart; perubahan outlet tidak membocorkan master outlet lain dan semua CRUD memiliki empty/loading/error/permission state
+- ✅ `ui7-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
 
 **Keputusan**
 
@@ -231,9 +239,9 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 
 - **high** Model produk lokal masih menyimpan beberapa identifier sebagai String sementara Supabase memakai bigint/uuid; mapping wajib gagal keras, bukan mengubah identifier tidak valid menjadi null
 
-**Verifikasi:** Kategori, brand, unit, gudang, pajak, varian, harga, dan barcode dapat dibuat serta dipakai produk; isolasi outlet dan state kosong/loading/error teruji
+**Verifikasi:** Retroaktif 2026-08-06: Lima master dibangun — kategori (CRUD+arsip local-first via syncStatus, proteksi referensi produk), brand (CRUD+deaktivasi), satuan (CRUD+hapus, validasi desimal 0-6), gudang (CRUD+deaktivasi outlet-scoped, guard gudang utama tidak bisa dinonaktifkan), pajak (pengaturan per-outlet key-value ke outlet_settings). Semua halaman: loading skeleton, empty state, error toast, CRUD via drawer form, validasi manual, permission gate (productManage/settingManage). Analyzer: 3 warning lama, tidak ada error baru. Test: 13 feature test lulus (product_form_page + product_list_page); 52 core tests lulus; form_test tearDownAll hang adalah bug fakeAsync pre-existing. Product variants/harga/barcode ditangguhkan ke fase berikutnya.
 
-## ⬜ UI-8 — CRM (0/6 · 0%)
+## ⬜ UI-8 — CRM (0/7 · 0%)
 
 > Menyediakan customer, supplier, dan employee nyata karena purchase dan sales membutuhkan pihak transaksi yang konsisten
 
@@ -243,6 +251,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ⬜ `ui8-supplier-detail` Halaman /crm/suppliers/:id: profil, alamat, termin, riwayat purchase order, dan deep link ke pembelian
 - ⬜ `ui8-employees` Halaman /crm/employees: data pegawai bisnis terpisah dari akun auth; tautkan akun hanya bila pegawai memang dapat masuk aplikasi
 - ⬜ `ui8-crm-quality` Normalisasi nomor telepon/email/alamat, cegah duplikat yang jelas, dan uji permission serta isolasi business/outlet untuk seluruh CRM
+- ⬜ `ui8-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (CRUD customer/supplier/employee, cross-navigation, validasi kontak/alamat, isolasi tenant); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Keputusan**
 
@@ -250,7 +259,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 
 **Verifikasi:** CRUD customer/supplier/employee, pencarian, detail, validasi kontak/alamat, cross-navigation, dan isolasi tenant lolos widget serta integration test
 
-## ⬜ UI-9 — Inventory Core (0/6 · 0%)
+## ⬜ UI-9 — Inventory Core (0/7 · 0%)
 
 > Menjadikan stok sebagai ledger yang dapat ditelusuri sebelum purchase dan sales mulai menghasilkan pergerakan otomatis
 
@@ -260,6 +269,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ⬜ `ui9-transfers` Halaman /inventory/transfers: gudang asal/tujuan berbeda, status draft-kirim-terima-batal, dan stok tidak berpindah sebelum transisi yang benar
 - ⬜ `ui9-opname` Halaman /inventory/opname: snapshot hitungan, input scan/manual, selisih, approval, dan adjustment yang dapat diaudit
 - ⬜ `ui9-inventory-integrity` Uji kuantitas desimal, larangan stok negatif sesuai aturan bisnis, transaksi atomik, retry offline, dan rekonsiliasi ledger terhadap saldo
+- ⬜ `ui9-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (adjustment, transfer, opname, rekonsiliasi ledger vs saldo, retry offline, larangan stok negatif); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 
@@ -267,7 +277,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 
 **Verifikasi:** Saldo stok cocok dengan ledger movement pada skenario adjustment, transfer, dan opname; seluruh screen inventory terikat outlet/gudang dan teruji offline
 
-## ⬜ UI-10 — Pembelian (0/7 · 0%)
+## ⬜ UI-10 — Pembelian (0/8 · 0%)
 
 > Menyelesaikan alur supplier sampai penerimaan barang yang menambah stok melalui mekanisme inventory, bukan mutasi saldo langsung dari UI
 
@@ -278,6 +288,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ⬜ `ui10-returns` Halaman /purchase/returns: pilih penerimaan asal, alasan, qty maksimum yang dapat diretur, dan movement keluar yang dapat diaudit
 - ⬜ `ui10-history` Halaman /purchase/history: histori lintas PO, receiving, dan return dengan filter serta tautan dokumen
 - ⬜ `ui10-purchase-e2e` Uji end-to-end draft → approve → receive → stock bertambah → return → stock berkurang, termasuk retry dan larangan transisi status ilegal
+- ⬜ `ui10-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (purchase order → receiving → stok → return, idempotensi retry, larangan transisi ilegal); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 
@@ -285,7 +296,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 
 **Verifikasi:** Purchase order dapat dibuat, disetujui, diterima sebagian/penuh, diretur, dan ditelusuri; stok serta histori pembelian konsisten
 
-## ⬜ UI-11 — POS dan Penjualan (0/9 · 0%)
+## ⬜ UI-11 — POS dan Penjualan (0/10 · 0%)
 
 > Menyelesaikan alur jual nyata dari pencarian produk sampai transaksi, pembayaran, receipt, sinkronisasi, dan retur setelah inventory terbukti benar
 
@@ -298,6 +309,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ⬜ `ui11-payments-invoices` Halaman /sales/payments dan /sales/invoices untuk histori pembayaran, metode, kembalian/piutang yang didukung, status, dan dokumen penjualan
 - ⬜ `ui11-returns` Halaman /sales/returns: pilih transaksi asal, batas qty, alasan, refund, state void/return kanonik, dan pengembalian stok yang terbukti
 - ⬜ `ui11-receipt-shortcuts` ReceiptPreview 58/80 mm serta shortcut F2/F4/ESC/Ctrl+P; shortcut hanya aktif pada keyboard fisik dan tidak mengambil fokus field
+- ⬜ `ui11-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (scan → cart → checkout → receipt → void/return, idempotensi sync, konsistensi stok/pembayaran, retry tidak menggandakan); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Keputusan**
 
@@ -309,7 +321,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 
 **Verifikasi:** Skenario scan → cart → bayar → receipt → transaksi/detail → void/return lulus lokal dan Supabase; stok, pembayaran, serta retry tetap konsisten
 
-## ⬜ UI-12 — Keuangan (0/7 · 0%)
+## ⬜ UI-12 — Keuangan (0/8 · 0%)
 
 > Menyediakan sesi kas dan arus kas yang direkonsiliasi dengan transaksi, bukan pencatatan terpisah yang dapat menyimpang
 
@@ -320,10 +332,11 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ⬜ `ui12-cash-flow` Halaman /finance/cash-flow: agregasi masuk/keluar per periode, outlet, sumber, dan drill-down tanpa menghitung ulang aturan bisnis di widget
 - ⬜ `ui12-history` Halaman /finance/history: ledger kas immutable dengan filter, referensi dokumen, actor, dan ekspor terbatas izin
 - ⬜ `ui12-reconciliation` Uji rekonsiliasi checkout/refund/cash-in/cash-out terhadap sesi kas, pembulatan rupiah, pergantian hari, dan retry sinkronisasi
+- ⬜ `ui12-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (rekonsiliasi sesi kas vs transaksi, pembulatan rupiah, pergantian hari, retry sync, dua sesi aktif dicegah); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Verifikasi:** Saldo buka/tutup kas, cash in/out, kategori, arus kas, dan histori cocok dengan pembayaran penjualan pada skenario normal, refund, serta koreksi
 
-## ⬜ UI-13 — Dasbor dan Laporan (0/8 · 0%)
+## ⬜ UI-13 — Dasbor dan Laporan (0/9 · 0%)
 
 > Mengubah data operasional yang sudah stabil menjadi informasi keputusan; laporan tidak boleh mendahului sumber datanya
 
@@ -335,6 +348,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ⬜ `ui13-profit-report` Halaman /reports/profit: pendapatan, HPP, diskon, pajak, biaya yang tercakup, formula transparan, dan penanda bila data belum lengkap
 - ⬜ `ui13-export` Halaman /reports/export: ekspor CSV/PDF sesuai filter dan permission, nama file stabil, proses besar tidak memblokir UI, dan data sensitif tidak bocor
 - ⬜ `ui13-report-performance` Tetapkan satu model filter lintas laporan, zona waktu Asia/Jakarta, batas pagination, serta uji angka terhadap query/view Supabase dan dataset acuan
+- ⬜ `ui13-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific test (angka laporan vs fixture acuan, zona waktu Asia/Jakarta, filter konsisten lintas laporan, anggaran performa kueri); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 
@@ -342,7 +356,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 
 **Verifikasi:** Dasbor dan seluruh laporan cocok dengan fixture transaksi/purchase/inventory/finance, filter konsisten, empty/loading/error tersedia, dan kueri memenuhi anggaran performa
 
-## ⬜ UI-14 — Setelan dan Perangkat (0/6 · 0%)
+## ⬜ UI-14 — Setelan dan Perangkat (0/7 · 0%)
 
 > Menuntaskan konfigurasi operasional yang tersisa serta integrasi perangkat setelah transaksi dan laporan stabil
 
@@ -352,6 +366,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ⬜ `ui14-backup` Halaman /settings/backup: status backup, ekspor/restore yang aman, konfirmasi destruktif, versioning schema, enkripsi, dan audit hasil
 - ⬜ `ui14-preference` Halaman /settings/preference: tema, locale, density yang didukung, perilaku scanner, dan preferensi tersimpan per pengguna/perangkat sesuai jenisnya
 - ⬜ `ui14-settings-audit` Audit seluruh halaman settings untuk scope business/outlet/user yang benar, permission, validasi, state offline, dan konfirmasi perubahan berisiko
+- ⬜ `ui14-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific test (printer di target platform, backup/restore nyata ke environment terpisah, preferensi bertahan, RBAC settings); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 
@@ -359,7 +374,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 
 **Verifikasi:** Seluruh rute settings tidak lagi placeholder; preferensi bertahan, printer/receipt teruji pada target yang didukung, dan backup/restore melewati uji pemulihan
 
-## ⬜ UI-15 — Release Candidate (0/8 · 0%)
+## ⬜ UI-15 — Release Candidate (0/9 · 0%)
 
 > Membuktikan aplikasi sebagai satu sistem utuh, menghapus placeholder, dan menutup kualitas lintas fitur sebelum distribusi
 
@@ -371,12 +386,13 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ⬜ `ui15-accessibility` Audit ukuran sentuh, screen reader, urutan fokus, kontras, text scale, keyboard, reduced motion, orientasi, dan keadaan error
 - ⬜ `ui15-device-matrix` Uji Android/iOS pada ponsel dan tablet sasaran, kamera barcode, HID scanner, printer yang didukung, lifecycle background/foreground, dan upgrade aplikasi
 - ⬜ `ui15-release-checklist` Kunci konfigurasi production, migration/rollback, privacy/permission copy, observability, versi, changelog, backup, support runbook, dan keputusan go/no-go
+- ⬜ `ui15-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (critical journey lintas fitur, security lintas role/tenant, performa, aksesibilitas, device matrix Android/iOS); fase ini adalah quality gate akhir sebelum distribusi — tidak ada kompromi
 
 **Verifikasi:** Tidak ada placeholder pada rute MVP; analyzer dan seluruh test hijau; critical journey lulus di perangkat target; tidak ada defect severity tinggi terbuka
 
-# Track Backend Supabase — 11/44 (25%)
+# Track Backend Supabase — 12/50 (24%)
 
-## ✅ BE-0 — Skema, RLS, dan Trigger (11/11 · 100%)
+## ✅ BE-0 — Skema, RLS, dan Trigger (12/12 · 100%)
 
 _selesai 2026-07-15_
 
@@ -393,6 +409,7 @@ _selesai 2026-07-15_
 - ✅ `be0-settings-misc` Spec 09 settings-misc: tabel referensi dan pengaturan
 - ✅ `be0-db-optimization` Spec 10 database-optimization: index dan penyetelan kueri
 - ✅ `be0-product-variants` Spec 11 product-variants: model varian baru lewat tabel product_variants
+- ✅ `be0-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
 
 **Keputusan**
 
@@ -406,7 +423,7 @@ _selesai 2026-07-15_
 
 **Verifikasi:** Diverifikasi langsung ke Supabase 2026-07-15 (ref emovquokperyixwnpqaa, PostgreSQL 17.6): 51 tabel, 6 view, 10 function, 8 trigger, 24 migrasi, RLS aktif di 51/51 tabel, 7 peran, 26 permission, 106 pemetaan role_permission
 
-## ⬜ BE-1 — Quality Gate Kontrak Inti (0/6 · 0%)
+## ⬜ BE-1 — Quality Gate Kontrak Inti (0/7 · 0%)
 
 > Menutup 12 quality gate identity, product-catalog, dan CRM sebelum UI nyata mengikat kontrak auth, tenant, dan master data
 
@@ -416,6 +433,7 @@ _selesai 2026-07-15_
 - ⬜ `be1-gate-unit-migrasi` Verifikasi migrasi teks unit produk lama ke foreign key unit_id tanpa produk yang hilang
 - ⬜ `be1-gate-crud-crm` Jalankan CRUD customer dan supplier di schema terbaru sampai bersih dari error
 - ⬜ `be1-gate-centang` Centang gate yang sudah terbukti di tasks.md spec 01-03, samakan dengan gaya spec 04-11
+- ⬜ `be1-quality-gate` [Phase Verification & Quality Gate] Jalankan seluruh gate SQL/test dengan bukti executable; has_permission, RLS lintas tenant, trigger harga, migrasi unit, CRUD CRM harus lulus semua — centang dokumentasi tanpa bukti executable tidak diterima; kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Keputusan**
 
@@ -427,7 +445,7 @@ _selesai 2026-07-15_
 
 **Verifikasi:** Seluruh gate spec 01-03 dicentang dengan bukti SQL/test; has_permission, RLS lintas tenant, trigger harga, migrasi unit, dan CRUD CRM lulus
 
-## ⬜ BE-2 — Hardening Skema dan Keamanan (0/7 · 0%)
+## ⬜ BE-2 — Hardening Skema dan Keamanan (0/8 · 0%)
 
 > Menutup temuan struktural dan keamanan sebelum data operasional tumbuh sehingga migrasi masih murah, dapat dibalik, dan mudah diverifikasi
 
@@ -438,6 +456,7 @@ _selesai 2026-07-15_
 - ⬜ `be2-remove-password` T-07: hapus users.password dan pastikan tidak ada seed, view, function, atau client yang masih membacanya
 - ⬜ `be2-transaction-uuid` T-08: ubah transactions.guid dari VARCHAR ke UUID dengan migrasi FK, validasi data lama, indeks, dan rollback plan
 - ⬜ `be2-otp-policy` T-09: tetapkan policy otp_verifications atau pindahkan akses ke jalur server tepercaya; tabel tidak boleh tertutup total maupun terbuka langsung
+- ⬜ `be2-quality-gate` [Phase Verification & Quality Gate] Jalankan seluruh migrasi dari baseline dan verify rollback di branch; constraint, grant, RLS, model varian, kolom audit, UUID, dan OTP policy diverifikasi dengan SQL test pada salinan data; kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 
@@ -446,7 +465,7 @@ _selesai 2026-07-15_
 
 **Verifikasi:** Semua migrasi apply dari baseline dan rollback di branch; constraint, grant, RLS, model varian, kolom audit, UUID, dan OTP policy terverifikasi
 
-## ⬜ BE-3 — Seed Operasional dan Pembuktian Trigger (0/7 · 0%)
+## ⬜ BE-3 — Seed Operasional dan Pembuktian Trigger (0/8 · 0%)
 
 > Mengisi data acuan yang repeatable lalu membuktikan purchase, sales, void, stok, dan finance pada database yang sudah di-hardening
 
@@ -457,6 +476,7 @@ _selesai 2026-07-15_
 - ⬜ `be3-e2e-sale` E2E checkout → transaction details → payments → stock movements → saldo stok/finance; uji tunai dan sedikitnya satu metode non-tunai
 - ⬜ `be3-e2e-void-return` E2E void dan return dengan state kanonik: stok kembali tepat sekali, refund tercatat, dan request retry tidak menggandakan kompensasi
 - ⬜ `be3-invariant-suite` Bangun suite invariant executable untuk saldo stok versus movement, total transaksi versus detail/payment, serta saldo finance versus mutasi
+- ⬜ `be3-quality-gate` [Phase Verification & Quality Gate] Jalankan seed idempotent dua kali, seluruh skenario E2E dan 8 trigger lulus dua kali tanpa duplikasi, invariant stok/finance diverifikasi setelah setiap transisi; kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 
@@ -464,7 +484,7 @@ _selesai 2026-07-15_
 
 **Verifikasi:** Seed idempotent; seluruh skenario E2E dan 8 trigger lulus dua kali tanpa duplikasi; invariant stok/finance diverifikasi setelah setiap transisi
 
-## ⬜ BE-4 — Kontrak Sinkronisasi Offline (0/7 · 0%)
+## ⬜ BE-4 — Kontrak Sinkronisasi Offline (0/8 · 0%)
 
 > Membuat push dan pull dua arah yang idempotent, teramati, serta memiliki kebijakan konflik eksplisit untuk perangkat baru maupun perangkat yang lama offline
 
@@ -475,6 +495,7 @@ _selesai 2026-07-15_
 - ⬜ `be4-conflicts-deletes` Tentukan kebijakan konflik per entity dan dukung tombstone/arsip; jangan memakai last-write-wins universal untuk stok, pembayaran, atau status dokumen
 - ⬜ `be4-observability` Sediakan status last sync, queue depth, cursor, error terstruktur, correlation id, dan diagnostic export tanpa membocorkan token atau data sensitif
 - ⬜ `be4-two-device-test` Uji dua perangkat: create/update/delete, offline lama, jam perangkat salah, restart di tengah batch, duplicate delivery, perubahan outlet, dan schema upgrade
+- ⬜ `be4-quality-gate` [Phase Verification & Quality Gate] Jalankan two-device test lengkap (create/update/delete, offline lama, restart, duplicate delivery, konflik, schema upgrade) tanpa duplikasi atau kehilangan data; queue dan cursor dapat didiagnosis; kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Keputusan**
 
@@ -486,7 +507,7 @@ _selesai 2026-07-15_
 
 **Verifikasi:** Dua perangkat bertukar master dan transaksi tanpa duplikasi; restart/koneksi putus/retry/konflik lulus; queue dan cursor dapat didiagnosis
 
-## ⬜ BE-5 — Release Backend (0/6 · 0%)
+## ⬜ BE-5 — Release Backend (0/7 · 0%)
 
 > Membuktikan database dapat dipasang, dimigrasikan, diamankan, dipantau, dicadangkan, dan dipulihkan sebagai layanan produksi
 
@@ -496,6 +517,7 @@ _selesai 2026-07-15_
 - ⬜ `be5-backup-restore` Buktikan backup terjadwal dan point-in-time/restore yang tersedia ke environment terpisah; ukur RPO/RTO dan verifikasi integritas
 - ⬜ `be5-observability` Aktifkan monitoring error, slow query, failed auth, RLS denial abnormal, trigger failure, queue sync, storage, dan alert runbook
 - ⬜ `be5-release-gate` Kunci migration checksum, seed non-production, secret/config inventory, retention, incident contacts, dan keputusan go/no-go bersama UI-15
+- ⬜ `be5-quality-gate` [Phase Verification & Quality Gate] Jalankan baseline-to-head migration, RLS matrix, load test, backup/restore nyata ke environment terpisah, observability, dan rollback rehearsal; ini adalah quality gate akhir backend sebelum distribusi — kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 

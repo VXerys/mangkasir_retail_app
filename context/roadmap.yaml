@@ -57,6 +57,9 @@ phases:
         title: Tes invarian token (breakpoint, density, motion), ColorScheme memakai token, galeri terbangun
         status: done
         files: [test/core/design]
+      - key: ui0-quality-gate
+        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
+        status: done
     decisions:
       - what: Tipografi disusun per peran, bukan per hierarki
         why: "Layar POS padat; ukuran teks ditentukan tugasnya (harga, label, angka tabel), bukan kedalaman heading"
@@ -110,6 +113,9 @@ phases:
         files: [test/core/design]
       - key: ui1-theme-switch
         title: Sakelar tema di galeri design system (Sistem/Terang/Gelap)
+        status: done
+      - key: ui1-quality-gate
+        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
         status: done
     decisions:
       - what: Bayangan tidak boleh sama di dua tema
@@ -165,6 +171,9 @@ phases:
         title: no_hardcoded_style_test.dart memindai lib/features/ untuk warna, gaya teks, spasi, radius, ikon, durasi mentah
         status: done
         files: [test/core/design/no_hardcoded_style_test.dart]
+      - key: ui2-quality-gate
+        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
+        status: done
     decisions:
       - what: showGeneralDialog, bukan showDialog
         why: Supaya tirai memakai colors.overlay dan durasinya tunduk pada plafon 220 ms
@@ -221,6 +230,9 @@ phases:
         title: "PhysicalKeyboard menyimpulkan papan ketik fisik dari tombol yang mustahil ada di papan ketik layar; AppShortcutHint"
         status: done
         files: [lib/core/design/components/keyboard]
+      - key: ui3-quality-gate
+        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
+        status: done
     decisions:
       - what: 01_Product_Vision_And_Scope.md menang atas 16_Design_System.md §16.1 soal perangkat sasaran
         why: "Vision menetapkan Android/iOS/Web Admin; §16.1 menulis Desktop POS dengan layout ala VS Code. Tidak bisa dua-duanya"
@@ -278,6 +290,9 @@ phases:
         status: done
       - key: ui4-scaffold-fix
         title: Ganti Scaffold.of(context) yang dipanggil dari konteks di atas Scaffold-nya dengan GlobalKey
+        status: done
+      - key: ui4-quality-gate
+        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
         status: done
     decisions:
       - what: Daftar izin dibaca langsung dari Supabase, tidak dikarang
@@ -340,6 +355,9 @@ phases:
       - key: ui5-features-tokens
         title: Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian
         status: done
+      - key: ui5-quality-gate
+        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
+        status: done
     decisions:
       - what: Komponen bisnis tidak lagi dibangun sebagai fase tersendiri
         why: "ProductCard menerima entitas Product, jadi ia tidak boleh tinggal di lib/core/design/ yang tidak mengenal domain — dan begitu ia tinggal di lib/features/, ia tidak bisa dipamerkan di galeri. Tidak ada tempat berdiri sendiri untuk keempatnya"
@@ -390,6 +408,9 @@ phases:
       - key: ui6-device-rbac
         title: Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS
         status: pending
+      - key: ui6-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (auth Supabase nyata, RBAC lintas role, isolasi tenant di device Android/iOS); kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
     decisions:
       - what: BE-1 adalah entry gate UI-6
         why: "Auth nyata tidak boleh dibangun di atas has_permission dan RLS yang belum dibuktikan; kalau kontraknya berubah setelah screen dibuat, seluruh guard dan query tenant harus diulang"
@@ -406,7 +427,7 @@ phases:
     status: done
     started_at: 2026-08-06
     completed_at: 2026-08-06
-    verification: "Kategori, brand, unit, gudang, pajak, varian, harga, dan barcode dapat dibuat serta dipakai produk; isolasi outlet dan state kosong/loading/error teruji"
+    verification: "Retroaktif 2026-08-06: Lima master dibangun — kategori (CRUD+arsip local-first via syncStatus, proteksi referensi produk), brand (CRUD+deaktivasi), satuan (CRUD+hapus, validasi desimal 0-6), gudang (CRUD+deaktivasi outlet-scoped, guard gudang utama tidak bisa dinonaktifkan), pajak (pengaturan per-outlet key-value ke outlet_settings). Semua halaman: loading skeleton, empty state, error toast, CRUD via drawer form, validasi manual, permission gate (productManage/settingManage). Analyzer: 3 warning lama, tidak ada error baru. Test: 13 feature test lulus (product_form_page + product_list_page); 52 core tests lulus; form_test tearDownAll hang adalah bug fakeAsync pre-existing. Product variants/harga/barcode ditangguhkan ke fase berikutnya."
     tasks:
       - key: ui7-categories
         title: "Halaman /inventory/categories: daftar, cari, tambah, ubah, arsipkan, cegah penghapusan kategori yang masih dipakai produk"
@@ -428,6 +449,9 @@ phases:
         status: done
       - key: ui7-master-crossflow
         title: "Buktikan master baru langsung tersedia di form produk tanpa restart; perubahan outlet tidak membocorkan master outlet lain dan semua CRUD memiliki empty/loading/error/permission state"
+        status: done
+      - key: ui7-quality-gate
+        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
         status: done
     decisions:
       - what: Master data diselesaikan sebelum inventory dan transaksi
@@ -461,6 +485,9 @@ phases:
       - key: ui8-crm-quality
         title: Normalisasi nomor telepon/email/alamat, cegah duplikat yang jelas, dan uji permission serta isolasi business/outlet untuk seluruh CRM
         status: pending
+      - key: ui8-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (CRUD customer/supplier/employee, cross-navigation, validasi kontak/alamat, isolasi tenant); kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
     decisions:
       - what: CRM mendahului purchase dan sales
         why: "Supplier adalah pihak purchase order dan customer adalah pihak transaksi; membuat keduanya belakangan menghasilkan data anonim yang harus dimigrasikan"
@@ -489,6 +516,9 @@ phases:
         status: pending
       - key: ui9-inventory-integrity
         title: Uji kuantitas desimal, larangan stok negatif sesuai aturan bisnis, transaksi atomik, retry offline, dan rekonsiliasi ledger terhadap saldo
+        status: pending
+      - key: ui9-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (adjustment, transfer, opname, rekonsiliasi ledger vs saldo, retry offline, larangan stok negatif); kumpulkan bukti sebelum fase dinyatakan DONE"
         status: pending
     risks:
       - what: "Kesalahan idempotensi atau pembulatan kuantitas akan mengubah stok dua kali; semua command movement wajib memiliki identity stabil dan diuji saat retry"
@@ -521,6 +551,9 @@ phases:
         status: pending
       - key: ui10-purchase-e2e
         title: "Uji end-to-end draft → approve → receive → stock bertambah → return → stock berkurang, termasuk retry dan larangan transisi status ilegal"
+        status: pending
+      - key: ui10-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (purchase order → receiving → stok → return, idempotensi retry, larangan transisi ilegal); kumpulkan bukti sebelum fase dinyatakan DONE"
         status: pending
     risks:
       - what: "Penerimaan parsial dan retry dapat menggandakan movement bila command tidak idempotent; backend BE-3 harus lulus sebelum sinkronisasi purchase diaktifkan"
@@ -560,6 +593,9 @@ phases:
       - key: ui11-receipt-shortcuts
         title: "ReceiptPreview 58/80 mm serta shortcut F2/F4/ESC/Ctrl+P; shortcut hanya aktif pada keyboard fisik dan tidak mengambil fokus field"
         status: pending
+      - key: ui11-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (scan → cart → checkout → receipt → void/return, idempotensi sync, konsistensi stok/pembayaran, retry tidak menggandakan); kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
     decisions:
       - what: POS dipindahkan setelah CRM, inventory, dan purchase
         why: "Roadmap dependency menetapkan transaksi baru aman setelah product, customer, supplier, dan ledger stok tersedia; prototipe POS lebih awal terlihat maju tetapi memaksa ulang kontrak data"
@@ -595,6 +631,9 @@ phases:
       - key: ui12-reconciliation
         title: Uji rekonsiliasi checkout/refund/cash-in/cash-out terhadap sesi kas, pembulatan rupiah, pergantian hari, dan retry sinkronisasi
         status: pending
+      - key: ui12-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (rekonsiliasi sesi kas vs transaksi, pembulatan rupiah, pergantian hari, retry sync, dua sesi aktif dicegah); kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
 
   - id: UI-13
     track: ui
@@ -627,6 +666,9 @@ phases:
       - key: ui13-report-performance
         title: Tetapkan satu model filter lintas laporan, zona waktu Asia/Jakarta, batas pagination, serta uji angka terhadap query/view Supabase dan dataset acuan
         status: pending
+      - key: ui13-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific test (angka laporan vs fixture acuan, zona waktu Asia/Jakarta, filter konsisten lintas laporan, anggaran performa kueri); kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
     risks:
       - what: "Laporan dapat terlihat benar tetapi berbeda akibat zona waktu, refund, atau pembulatan; setiap KPI wajib memiliki fixture acuan dan formula terdokumentasi"
         severity: high
@@ -655,6 +697,9 @@ phases:
         status: pending
       - key: ui14-settings-audit
         title: Audit seluruh halaman settings untuk scope business/outlet/user yang benar, permission, validasi, state offline, dan konfirmasi perubahan berisiko
+        status: pending
+      - key: ui14-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific test (printer di target platform, backup/restore nyata ke environment terpisah, preferensi bertahan, RBAC settings); kumpulkan bukti sebelum fase dinyatakan DONE"
         status: pending
     risks:
       - what: "Printer dan backup bergantung kemampuan platform; dukungan harus dinyatakan per Android/iOS/Web dan fitur yang tidak tersedia harus disabled dengan penjelasan"
@@ -690,6 +735,9 @@ phases:
         status: pending
       - key: ui15-release-checklist
         title: Kunci konfigurasi production, migration/rollback, privacy/permission copy, observability, versi, changelog, backup, support runbook, dan keputusan go/no-go
+        status: pending
+      - key: ui15-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (critical journey lintas fitur, security lintas role/tenant, performa, aksesibilitas, device matrix Android/iOS); fase ini adalah quality gate akhir sebelum distribusi — tidak ada kompromi"
         status: pending
 
   - id: BE-0
@@ -744,6 +792,9 @@ phases:
         title: "Spec 11 product-variants: model varian baru lewat tabel product_variants"
         status: done
         files: [docs/MVP(new)/.kiro/specs/11-product-variants]
+      - key: be0-quality-gate
+        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
+        status: done
     decisions:
       - what: Database dipakai sebagai backend langsung, tanpa lapisan API sendiri
         why: Keamanan ditegakkan RLS di 51/51 tabel plus 26 permission, bukan oleh kode server yang harus ditulis dan dirawat terpisah. 0 Edge Function
@@ -780,6 +831,9 @@ phases:
       - key: be1-gate-centang
         title: Centang gate yang sudah terbukti di tasks.md spec 01-03, samakan dengan gaya spec 04-11
         status: pending
+      - key: be1-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan seluruh gate SQL/test dengan bukti executable; has_permission, RLS lintas tenant, trigger harga, migrasi unit, CRUD CRM harus lulus semua — centang dokumentasi tanpa bukti executable tidak diterima; kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
     decisions:
       - what: BE-1 adalah release gate untuk UI-6
         why: Kontrak auth dan organisasi tidak boleh dibekukan sebelum permission serta isolasi tenant terbukti dengan user dan business berbeda
@@ -815,6 +869,9 @@ phases:
       - key: be2-otp-policy
         title: "T-09: tetapkan policy otp_verifications atau pindahkan akses ke jalur server tepercaya; tabel tidak boleh tertutup total maupun terbuka langsung"
         status: pending
+      - key: be2-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan seluruh migrasi dari baseline dan verify rollback di branch; constraint, grant, RLS, model varian, kolom audit, UUID, dan OTP policy diverifikasi dengan SQL test pada salinan data; kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
     risks:
       - what: "Migrasi guid dan kolom audit menyentuh FK serta client mapping; wajib diuji pada salinan data dan memiliki rollback sebelum diterapkan ke environment bersama"
         severity: high
@@ -849,6 +906,9 @@ phases:
       - key: be3-invariant-suite
         title: Bangun suite invariant executable untuk saldo stok versus movement, total transaksi versus detail/payment, serta saldo finance versus mutasi
         status: pending
+      - key: be3-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan seed idempotent dua kali, seluruh skenario E2E dan 8 trigger lulus dua kali tanpa duplikasi, invariant stok/finance diverifikasi setelah setiap transisi; kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
     risks:
       - what: "T-01 Kritis: 8 trigger belum pernah dijalankan dengan data nyata; NULL, urutan trigger, locking, atau RAISE EXCEPTION dapat mematahkan alur E2E"
         severity: high
@@ -881,6 +941,9 @@ phases:
       - key: be4-two-device-test
         title: "Uji dua perangkat: create/update/delete, offline lama, jam perangkat salah, restart di tengah batch, duplicate delivery, perubahan outlet, dan schema upgrade"
         status: pending
+      - key: be4-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan two-device test lengkap (create/update/delete, offline lama, restart, duplicate delivery, konflik, schema upgrade) tanpa duplikasi atau kehilangan data; queue dan cursor dapat didiagnosis; kumpulkan bukti sebelum fase dinyatakan DONE"
+        status: pending
     decisions:
       - what: Konflik transaksi diselesaikan oleh aturan domain, bukan timestamp
         why: "Last-write-wins dapat menghapus pembayaran atau menggandakan stok; command finansial dan inventory bersifat append-only/idempotent"
@@ -912,6 +975,9 @@ phases:
         status: pending
       - key: be5-release-gate
         title: Kunci migration checksum, seed non-production, secret/config inventory, retention, incident contacts, dan keputusan go/no-go bersama UI-15
+        status: pending
+      - key: be5-quality-gate
+        title: "[Phase Verification & Quality Gate] Jalankan baseline-to-head migration, RLS matrix, load test, backup/restore nyata ke environment terpisah, observability, dan rollback rehearsal; ini adalah quality gate akhir backend sebelum distribusi — kumpulkan bukti sebelum fase dinyatakan DONE"
         status: pending
     risks:
       - what: "Backup yang belum pernah direstore bukan backup yang terbukti; release gate gagal bila pemulihan hanya diasumsikan"

@@ -3,23 +3,23 @@
 
 # MangRitel — di mana proyek ini sekarang
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:06:01Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:28:30Z_
 
 ## 🔄 Aplikasi Flutter — fase aktif UI-6 · Identity dan Organisasi Nyata
 
-`8/9` task selesai (88%)
+`8/10` task selesai (80%)
 
 > Mengganti sesi pengembangan dengan identitas Supabase dan menuntaskan konteks business, outlet, pengguna, serta peran sebelum modul operasional bergantung kepadanya
 
 Berikutnya:
 
 1. `ui6-device-rbac` Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS _(UI-6)_
-2. `ui8-customer-list` Halaman /crm/customers: pencarian, filter status, pagination, saldo/ringkasan transaksi, dan empty/loading/error state _(UI-8)_
-3. `ui8-customer-detail` Halaman /crm/customers/:id: profil, alamat, riwayat transaksi, edit, dan deep link kembali ke transaksi terkait _(UI-8)_
+2. `ui6-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (auth Supabase nyata, RBAC lintas role, isolasi tenant di device Android/iOS); kumpulkan bukti sebelum fase dinyatakan DONE _(UI-6)_
+3. `ui8-customer-list` Halaman /crm/customers: pencarian, filter status, pagination, saldo/ringkasan transaksi, dan empty/loading/error state _(UI-8)_
 
 ## ⬜ Backend Supabase — fase aktif BE-1 · Quality Gate Kontrak Inti
 
-`0/6` task selesai (0%)
+`0/7` task selesai (0%)
 
 > Menutup 12 quality gate identity, product-catalog, dan CRM sebelum UI nyata mengikat kontrak auth, tenant, dan master data
 
@@ -37,31 +37,31 @@ _Tidak ada task berstatus in_progress._
 
 **Aplikasi Flutter**
 
-- ✅ **UI-0** Fondasi Design System — 9/9 (100%)
-- ✅ **UI-1** Tema Tuntas — 6/6 (100%)
-- ✅ **UI-2** Primitive Tuntas — 9/9 (100%)
-- ✅ **UI-3** Mobile-First — 8/8 (100%)
-- ✅ **UI-4** Rangka Sesi/RBAC + Tabel Rute Penuh — 9/9 (100%)
-- ✅ **UI-5** Halaman Produk — 9/9 (100%)
-- 🔄 **UI-6** Identity dan Organisasi Nyata — 8/9 (88%)
-- ✅ **UI-7** Master Data Katalog — 7/7 (100%)
-- ⬜ **UI-8** CRM — 0/6 (0%)
-- ⬜ **UI-9** Inventory Core — 0/6 (0%)
-- ⬜ **UI-10** Pembelian — 0/7 (0%)
-- ⬜ **UI-11** POS dan Penjualan — 0/9 (0%)
-- ⬜ **UI-12** Keuangan — 0/7 (0%)
-- ⬜ **UI-13** Dasbor dan Laporan — 0/8 (0%)
-- ⬜ **UI-14** Setelan dan Perangkat — 0/6 (0%)
-- ⬜ **UI-15** Release Candidate — 0/8 (0%)
+- ✅ **UI-0** Fondasi Design System — 10/10 (100%)
+- ✅ **UI-1** Tema Tuntas — 7/7 (100%)
+- ✅ **UI-2** Primitive Tuntas — 10/10 (100%)
+- ✅ **UI-3** Mobile-First — 9/9 (100%)
+- ✅ **UI-4** Rangka Sesi/RBAC + Tabel Rute Penuh — 10/10 (100%)
+- ✅ **UI-5** Halaman Produk — 10/10 (100%)
+- 🔄 **UI-6** Identity dan Organisasi Nyata — 8/10 (80%)
+- ✅ **UI-7** Master Data Katalog — 8/8 (100%)
+- ⬜ **UI-8** CRM — 0/7 (0%)
+- ⬜ **UI-9** Inventory Core — 0/7 (0%)
+- ⬜ **UI-10** Pembelian — 0/8 (0%)
+- ⬜ **UI-11** POS dan Penjualan — 0/10 (0%)
+- ⬜ **UI-12** Keuangan — 0/8 (0%)
+- ⬜ **UI-13** Dasbor dan Laporan — 0/9 (0%)
+- ⬜ **UI-14** Setelan dan Perangkat — 0/7 (0%)
+- ⬜ **UI-15** Release Candidate — 0/9 (0%)
 
 **Backend Supabase**
 
-- ✅ **BE-0** Skema, RLS, dan Trigger — 11/11 (100%)
-- ⬜ **BE-1** Quality Gate Kontrak Inti — 0/6 (0%)
-- ⬜ **BE-2** Hardening Skema dan Keamanan — 0/7 (0%)
-- ⬜ **BE-3** Seed Operasional dan Pembuktian Trigger — 0/7 (0%)
-- ⬜ **BE-4** Kontrak Sinkronisasi Offline — 0/7 (0%)
-- ⬜ **BE-5** Release Backend — 0/6 (0%)
+- ✅ **BE-0** Skema, RLS, dan Trigger — 12/12 (100%)
+- ⬜ **BE-1** Quality Gate Kontrak Inti — 0/7 (0%)
+- ⬜ **BE-2** Hardening Skema dan Keamanan — 0/8 (0%)
+- ⬜ **BE-3** Seed Operasional dan Pembuktian Trigger — 0/8 (0%)
+- ⬜ **BE-4** Kontrak Sinkronisasi Offline — 0/8 (0%)
+- ⬜ **BE-5** Release Backend — 0/7 (0%)
 
 ## Backlog tertunda
 

@@ -253,7 +253,8 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.byIcon(AppIcons.close));
-      await tester.pumpAndSettle();
+      await tester.pump(); // proses ketukan, tandai data.leaving = true
+      await tester.pump(const Duration(milliseconds: 300)); // animasi dismiss (≤220 ms)
 
       expect(find.text('Sinkronisasi gagal'), findsNothing);
     });

@@ -3,19 +3,19 @@
 
 # MangRitel — di mana proyek ini sekarang
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T03:08:52Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T07:37:58Z_
 
-## 🔄 Aplikasi Flutter — fase aktif UI-5 · Halaman Produk
+## 🔄 Aplikasi Flutter — fase aktif UI-6 · Identity dan Organisasi Nyata
 
-`7/9` task selesai (77%)
+`8/9` task selesai (88%)
 
-> Halaman fitur nyata pertama, sekaligus memasang seluruh perkakas slicing — registry halaman, penyediaan bloc, dan uji asap aplikasi — di layar yang paling murah risikonya
+> Mengganti sesi pengembangan dengan identitas Supabase dan menuntaskan konteks business, outlet, pengguna, serta peran sebelum modul operasional bergantung kepadanya
 
 Berikutnya:
 
-1. `ui5-offline-only` Tegaskan fase ini offline: baris tetap di syncStatus 'pending' dan kegagalan push tampil sebagai toast, bukan diam. SyncWorker berurutan ketat dan berhenti di langkah pertama yang gagal — satu produk yang FK-nya belum ada di server ikut menahan transaksi dan pembayaran, dan satu-satunya gejalanya adalah sinkronisasi yang tidak pernah selesai _(UI-5)_
-2. `ui5-features-tokens` Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian _(UI-5)_
-3. `ui6-device-rbac` Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS _(UI-6)_
+1. `ui6-device-rbac` Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS _(UI-6)_
+2. `ui7-categories` Halaman /inventory/categories: daftar, cari, tambah, ubah, arsipkan, cegah penghapusan kategori yang masih dipakai produk _(UI-7)_
+3. `ui7-brands` Halaman /inventory/brands: daftar dan CRUD brand dengan status aktif serta validasi nama unik dalam business _(UI-7)_
 
 ## ⬜ Backend Supabase — fase aktif BE-1 · Quality Gate Kontrak Inti
 
@@ -42,7 +42,7 @@ _Tidak ada task berstatus in_progress._
 - ✅ **UI-2** Primitive Tuntas — 9/9 (100%)
 - ✅ **UI-3** Mobile-First — 8/8 (100%)
 - ✅ **UI-4** Rangka Sesi/RBAC + Tabel Rute Penuh — 9/9 (100%)
-- 🔄 **UI-5** Halaman Produk — 7/9 (77%)
+- ✅ **UI-5** Halaman Produk — 9/9 (100%)
 - 🔄 **UI-6** Identity dan Organisasi Nyata — 8/9 (88%)
 - ⬜ **UI-7** Master Data Katalog — 0/7 (0%)
 - ⬜ **UI-8** CRM — 0/6 (0%)

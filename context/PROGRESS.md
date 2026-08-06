@@ -3,11 +3,11 @@
 
 # Progres MangRitel
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T03:08:52Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T07:37:58Z_
 
-**Total: 67/167 task selesai (40%) di 22 fase.**
+**Total: 69/167 task selesai (41%) di 22 fase.**
 
-# Track Aplikasi Flutter — 56/123 (45%)
+# Track Aplikasi Flutter — 58/123 (47%)
 
 ## ✅ UI-0 — Fondasi Design System (9/9 · 100%)
 
@@ -152,9 +152,9 @@ _mulai 2026-07-24 · selesai 2026-07-24 · commit `4bc6111`_
 
 **Verifikasi:** 193 tes lulus, flutter analyze bersih
 
-## 🔄 UI-5 — Halaman Produk (7/9 · 77%)
+## ✅ UI-5 — Halaman Produk (9/9 · 100%)
 
-_mulai 2026-07-27_
+_mulai 2026-07-27 · selesai 2026-08-06_
 
 > Halaman fitur nyata pertama, sekaligus memasang seluruh perkakas slicing — registry halaman, penyediaan bloc, dan uji asap aplikasi — di layar yang paling murah risikonya
 
@@ -165,8 +165,8 @@ _mulai 2026-07-27_
 - ✅ `ui5-product-list` Halaman /inventory/products di atas AppDataTable, AppSearchField, dan AppPagination; keadaan kosong, memuat, dan galat dibangun sungguhan karena ketiganya yang akan terlihat lebih dulu di database yang masih kosong
 - ✅ `ui5-product-form` Satu formulir untuk /inventory/products/new dan /inventory/products/:id; izin PRODUCT_CREATE dan PRODUCT_READ sudah ditetapkan pohon navigasi, formulir tidak memeriksanya lagi sendiri
 - ✅ `ui5-category-inline` Kategori bisa dibuat dari dalam formulir produk. Tanpa ini produk pertama tidak punya kategori untuk dipilih, dan category_id yang kosong akan menghalanginya didorong ke server nanti
-- ⬜ `ui5-offline-only` Tegaskan fase ini offline: baris tetap di syncStatus 'pending' dan kegagalan push tampil sebagai toast, bukan diam. SyncWorker berurutan ketat dan berhenti di langkah pertama yang gagal — satu produk yang FK-nya belum ada di server ikut menahan transaksi dan pembayaran, dan satu-satunya gejalanya adalah sinkronisasi yang tidak pernah selesai
-- ⬜ `ui5-features-tokens` Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian
+- ✅ `ui5-offline-only` Tegaskan fase ini offline: baris tetap di syncStatus 'pending' dan kegagalan push tampil sebagai toast, bukan diam. SyncWorker berurutan ketat dan berhenti di langkah pertama yang gagal — satu produk yang FK-nya belum ada di server ikut menahan transaksi dan pembayaran, dan satu-satunya gejalanya adalah sinkronisasi yang tidak pernah selesai
+- ✅ `ui5-features-tokens` Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian
 
 **Keputusan**
 

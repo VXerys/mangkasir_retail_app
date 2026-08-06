@@ -300,8 +300,9 @@ phases:
     track: ui
     name: Halaman Produk
     goal: "Halaman fitur nyata pertama, sekaligus memasang seluruh perkakas slicing — registry halaman, penyediaan bloc, dan uji asap aplikasi — di layar yang paling murah risikonya"
-    status: in_progress
+    status: done
     started_at: 2026-07-27
+    completed_at: 2026-08-06
     verification: Daftar/tambah/edit produk terbuka dari AppRoot, terikat outlet aktif, menyimpan pending secara offline, menampilkan kegagalan sync, lolos style enforcer, widget test, dan flutter analyze
     tasks:
       - key: ui5-drop-gallery-route
@@ -334,11 +335,11 @@ phases:
         files: [lib/features/categories/presentation]
       - key: ui5-offline-only
         title: "Tegaskan fase ini offline: baris tetap di syncStatus 'pending' dan kegagalan push tampil sebagai toast, bukan diam. SyncWorker berurutan ketat dan berhenti di langkah pertama yang gagal — satu produk yang FK-nya belum ada di server ikut menahan transaksi dan pembayaran, dan satu-satunya gejalanya adalah sinkronisasi yang tidak pernah selesai"
-        status: pending
+        status: done
         files: [lib/core/sync/sync_bloc, lib/main.dart]
       - key: ui5-features-tokens
         title: Loloskan widget pertama di lib/features/ terhadap no_hardcoded_style_test tanpa menambah pengecualian
-        status: pending
+        status: done
     decisions:
       - what: Komponen bisnis tidak lagi dibangun sebagai fase tersendiri
         why: "ProductCard menerima entitas Product, jadi ia tidak boleh tinggal di lib/core/design/ yang tidak mengenal domain — dan begitu ia tinggal di lib/features/, ia tidak bisa dipamerkan di galeri. Tidak ada tempat berdiri sendiri untuk keempatnya"

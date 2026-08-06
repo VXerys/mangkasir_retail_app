@@ -109,7 +109,13 @@ Future<SessionCubit> pumpApp(
     AppRoot(session: cubit, themeMode: ThemeMode.light, sync: sync),
   );
   await cubit.restore();
-  await tester.pumpAndSettle();
+  // pumpAndSettle() tidak dipakai di sini karena widget pohon penuh bisa
+  // menyimpan animasi berulang (AppSkeleton pada AppBootPage selama transisi
+  // GoRouter 220 ms). Dengan animasi berulang, pumpAndSettle baru berhenti
+  // setelah batas waktu 10-detik fake time-nya tercapai — yang, karena setiap
+  // pump() merender frame penuh, memakan ~6 menit waktu nyata. Cukup satu
+  // pump(300 ms) untuk melewati transisi 220 ms dan membuang halaman boot.
+  await tester.pump(const Duration(milliseconds: 300));
 
   return cubit;
 }

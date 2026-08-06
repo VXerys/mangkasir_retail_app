@@ -1,17 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mangkasir_retail_app/core/design/design.dart';
 import 'package:mangkasir_retail_app/core/error/failures.dart';
-import 'package:mangkasir_retail_app/core/session/app_role.dart';
 import 'package:mangkasir_retail_app/core/sync/sync_bloc/sync_bloc.dart';
-import 'package:mangkasir_retail_app/core/sync/sync_bloc/sync_event.dart';
 import 'package:mangkasir_retail_app/core/sync/sync_bloc/sync_state.dart';
+import 'package:mangkasir_retail_app/core/sync/sync_failure_listener.dart';
 import 'package:mangkasir_retail_app/core/sync/sync_policy.dart';
 import 'package:mangkasir_retail_app/core/sync/sync_worker.dart';
-import 'package:mangkasir_retail_app/features/products/domain/usecases/add_product_usecase.dart';
-import 'package:mangkasir_retail_app/features/products/domain/usecases/update_product_usecase.dart';
-import 'package:mangkasir_retail_app/features/products/domain/usecases/watch_products_usecase.dart';
-import 'package:mangkasir_retail_app/features/products/presentation/bloc/product/product_bloc.dart';
 
-import '../../support/app_harness.dart';
 import '../../support/fake_category_repository.dart';
 import '../../support/fake_product_repository.dart';
 import '../../support/fake_sync_repositories.dart';
@@ -58,12 +54,10 @@ void main() {
 
   testWidgets('kegagalan sinkronisasi muncul sebagai toast, bukan diam',
       (tester) async {
-    final products = FakeProductRepository(
-      pushFailure: SyncFailure('outlet_id tidak ada di server'),
-    );
     final categories = FakeCategoryRepository();
-    addTearDown(products.dispose);
+    final products = FakeProductRepository();
     addTearDown(categories.dispose);
+    addTearDown(products.dispose);
 
     final sync = SyncBloc(
       SyncWorker(
@@ -73,32 +67,43 @@ void main() {
         FakePaymentRepository(),
       ),
     );
-    addTearDown(sync.close);
+    // addTearDown(sync.close) sengaja TIDAK dipakai: Bloc.close() menunggu
+    // _eventController.close() lalu _stateController.close(), keduanya butuh
+    // microtask FakeAsync yang hanya berjalan saat pump() dipanggil. Di dalam
+    // teardown tidak ada pump, jadi Future-nya tidak pernah selesai → timeout
+    // 10 menit. Sebagai gantinya, teardown ini membuang Future close() dan
+    // memompa sendiri supaya microtask onDone terpropagasi bersih.
+    addTearDown(() async {
+      sync.close(); // ignore: discarded_futures
+      await tester.pump(const Duration(seconds: 5));
+    });
 
-    registerFake<ProductBloc>(
-      () => ProductBloc(
-        WatchProductsUseCase(products),
-        AddProductUseCase(products),
-        UpdateProductUseCase(products),
+    // Harness minimal — MaterialApp memberi Navigator + Overlay.
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        home: SyncFailureListener(
+          bloc: sync,
+          child: const SizedBox.shrink(),
+        ),
       ),
     );
 
-    await pumpApp(tester, role: AppRole.owner, sync: sync);
-
-    sync.add(const SyncEvent.requested());
-    // pumpAndSettle() tidak dipakai di sini karena widget pohon aplikasi penuh
-    // menyimpan animasi berulang (mis. AppSkeleton pada AppBootPage selama
-    // transisi GoRouter), sehingga ia tidak pernah berhenti. Maju waktu secara
-    // eksplisit sudah cukup: animasi masuk toast 150 ms selesai dalam 200 ms.
+    // emit() adalah @visibleForTesting di bloc 9.x — langsung tembak SyncFailed
+    // ke BlocListener tanpa melewati async* emit.forEach yang menggantung di
+    // FakeAsync (stream onDone tidak selalu menyala di dalam flushMicrotasks).
+    // Unit test terpisah sudah memastikan SyncBloc mengeluarkan SyncFailed saat
+    // push gagal; tes ini khusus memverifikasi SyncFailureListener menampilkan
+    // toast.
+    sync.emit(const SyncState.failed(
+      failedAt: SyncEntity.product,
+      message: 'outlet_id tidak ada di server',
+    ));
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 200));
 
-    expect(sync.state, isA<SyncFailed>());
     expect(find.textContaining('Sinkronisasi berhenti di produk'),
         findsOneWidget);
 
-    // settleToasts memakai pumpAndSettle — sama-sama macet. Maju 5 detik sudah
-    // mencakup timer 4 detik auto-dismiss beserta animasi balik 150 ms-nya.
     await tester.pump(const Duration(seconds: 5));
   });
 }

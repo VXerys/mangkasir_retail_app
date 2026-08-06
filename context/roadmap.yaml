@@ -451,7 +451,7 @@ phases:
         title: "Buktikan master baru langsung tersedia di form produk tanpa restart; perubahan outlet tidak membocorkan master outlet lain dan semua CRUD memiliki empty/loading/error/permission state"
         status: done
       - key: ui7-quality-gate
-        title: "[Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini"
+        title: "[Phase Verification & Quality Gate] 216 tes lulus (flutter test), analyzer bersih, perbaikan bug: CurvedAnimation listener leak di AppToast + 5 tes navigation/widget yang gagal pasca UI-7 (LoginCubit tidak terdaftar, teks login berubah, GoRouter redirect butuh 2 pump)"
         status: done
     decisions:
       - what: Master data diselesaikan sebelum inventory dan transaksi

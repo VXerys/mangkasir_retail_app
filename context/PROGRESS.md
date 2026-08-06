@@ -3,7 +3,7 @@
 
 # Progres MangRitel
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:28:30Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:55:50Z_
 
 **Total: 84/189 task selesai (44%) di 22 fase.**
 
@@ -229,7 +229,7 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 - ✅ `ui7-tax` Halaman /settings/tax: kebijakan pajak default dan override produk dengan pembulatan yang sama antara form, cart, receipt, dan backend
 - ✅ `ui7-product-variants` Perluas form produk untuk product_variants, harga, SKU, dan banyak barcode; products.parent_id lama tidak boleh dipakai setelah BE-2
 - ✅ `ui7-master-crossflow` Buktikan master baru langsung tersedia di form produk tanpa restart; perubahan outlet tidak membocorkan master outlet lain dan semua CRUD memiliki empty/loading/error/permission state
-- ✅ `ui7-quality-gate` [Phase Verification & Quality Gate] Verifikasi retroaktif — fase selesai sebelum aturan quality gate berlaku; bukti verifikasi tercatat di field verification fase ini
+- ✅ `ui7-quality-gate` [Phase Verification & Quality Gate] 216 tes lulus (flutter test), analyzer bersih, perbaikan bug: CurvedAnimation listener leak di AppToast + 5 tes navigation/widget yang gagal pasca UI-7 (LoginCubit tidak terdaftar, teks login berubah, GoRouter redirect butuh 2 pump)
 
 **Keputusan**
 

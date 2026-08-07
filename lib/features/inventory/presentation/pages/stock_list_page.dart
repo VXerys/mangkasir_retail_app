@@ -152,8 +152,9 @@ class _StockTile extends StatelessWidget {
     final text = context.text;
     final density = context.space;
 
-    return AppPanel(
+    return GestureDetector(
       onTap: onTapDrillDown,
+      child: AppPanel(
       child: Row(
         children: [
           Expanded(
@@ -164,7 +165,7 @@ class _StockTile extends StatelessWidget {
                 SizedBox(height: density.xs),
                 Text(
                   'Gudang: ${stock.warehouseName} • SKU: ${stock.sku ?? '-'}',
-                  style: text.caption,
+                  style: text.formHelper,
                 ),
               ],
             ),
@@ -174,18 +175,19 @@ class _StockTile extends StatelessWidget {
             children: [
               Text(
                 '${stock.qty.toStringAsFixed(0)} ${stock.unitName}',
-                style: text.sectionHeading,
+                style: text.dialogTitle,
               ),
               SizedBox(height: density.xs),
               if (stock.isOutOfStock)
-                const AppBadge(label: 'Habis', variant: AppBadgeVariant.danger)
+                AppBadge(label: 'Habis', color: context.colors.danger)
               else if (stock.isLowStock)
-                const AppBadge(label: 'Menipis', variant: AppBadgeVariant.warning)
+                AppBadge(label: 'Menipis', color: context.colors.warning)
               else
-                const AppBadge(label: 'Tersedia', variant: AppBadgeVariant.success),
+                AppBadge(label: 'Tersedia', color: context.colors.success),
             ],
           ),
         ],
+      ),
       ),
     );
   }

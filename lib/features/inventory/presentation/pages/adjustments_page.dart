@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/design/design.dart';
@@ -104,11 +103,11 @@ class _AdjustmentsContentState extends State<_AdjustmentsContent> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(adj['reason'] as String, style: ctx.text.formLabel),
-                              Text('Produk ID: #${adj['product_id']} • Selisih: ${adj['actual_qty'] - adj['current_qty']}', style: ctx.text.caption),
+                              Text('Produk ID: #${adj['product_id']} • Selisih: ${adj['actual_qty'] - adj['current_qty']}', style: ctx.text.formHelper),
                             ],
                           ),
                         ),
-                        const AppBadge(label: 'Selesai', variant: AppBadgeVariant.success),
+                        AppBadge(label: 'Selesai', color: ctx.colors.success),
                       ],
                     ),
                   );

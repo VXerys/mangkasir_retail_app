@@ -165,7 +165,7 @@ class _MovementTile extends StatelessWidget {
                 SizedBox(height: density.xs),
                 Text(
                   'Gudang: ${movement.warehouseName} • Referensi: ${movement.referenceType ?? 'Manual'} ${movement.referenceId ?? ''}',
-                  style: text.caption,
+                  style: text.formHelper,
                 ),
               ],
             ),
@@ -175,14 +175,14 @@ class _MovementTile extends StatelessWidget {
             children: [
               Text(
                 '$qtyPrefix${movement.qty.toStringAsFixed(0)}',
-                style: text.sectionHeading.copyWith(
+                style: text.dialogTitle.copyWith(
                   color: isPositive ? Colors.green : Colors.red,
                 ),
               ),
               SizedBox(height: density.xs),
               Text(
                 'Saldo: ${movement.balanceAfter.toStringAsFixed(0)}',
-                style: text.caption,
+                style: text.formHelper,
               ),
             ],
           ),

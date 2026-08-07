@@ -103,11 +103,11 @@ class _TransfersContentState extends State<_TransfersContent> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Gudang #${trf['from_id']} ➔ Gudang #${trf['to_id']}', style: ctx.text.formLabel),
-                              Text('Produk ID: #${trf['product_id']} • Qty: ${trf['qty']}', style: ctx.text.caption),
+                              Text('Produk ID: #${trf['product_id']} • Qty: ${trf['qty']}', style: ctx.text.formHelper),
                             ],
                           ),
                         ),
-                        const AppBadge(label: 'Terkirim', variant: AppBadgeVariant.info),
+                        AppBadge(label: 'Terkirim', color: ctx.colors.info),
                       ],
                     ),
                   );

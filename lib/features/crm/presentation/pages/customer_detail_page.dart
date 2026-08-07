@@ -94,11 +94,11 @@ class _CustomerDetailContentState extends State<_CustomerDetailContent> {
                     ),
                     SizedBox(width: density.md),
                     Expanded(
-                      child: Text(customer.name, style: text.sectionHeading),
+                      child: Text(customer.name, style: text.dialogTitle),
                     ),
                     AppBadge(
                       label: customer.phone ?? 'Tanpa Telepon',
-                      variant: AppBadgeVariant.neutral,
+                      color: context.colors.info,
                     ),
                   ],
                 ),
@@ -112,11 +112,11 @@ class _CustomerDetailContentState extends State<_CustomerDetailContent> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Poin Loyalitas', style: text.caption),
+                            Text('Poin Loyalitas', style: text.formHelper),
                             SizedBox(height: density.xs),
                             Text(
                               '${customer.loyaltyPoints.toStringAsFixed(0)} Pts',
-                              style: text.sectionHeading,
+                              style: text.dialogTitle,
                             ),
                           ],
                         ),
@@ -128,11 +128,11 @@ class _CustomerDetailContentState extends State<_CustomerDetailContent> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Limit Piutang', style: text.caption),
+                            Text('Limit Piutang', style: text.formHelper),
                             SizedBox(height: density.xs),
                             Text(
                               'Rp ${customer.creditLimit.toStringAsFixed(0)}',
-                              style: text.sectionHeading,
+                              style: text.dialogTitle,
                             ),
                           ],
                         ),
@@ -144,7 +144,7 @@ class _CustomerDetailContentState extends State<_CustomerDetailContent> {
 
                 // Detail Profil
                 AppPanel(
-                  title: 'Informasi Kontak & Alamat',
+                  header: Text('Informasi Kontak & Alamat', style: text.toolbarTitle),
                   child: Column(
                     children: [
                       _DetailRow(label: 'ID Pelanggan', value: '#${customer.id}'),
@@ -159,13 +159,13 @@ class _CustomerDetailContentState extends State<_CustomerDetailContent> {
 
                 // Riwayat Transaksi Placeholder
                 AppPanel(
-                  title: 'Riwayat Transaksi Terkait',
+                  header: Text('Riwayat Transaksi Terkait', style: text.toolbarTitle),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Daftar transaksi penjualan untuk pelanggan ini.',
-                        style: text.caption,
+                        style: text.formHelper,
                       ),
                       SizedBox(height: density.md),
                       AppButton(
@@ -203,7 +203,7 @@ class _DetailRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: text.caption),
+          Text(label, style: text.formHelper),
           Flexible(
             child: Text(
               value,

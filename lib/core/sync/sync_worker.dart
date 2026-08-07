@@ -1,7 +1,4 @@
-import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-
-import '../error/failures.dart';
 import '../../features/categories/domain/repositories/category_repository.dart';
 import '../../features/payments/domain/repositories/payment_repository.dart';
 import '../../features/products/domain/repositories/product_repository.dart';

@@ -188,8 +188,9 @@ class _SupplierTile extends StatelessWidget {
     final text = context.text;
     final density = context.space;
 
-    return AppPanel(
+    return GestureDetector(
       onTap: onTap,
+      child: AppPanel(
       child: Row(
         children: [
           Expanded(
@@ -204,7 +205,7 @@ class _SupplierTile extends StatelessWidget {
                     if (supplier.paymentTerms != null && supplier.paymentTerms!.isNotEmpty)
                       'Termin: ${supplier.paymentTerms}',
                   ].join(' • '),
-                  style: text.caption,
+                  style: text.formHelper,
                 ),
               ],
             ),
@@ -212,7 +213,7 @@ class _SupplierTile extends StatelessWidget {
           if (supplier.taxId != null && supplier.taxId!.isNotEmpty) ...[
             AppBadge(
               label: 'NPWP',
-              variant: AppBadgeVariant.neutral,
+              color: context.colors.info,
             ),
             SizedBox(width: density.sm),
           ],
@@ -229,6 +230,7 @@ class _SupplierTile extends StatelessWidget {
             ),
           ],
         ],
+      ),
       ),
     );
   }

@@ -182,8 +182,9 @@ class _PurchaseOrderTile extends StatelessWidget {
     final text = context.text;
     final density = context.space;
 
-    return AppPanel(
+    return GestureDetector(
       onTap: onTap,
+      child: AppPanel(
       child: Row(
         children: [
           Expanded(
@@ -194,7 +195,7 @@ class _PurchaseOrderTile extends StatelessWidget {
                 SizedBox(height: density.xs),
                 Text(
                   'Supplier: ${order.supplierName} • Gudang: ${order.warehouseName}',
-                  style: text.caption,
+                  style: text.formHelper,
                 ),
               ],
             ),
@@ -204,18 +205,19 @@ class _PurchaseOrderTile extends StatelessWidget {
             children: [
               Text(
                 'Rp ${order.totalAmount.toStringAsFixed(0)}',
-                style: text.sectionHeading,
+                style: text.dialogTitle,
               ),
               SizedBox(height: density.xs),
               AppBadge(
                 label: order.status.toUpperCase(),
-                variant: order.status == 'completed'
-                    ? AppBadgeVariant.success
-                    : (order.status == 'approved' ? AppBadgeVariant.info : AppBadgeVariant.neutral),
+                color: order.status == 'completed'
+                    ? context.colors.success
+                    : (order.status == 'approved' ? context.colors.info : context.colors.offline),
               ),
             ],
           ),
         ],
+      ),
       ),
     );
   }

@@ -157,8 +157,8 @@ import '../network/connectivity_module.dart' as _i154;
 import '../network/supabase_module.dart' as _i374;
 import '../preferences/app_preferences.dart' as _i597;
 import '../session/session_cubit.dart' as _i796;
+import '../session/dev_session_repository.dart' as _i833;
 import '../session/session_repository.dart' as _i77;
-import '../session/supabase_session_repository.dart' as _i833;
 import '../sync/connectivity_service.dart' as _i312;
 import '../sync/sync_bloc/sync_bloc.dart' as _i547;
 import '../sync/sync_worker.dart' as _i987;
@@ -181,8 +181,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i597.AppPreferences>(() => _i597.AppPreferences());
     gh.lazySingleton<_i669.CartStorage>(() => _i669.CartStorage());
     gh.lazySingleton<_i77.SessionRepository>(
-      () => _i833.SupabaseSessionRepository(
-        gh<_i454.SupabaseClient>(),
+      () => _i833.DevSessionRepository(
         gh<_i597.AppPreferences>(),
       ),
     );

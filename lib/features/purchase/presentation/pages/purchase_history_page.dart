@@ -88,7 +88,7 @@ class _PurchaseHistoryContentState extends State<_PurchaseHistoryContent> {
                     child: AppEmptyState(
                       title: 'Belum ada histori pengadaan',
                       message: 'Histori transaksi pembelian lintas PO dan receiving akan tampil di sini.',
-                      icon: AppIcons.purchaseHistory,
+                      icon: AppIcons.movementHistory,
                     ),
                   )
                 else
@@ -98,8 +98,9 @@ class _PurchaseHistoryContentState extends State<_PurchaseHistoryContent> {
                       separatorBuilder: (_, i) => SizedBox(height: density.sm),
                       itemBuilder: (ctx, i) {
                         final po = rows[i];
-                        return AppPanel(
+                        return GestureDetector(
                           onTap: () => context.go(AppRoutes.purchaseOrder(po.id.toString())),
+                          child: AppPanel(
                           child: Row(
                             children: [
                               Expanded(
@@ -107,12 +108,13 @@ class _PurchaseHistoryContentState extends State<_PurchaseHistoryContent> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(po.poNumber, style: ctx.text.formLabel),
-                                    Text('Supplier: ${po.supplierName} • Tanggal: ${po.createdAt?.toIso8601String().substring(0, 10) ?? '-'}', style: ctx.text.caption),
+                                    Text('Supplier: ${po.supplierName} • Tanggal: ${po.createdAt?.toIso8601String().substring(0, 10) ?? '-'}', style: ctx.text.formHelper),
                                   ],
                                 ),
                               ),
-                              Text('Rp ${po.totalAmount.toStringAsFixed(0)}', style: ctx.text.sectionHeading),
+                              Text('Rp ${po.totalAmount.toStringAsFixed(0)}', style: ctx.text.dialogTitle),
                             ],
+                          ),
                           ),
                         );
                       },

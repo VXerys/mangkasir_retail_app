@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../error/failures.dart';
 import '../preferences/app_preferences.dart';
@@ -20,6 +21,7 @@ import 'session_repository.dart';
 ///
 /// Method [signInAs] bersifat private bagi kelas ini; tidak ada jalur masuk
 /// ke implementasi ini dari kode produksi.
+@LazySingleton(as: SessionRepository)
 class DevSessionRepository implements SessionRepository {
   final AppPreferences _preferences;
 
@@ -56,11 +58,8 @@ class DevSessionRepository implements SessionRepository {
 
   @override
   Future<Either<Failure, AppSession>> restore() async {
-    final role = _preferences.devRole;
-    if (role == null) {
-      return const Left(AuthFailure('Belum ada sesi tersimpan'));
-    }
-
+    // Mode Dev Bypass: Default ke Owner bila belum ada role tersimpan
+    final role = _preferences.devRole ?? AppRole.owner;
     return Right(_build(role, _preferences.activeOutletId ?? _outlets.first.id));
   }
 

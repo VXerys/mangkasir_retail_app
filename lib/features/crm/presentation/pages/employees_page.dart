@@ -197,7 +197,7 @@ class _EmployeeTile extends StatelessWidget {
                     SizedBox(width: density.sm),
                     AppBadge(
                       label: employee.roleName,
-                      variant: AppBadgeVariant.info,
+                      color: context.colors.info,
                     ),
                   ],
                 ),
@@ -207,7 +207,7 @@ class _EmployeeTile extends StatelessWidget {
                     if (employee.email != null && employee.email!.isNotEmpty) employee.email,
                     if (employee.phone != null && employee.phone!.isNotEmpty) employee.phone,
                   ].join(' • '),
-                  style: text.caption,
+                  style: text.formHelper,
                 ),
               ],
             ),

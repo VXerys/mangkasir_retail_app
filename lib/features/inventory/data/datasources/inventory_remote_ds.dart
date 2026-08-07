@@ -95,16 +95,13 @@ class InventoryRemoteDsImpl implements InventoryRemoteDs {
     String? movementType,
   }) async {
     try {
-      var query = _client
-          .from('stock_movements')
-          .select(_movementCols)
-          .order('created_at', ascending: false);
+      var query = _client.from('stock_movements').select(_movementCols);
 
       if (productId != null) query = query.eq('product_id', productId);
       if (warehouseId != null) query = query.eq('warehouse_id', warehouseId);
       if (movementType != null) query = query.eq('movement_type', movementType);
 
-      final data = await query;
+      final data = await query.order('created_at', ascending: false);
       return (data as List)
           .map((e) => StockMovementModel.fromJson(e as Map<String, dynamic>))
           .toList();

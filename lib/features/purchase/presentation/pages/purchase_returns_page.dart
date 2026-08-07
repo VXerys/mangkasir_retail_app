@@ -103,11 +103,11 @@ class _PurchaseReturnsContentState extends State<_PurchaseReturnsContent> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('PO #${ret['po_id']} • Supplier #${ret['supplier_id']}', style: ctx.text.formLabel),
-                              Text('Alasan: ${ret['reason']} • Qty: ${ret['qty']}', style: ctx.text.caption),
+                              Text('Alasan: ${ret['reason']} • Qty: ${ret['qty']}', style: ctx.text.formHelper),
                             ],
                           ),
                         ),
-                        const AppBadge(label: 'Diretur', variant: AppBadgeVariant.warning),
+                        AppBadge(label: 'Diretur', color: ctx.colors.warning),
                       ],
                     ),
                   );

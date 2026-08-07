@@ -188,8 +188,9 @@ class _CustomerTile extends StatelessWidget {
     final text = context.text;
     final density = context.space;
 
-    return AppPanel(
+    return GestureDetector(
       onTap: onTap,
+      child: AppPanel(
       child: Row(
         children: [
           Expanded(
@@ -203,7 +204,7 @@ class _CustomerTile extends StatelessWidget {
                     if (customer.phone != null && customer.phone!.isNotEmpty) customer.phone,
                     if (customer.email != null && customer.email!.isNotEmpty) customer.email,
                   ].join(' • '),
-                  style: text.caption,
+                  style: text.formHelper,
                 ),
               ],
             ),
@@ -211,7 +212,7 @@ class _CustomerTile extends StatelessWidget {
           if (customer.loyaltyPoints > 0) ...[
             AppBadge(
               label: '${customer.loyaltyPoints.toStringAsFixed(0)} poin',
-              variant: AppBadgeVariant.info,
+              color: context.colors.info,
             ),
             SizedBox(width: density.sm),
           ],
@@ -228,6 +229,7 @@ class _CustomerTile extends StatelessWidget {
             ),
           ],
         ],
+      ),
       ),
     );
   }

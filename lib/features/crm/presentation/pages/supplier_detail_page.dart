@@ -94,11 +94,11 @@ class _SupplierDetailContentState extends State<_SupplierDetailContent> {
                     ),
                     SizedBox(width: density.md),
                     Expanded(
-                      child: Text(supplier.name, style: text.sectionHeading),
+                      child: Text(supplier.name, style: text.dialogTitle),
                     ),
                     AppBadge(
                       label: supplier.paymentTerms ?? 'Termin Standar',
-                      variant: AppBadgeVariant.neutral,
+                      color: context.colors.info,
                     ),
                   ],
                 ),
@@ -106,7 +106,7 @@ class _SupplierDetailContentState extends State<_SupplierDetailContent> {
 
                 // Detail Profil
                 AppPanel(
-                  title: 'Informasi Pemasok & NPWP',
+                  header: Text('Informasi Pemasok & NPWP', style: text.toolbarTitle),
                   child: Column(
                     children: [
                       _DetailRow(label: 'ID Pemasok', value: '#${supplier.id}'),
@@ -126,13 +126,13 @@ class _SupplierDetailContentState extends State<_SupplierDetailContent> {
 
                 // Riwayat Purchase Order Placeholder
                 AppPanel(
-                  title: 'Riwayat Purchase Order (PO)',
+                  header: Text('Riwayat Purchase Order (PO)', style: text.toolbarTitle),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Daftar pesanan pembelian barang ke pemasok ini.',
-                        style: text.caption,
+                        style: text.formHelper,
                       ),
                       SizedBox(height: density.md),
                       AppButton(
@@ -170,7 +170,7 @@ class _DetailRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: text.caption),
+          Text(label, style: text.formHelper),
           Flexible(
             child: Text(
               value,

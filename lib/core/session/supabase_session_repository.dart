@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
+// import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../error/failures.dart';
@@ -20,7 +20,7 @@ import 'session_repository.dart';
 /// Bila jaringan tidak ada tetapi token belum kedaluwarsa, sesi dikembalikan dari
 /// cache sehingga kasir tidak terkunci. Token yang sudah kedaluwarsa tetap
 /// memaksa login ulang — cache bukan pengganti validitas token.
-@LazySingleton(as: SessionRepository)
+// @LazySingleton(as: SessionRepository)
 class SupabaseSessionRepository implements SessionRepository {
   final SupabaseClient _client;
   final AppPreferences _prefs;

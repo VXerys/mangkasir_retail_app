@@ -3,7 +3,7 @@
 
 # MangRitel — di mana proyek ini sekarang
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T06:20:02Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T06:37:37Z_
 
 ## 🔄 Aplikasi Flutter — fase aktif UI-6 · Identity dan Organisasi Nyata
 

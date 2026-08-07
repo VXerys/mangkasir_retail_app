@@ -101,11 +101,11 @@ class _OpnameContentState extends State<_OpnameContent> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(opn['no'] as String, style: ctx.text.formLabel),
-                              Text('Gudang ID: #${opn['warehouse_id']} • Catatan: ${opn['notes'] ?? '-'}', style: ctx.text.caption),
+                              Text('Gudang ID: #${opn['warehouse_id']} • Catatan: ${opn['notes'] ?? '-'}', style: ctx.text.formHelper),
                             ],
                           ),
                         ),
-                        const AppBadge(label: 'Berjalan', variant: AppBadgeVariant.warning),
+                        AppBadge(label: 'Berjalan', color: ctx.colors.warning),
                       ],
                     ),
                   );

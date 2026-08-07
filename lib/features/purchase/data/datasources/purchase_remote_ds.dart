@@ -40,12 +40,12 @@ class PurchaseRemoteDsImpl implements PurchaseRemoteDs {
   @override
   Future<List<PurchaseOrderModel>> getOrders(int outletId, {int? supplierId, String? status}) async {
     try {
-      var query = _client.from('purchase_orders').select(_poCols).order('created_at', ascending: false);
+      var query = _client.from('purchase_orders').select(_poCols);
 
       if (supplierId != null) query = query.eq('supplier_id', supplierId);
       if (status != null) query = query.eq('status', status);
 
-      final data = await query;
+      final data = await query.order('created_at', ascending: false);
       return (data as List).map((e) => PurchaseOrderModel.fromJson(e as Map<String, dynamic>)).toList();
     } on PostgrestException catch (e) {
       throw RemoteException('getOrders failed: ${e.message}');

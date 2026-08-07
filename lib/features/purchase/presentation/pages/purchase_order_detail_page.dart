@@ -127,13 +127,13 @@ class _PurchaseOrderDetailContentState extends State<_PurchaseOrderDetailContent
                     ),
                     SizedBox(width: density.md),
                     Expanded(
-                      child: Text(po.poNumber, style: text.sectionHeading),
+                      child: Text(po.poNumber, style: text.dialogTitle),
                     ),
                     AppBadge(
                       label: po.status.toUpperCase(),
-                      variant: po.status == 'completed'
-                          ? AppBadgeVariant.success
-                          : (po.status == 'approved' ? AppBadgeVariant.info : AppBadgeVariant.neutral),
+                      color: po.status == 'completed'
+                          ? context.colors.success
+                          : (po.status == 'approved' ? context.colors.info : context.colors.offline),
                     ),
                   ],
                 ),
@@ -165,7 +165,7 @@ class _PurchaseOrderDetailContentState extends State<_PurchaseOrderDetailContent
 
                 // Detail Ringkasan PO
                 AppPanel(
-                  title: 'Informasi PO & Supplier',
+                  header: Text('Informasi PO & Supplier', style: text.toolbarTitle),
                   child: Column(
                     children: [
                       _DetailRow(label: 'ID PO', value: '#${po.id}'),
@@ -180,7 +180,7 @@ class _PurchaseOrderDetailContentState extends State<_PurchaseOrderDetailContent
 
                 // Rincian Item PO
                 AppPanel(
-                  title: 'Rincian Item Barang Dipesan',
+                  header: Text('Rincian Item Barang Dipesan', style: text.toolbarTitle),
                   child: Column(
                     children: po.items
                         .map(
@@ -192,7 +192,7 @@ class _PurchaseOrderDetailContentState extends State<_PurchaseOrderDetailContent
                                 Text(item.productName, style: text.formLabel),
                                 Text(
                                   '${item.qtyOrdered.toStringAsFixed(0)} x Rp ${item.unitPrice.toStringAsFixed(0)} = Rp ${item.totalPrice.toStringAsFixed(0)}',
-                                  style: text.caption,
+                                  style: text.formHelper,
                                 ),
                               ],
                             ),
@@ -226,7 +226,7 @@ class _DetailRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: text.caption),
+          Text(label, style: text.formHelper),
           Flexible(
             child: Text(
               value,

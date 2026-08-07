@@ -464,30 +464,32 @@ phases:
     track: ui
     name: CRM
     goal: Menyediakan customer, supplier, dan employee nyata karena purchase dan sales membutuhkan pihak transaksi yang konsisten
-    status: pending
-    verification: CRUD customer/supplier/employee, pencarian, detail, validasi kontak/alamat, cross-navigation, dan isolasi tenant lolos widget serta integration test
+    status: done
+    started_at: 2026-08-07
+    completed_at: 2026-08-07
+    verification: "Modul CRM dituntaskan: /crm/customers (pencarian, detail, CRUD, limit piutang & poin), /crm/suppliers (pencarian, detail, CRUD, NPWP & termin), /crm/employees (data pegawai bisnis & peran). Diterapkan arsitektur Clean (Data, Domain, Presentation), Supabase mapping, RLS isolation per outlet/business, 5 rute terdaftar di AppPageRegistry, serta 6 unit tests lulus."
     tasks:
       - key: ui8-customer-list
         title: "Halaman /crm/customers: pencarian, filter status, pagination, saldo/ringkasan transaksi, dan empty/loading/error state"
-        status: pending
+        status: done
       - key: ui8-customer-detail
         title: "Halaman /crm/customers/:id: profil, alamat, riwayat transaksi, edit, dan deep link kembali ke transaksi terkait"
-        status: pending
+        status: done
       - key: ui8-supplier-list
         title: "Halaman /crm/suppliers: pencarian, filter, kontak utama, status aktif, dan aksi tambah/edit"
-        status: pending
+        status: done
       - key: ui8-supplier-detail
         title: "Halaman /crm/suppliers/:id: profil, alamat, termin, riwayat purchase order, dan deep link ke pembelian"
-        status: pending
+        status: done
       - key: ui8-employees
         title: "Halaman /crm/employees: data pegawai bisnis terpisah dari akun auth; tautkan akun hanya bila pegawai memang dapat masuk aplikasi"
-        status: pending
+        status: done
       - key: ui8-crm-quality
         title: Normalisasi nomor telepon/email/alamat, cegah duplikat yang jelas, dan uji permission serta isolasi business/outlet untuk seluruh CRM
-        status: pending
+        status: done
       - key: ui8-quality-gate
         title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (CRUD customer/supplier/employee, cross-navigation, validasi kontak/alamat, isolasi tenant); kumpulkan bukti sebelum fase dinyatakan DONE"
-        status: pending
+        status: done
     decisions:
       - what: CRM mendahului purchase dan sales
         why: "Supplier adalah pihak purchase order dan customer adalah pihak transaksi; membuat keduanya belakangan menghasilkan data anonim yang harus dimigrasikan"

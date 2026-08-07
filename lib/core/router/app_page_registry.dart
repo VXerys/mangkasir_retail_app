@@ -10,6 +10,11 @@ import '../../features/identity/presentation/pages/business_settings_page.dart';
 import '../../features/identity/presentation/pages/outlets_page.dart';
 import '../../features/identity/presentation/pages/roles_page.dart';
 import '../../features/identity/presentation/pages/users_page.dart';
+import '../../features/crm/presentation/pages/customer_detail_page.dart';
+import '../../features/crm/presentation/pages/customer_list_page.dart';
+import '../../features/crm/presentation/pages/employees_page.dart';
+import '../../features/crm/presentation/pages/supplier_detail_page.dart';
+import '../../features/crm/presentation/pages/supplier_list_page.dart';
 import '../../features/products/presentation/pages/product_form_page.dart';
 import '../../features/products/presentation/pages/product_list_page.dart';
 import '../../features/settings/tax/presentation/pages/tax_settings_page.dart';
@@ -60,6 +65,13 @@ abstract final class AppPageRegistry {
     AppRoutes.inventoryProducts: ProductListPage.build,
     AppRoutes.inventoryProductNew: ProductFormPage.buildNew,
     AppRoutes.inventoryProductDetail: ProductFormPage.buildEdit,
+
+    // ── CRM (UI-8) ─────────────────────────────────────────────────────────
+    AppRoutes.crmCustomers: CustomerListPage.pageBuilder,
+    AppRoutes.crmCustomerDetail: CustomerDetailPage.pageBuilder,
+    AppRoutes.crmSuppliers: SupplierListPage.pageBuilder,
+    AppRoutes.crmSupplierDetail: SupplierDetailPage.pageBuilder,
+    AppRoutes.crmEmployees: EmployeesPage.pageBuilder,
   };
 
   /// Pembangun untuk [route], atau null bila alamat itu masih penanda tempat.

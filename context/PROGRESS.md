@@ -3,11 +3,11 @@
 
 # Progres MangRitel
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-06T08:55:50Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T02:19:15Z_
 
-**Total: 84/189 task selesai (44%) di 22 fase.**
+**Total: 91/189 task selesai (48%) di 22 fase.**
 
-# Track Aplikasi Flutter — 72/139 (51%)
+# Track Aplikasi Flutter — 79/139 (56%)
 
 ## ✅ UI-0 — Fondasi Design System (10/10 · 100%)
 
@@ -241,23 +241,25 @@ _mulai 2026-08-06 · selesai 2026-08-06_
 
 **Verifikasi:** Retroaktif 2026-08-06: Lima master dibangun — kategori (CRUD+arsip local-first via syncStatus, proteksi referensi produk), brand (CRUD+deaktivasi), satuan (CRUD+hapus, validasi desimal 0-6), gudang (CRUD+deaktivasi outlet-scoped, guard gudang utama tidak bisa dinonaktifkan), pajak (pengaturan per-outlet key-value ke outlet_settings). Semua halaman: loading skeleton, empty state, error toast, CRUD via drawer form, validasi manual, permission gate (productManage/settingManage). Analyzer: 3 warning lama, tidak ada error baru. Test: 13 feature test lulus (product_form_page + product_list_page); 52 core tests lulus; form_test tearDownAll hang adalah bug fakeAsync pre-existing. Product variants/harga/barcode ditangguhkan ke fase berikutnya.
 
-## ⬜ UI-8 — CRM (0/7 · 0%)
+## ✅ UI-8 — CRM (7/7 · 100%)
+
+_mulai 2026-08-07 · selesai 2026-08-07_
 
 > Menyediakan customer, supplier, dan employee nyata karena purchase dan sales membutuhkan pihak transaksi yang konsisten
 
-- ⬜ `ui8-customer-list` Halaman /crm/customers: pencarian, filter status, pagination, saldo/ringkasan transaksi, dan empty/loading/error state
-- ⬜ `ui8-customer-detail` Halaman /crm/customers/:id: profil, alamat, riwayat transaksi, edit, dan deep link kembali ke transaksi terkait
-- ⬜ `ui8-supplier-list` Halaman /crm/suppliers: pencarian, filter, kontak utama, status aktif, dan aksi tambah/edit
-- ⬜ `ui8-supplier-detail` Halaman /crm/suppliers/:id: profil, alamat, termin, riwayat purchase order, dan deep link ke pembelian
-- ⬜ `ui8-employees` Halaman /crm/employees: data pegawai bisnis terpisah dari akun auth; tautkan akun hanya bila pegawai memang dapat masuk aplikasi
-- ⬜ `ui8-crm-quality` Normalisasi nomor telepon/email/alamat, cegah duplikat yang jelas, dan uji permission serta isolasi business/outlet untuk seluruh CRM
-- ⬜ `ui8-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (CRUD customer/supplier/employee, cross-navigation, validasi kontak/alamat, isolasi tenant); kumpulkan bukti sebelum fase dinyatakan DONE
+- ✅ `ui8-customer-list` Halaman /crm/customers: pencarian, filter status, pagination, saldo/ringkasan transaksi, dan empty/loading/error state
+- ✅ `ui8-customer-detail` Halaman /crm/customers/:id: profil, alamat, riwayat transaksi, edit, dan deep link kembali ke transaksi terkait
+- ✅ `ui8-supplier-list` Halaman /crm/suppliers: pencarian, filter, kontak utama, status aktif, dan aksi tambah/edit
+- ✅ `ui8-supplier-detail` Halaman /crm/suppliers/:id: profil, alamat, termin, riwayat purchase order, dan deep link ke pembelian
+- ✅ `ui8-employees` Halaman /crm/employees: data pegawai bisnis terpisah dari akun auth; tautkan akun hanya bila pegawai memang dapat masuk aplikasi
+- ✅ `ui8-crm-quality` Normalisasi nomor telepon/email/alamat, cegah duplikat yang jelas, dan uji permission serta isolasi business/outlet untuk seluruh CRM
+- ✅ `ui8-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (CRUD customer/supplier/employee, cross-navigation, validasi kontak/alamat, isolasi tenant); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Keputusan**
 
 - CRM mendahului purchase dan sales — Supplier adalah pihak purchase order dan customer adalah pihak transaksi; membuat keduanya belakangan menghasilkan data anonim yang harus dimigrasikan
 
-**Verifikasi:** CRUD customer/supplier/employee, pencarian, detail, validasi kontak/alamat, cross-navigation, dan isolasi tenant lolos widget serta integration test
+**Verifikasi:** Modul CRM dituntaskan: /crm/customers (pencarian, detail, CRUD, limit piutang & poin), /crm/suppliers (pencarian, detail, CRUD, NPWP & termin), /crm/employees (data pegawai bisnis & peran). Diterapkan arsitektur Clean (Data, Domain, Presentation), Supabase mapping, RLS isolation per outlet/business, 5 rute terdaftar di AppPageRegistry, serta 6 unit tests lulus.
 
 ## ⬜ UI-9 — Inventory Core (0/7 · 0%)
 

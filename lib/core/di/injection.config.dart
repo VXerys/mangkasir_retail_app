@@ -55,6 +55,12 @@ import '../../features/categories/domain/usecases/update_category_usecase.dart'
     as _i656;
 import '../../features/categories/presentation/bloc/category/category_bloc.dart'
     as _i366;
+import '../../features/crm/data/datasources/crm_remote_ds.dart' as _i126;
+import '../../features/crm/data/repositories/crm_repository_impl.dart' as _i516;
+import '../../features/crm/domain/repositories/crm_repository.dart' as _i677;
+import '../../features/crm/presentation/bloc/customer_cubit.dart' as _i220;
+import '../../features/crm/presentation/bloc/employee_cubit.dart' as _i107;
+import '../../features/crm/presentation/bloc/supplier_cubit.dart' as _i27;
 import '../../features/identity/data/datasources/business_remote_ds.dart'
     as _i620;
 import '../../features/identity/data/datasources/outlet_remote_ds.dart'
@@ -215,6 +221,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i367.BrandRemoteDs>(
       () => _i367.BrandRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i126.CrmRemoteDs>(
+      () => _i126.CrmRemoteDsImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i353.UnitRemoteDs>(
       () => _i353.UnitRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
@@ -272,6 +281,9 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.factory<_i110.TaxCubit>(() => _i110.TaxCubit(gh<_i544.TaxRepository>()));
+    gh.lazySingleton<_i677.CrmRepository>(
+      () => _i516.CrmRepositoryImpl(gh<_i126.CrmRemoteDs>()),
+    );
     gh.lazySingleton<_i971.BusinessRepository>(
       () => _i307.BusinessRepositoryImpl(gh<_i620.BusinessRemoteDs>()),
     );
@@ -315,6 +327,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i421.TransactionRepository>(),
         gh<_i315.PaymentRepository>(),
       ),
+    );
+    gh.factory<_i220.CustomerCubit>(
+      () => _i220.CustomerCubit(gh<_i677.CrmRepository>()),
+    );
+    gh.factory<_i107.EmployeeCubit>(
+      () => _i107.EmployeeCubit(gh<_i677.CrmRepository>()),
+    );
+    gh.factory<_i27.SupplierCubit>(
+      () => _i27.SupplierCubit(gh<_i677.CrmRepository>()),
     );
     gh.factory<_i384.PaymentCubit>(
       () => _i384.PaymentCubit(

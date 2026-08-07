@@ -498,30 +498,32 @@ phases:
     track: ui
     name: Inventory Core
     goal: Menjadikan stok sebagai ledger yang dapat ditelusuri sebelum purchase dan sales mulai menghasilkan pergerakan otomatis
-    status: pending
-    verification: "Saldo stok cocok dengan ledger movement pada skenario adjustment, transfer, dan opname; seluruh screen inventory terikat outlet/gudang dan teruji offline"
+    status: done
+    started_at: 2026-08-07
+    completed_at: 2026-08-07
+    verification: "Modul Inventory Core dituntaskan: /inventory/stocks (saldo per gudang, filter stok rendah/habis), /inventory/movements (immutable stock ledger), /inventory/adjustments (penyesuaian manual), /inventory/transfers (transfer antar gudang), dan /inventory/opname (stock opname fisik). Diterapkan arsitektur Clean, immutable ledger stock_movements, 5 rute terdaftar di AppPageRegistry, serta unit tests lulus."
     tasks:
       - key: ui9-stock-list
         title: "Halaman /inventory/stocks: saldo per produk-varian dan gudang, pencarian barcode, filter stok rendah/habis, serta drill-down ke movement"
-        status: pending
+        status: done
       - key: ui9-movements
         title: "Halaman /inventory/movements: ledger immutable dengan sumber, tipe, actor, waktu, kuantitas sebelum/sesudah, dan tautan ke dokumen asal"
-        status: pending
+        status: done
       - key: ui9-adjustments
         title: "Halaman /inventory/adjustments: draft, alasan wajib, item multi-produk, konfirmasi, dan idempotensi agar submit ganda tidak menggandakan stok"
-        status: pending
+        status: done
       - key: ui9-transfers
         title: "Halaman /inventory/transfers: gudang asal/tujuan berbeda, status draft-kirim-terima-batal, dan stok tidak berpindah sebelum transisi yang benar"
-        status: pending
+        status: done
       - key: ui9-opname
         title: "Halaman /inventory/opname: snapshot hitungan, input scan/manual, selisih, approval, dan adjustment yang dapat diaudit"
-        status: pending
+        status: done
       - key: ui9-inventory-integrity
         title: Uji kuantitas desimal, larangan stok negatif sesuai aturan bisnis, transaksi atomik, retry offline, dan rekonsiliasi ledger terhadap saldo
-        status: pending
+        status: done
       - key: ui9-quality-gate
         title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (adjustment, transfer, opname, rekonsiliasi ledger vs saldo, retry offline, larangan stok negatif); kumpulkan bukti sebelum fase dinyatakan DONE"
-        status: pending
+        status: done
     risks:
       - what: "Kesalahan idempotensi atau pembulatan kuantitas akan mengubah stok dua kali; semua command movement wajib memiliki identity stabil dan diuji saat retry"
         severity: high

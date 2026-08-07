@@ -86,6 +86,15 @@ import '../../features/identity/presentation/bloc/outlet/outlet_cubit.dart'
     as _i1046;
 import '../../features/identity/presentation/bloc/user/user_cubit.dart'
     as _i337;
+import '../../features/inventory/data/datasources/inventory_remote_ds.dart'
+    as _i729;
+import '../../features/inventory/data/repositories/inventory_repository_impl.dart'
+    as _i572;
+import '../../features/inventory/domain/repositories/inventory_repository.dart'
+    as _i422;
+import '../../features/inventory/presentation/bloc/movement_cubit.dart'
+    as _i744;
+import '../../features/inventory/presentation/bloc/stock_cubit.dart' as _i1016;
 import '../../features/payments/data/datasources/payment_local_ds.dart'
     as _i971;
 import '../../features/payments/data/datasources/payment_remote_ds.dart'
@@ -197,6 +206,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i131.TransactionRemoteDs>(
       () => _i131.TransactionRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i729.InventoryRemoteDs>(
+      () => _i729.InventoryRemoteDsImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i710.PaymentRemoteDs>(
       () => _i710.PaymentRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
@@ -287,6 +299,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i971.BusinessRepository>(
       () => _i307.BusinessRepositoryImpl(gh<_i620.BusinessRemoteDs>()),
     );
+    gh.lazySingleton<_i422.InventoryRepository>(
+      () => _i572.InventoryRepositoryImpl(gh<_i729.InventoryRemoteDs>()),
+    );
     gh.lazySingleton<_i921.UnitRepository>(
       () => _i195.UnitRepositoryImpl(gh<_i353.UnitRemoteDs>()),
     );
@@ -343,6 +358,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i561.CalculateCartTotals>(),
         gh<_i666.CartBloc>(),
       ),
+    );
+    gh.factory<_i744.MovementCubit>(
+      () => _i744.MovementCubit(gh<_i422.InventoryRepository>()),
+    );
+    gh.factory<_i1016.StockCubit>(
+      () => _i1016.StockCubit(gh<_i422.InventoryRepository>()),
     );
     gh.factory<_i366.CategoryBloc>(
       () => _i366.CategoryBloc(

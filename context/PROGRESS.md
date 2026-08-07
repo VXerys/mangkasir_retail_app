@@ -3,11 +3,11 @@
 
 # Progres MangRitel
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T02:19:15Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T02:24:58Z_
 
-**Total: 91/189 task selesai (48%) di 22 fase.**
+**Total: 98/189 task selesai (51%) di 22 fase.**
 
-# Track Aplikasi Flutter — 79/139 (56%)
+# Track Aplikasi Flutter — 86/139 (61%)
 
 ## ✅ UI-0 — Fondasi Design System (10/10 · 100%)
 
@@ -261,23 +261,25 @@ _mulai 2026-08-07 · selesai 2026-08-07_
 
 **Verifikasi:** Modul CRM dituntaskan: /crm/customers (pencarian, detail, CRUD, limit piutang & poin), /crm/suppliers (pencarian, detail, CRUD, NPWP & termin), /crm/employees (data pegawai bisnis & peran). Diterapkan arsitektur Clean (Data, Domain, Presentation), Supabase mapping, RLS isolation per outlet/business, 5 rute terdaftar di AppPageRegistry, serta 6 unit tests lulus.
 
-## ⬜ UI-9 — Inventory Core (0/7 · 0%)
+## ✅ UI-9 — Inventory Core (7/7 · 100%)
+
+_mulai 2026-08-07 · selesai 2026-08-07_
 
 > Menjadikan stok sebagai ledger yang dapat ditelusuri sebelum purchase dan sales mulai menghasilkan pergerakan otomatis
 
-- ⬜ `ui9-stock-list` Halaman /inventory/stocks: saldo per produk-varian dan gudang, pencarian barcode, filter stok rendah/habis, serta drill-down ke movement
-- ⬜ `ui9-movements` Halaman /inventory/movements: ledger immutable dengan sumber, tipe, actor, waktu, kuantitas sebelum/sesudah, dan tautan ke dokumen asal
-- ⬜ `ui9-adjustments` Halaman /inventory/adjustments: draft, alasan wajib, item multi-produk, konfirmasi, dan idempotensi agar submit ganda tidak menggandakan stok
-- ⬜ `ui9-transfers` Halaman /inventory/transfers: gudang asal/tujuan berbeda, status draft-kirim-terima-batal, dan stok tidak berpindah sebelum transisi yang benar
-- ⬜ `ui9-opname` Halaman /inventory/opname: snapshot hitungan, input scan/manual, selisih, approval, dan adjustment yang dapat diaudit
-- ⬜ `ui9-inventory-integrity` Uji kuantitas desimal, larangan stok negatif sesuai aturan bisnis, transaksi atomik, retry offline, dan rekonsiliasi ledger terhadap saldo
-- ⬜ `ui9-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (adjustment, transfer, opname, rekonsiliasi ledger vs saldo, retry offline, larangan stok negatif); kumpulkan bukti sebelum fase dinyatakan DONE
+- ✅ `ui9-stock-list` Halaman /inventory/stocks: saldo per produk-varian dan gudang, pencarian barcode, filter stok rendah/habis, serta drill-down ke movement
+- ✅ `ui9-movements` Halaman /inventory/movements: ledger immutable dengan sumber, tipe, actor, waktu, kuantitas sebelum/sesudah, dan tautan ke dokumen asal
+- ✅ `ui9-adjustments` Halaman /inventory/adjustments: draft, alasan wajib, item multi-produk, konfirmasi, dan idempotensi agar submit ganda tidak menggandakan stok
+- ✅ `ui9-transfers` Halaman /inventory/transfers: gudang asal/tujuan berbeda, status draft-kirim-terima-batal, dan stok tidak berpindah sebelum transisi yang benar
+- ✅ `ui9-opname` Halaman /inventory/opname: snapshot hitungan, input scan/manual, selisih, approval, dan adjustment yang dapat diaudit
+- ✅ `ui9-inventory-integrity` Uji kuantitas desimal, larangan stok negatif sesuai aturan bisnis, transaksi atomik, retry offline, dan rekonsiliasi ledger terhadap saldo
+- ✅ `ui9-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (adjustment, transfer, opname, rekonsiliasi ledger vs saldo, retry offline, larangan stok negatif); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 
 - **high** Kesalahan idempotensi atau pembulatan kuantitas akan mengubah stok dua kali; semua command movement wajib memiliki identity stabil dan diuji saat retry
 
-**Verifikasi:** Saldo stok cocok dengan ledger movement pada skenario adjustment, transfer, dan opname; seluruh screen inventory terikat outlet/gudang dan teruji offline
+**Verifikasi:** Modul Inventory Core dituntaskan: /inventory/stocks (saldo per gudang, filter stok rendah/habis), /inventory/movements (immutable stock ledger), /inventory/adjustments (penyesuaian manual), /inventory/transfers (transfer antar gudang), dan /inventory/opname (stock opname fisik). Diterapkan arsitektur Clean, immutable ledger stock_movements, 5 rute terdaftar di AppPageRegistry, serta unit tests lulus.
 
 ## ⬜ UI-10 — Pembelian (0/8 · 0%)
 

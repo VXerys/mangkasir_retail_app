@@ -15,6 +15,11 @@ import '../../features/crm/presentation/pages/customer_list_page.dart';
 import '../../features/crm/presentation/pages/employees_page.dart';
 import '../../features/crm/presentation/pages/supplier_detail_page.dart';
 import '../../features/crm/presentation/pages/supplier_list_page.dart';
+import '../../features/inventory/presentation/pages/adjustments_page.dart';
+import '../../features/inventory/presentation/pages/movements_page.dart';
+import '../../features/inventory/presentation/pages/opname_page.dart';
+import '../../features/inventory/presentation/pages/stock_list_page.dart';
+import '../../features/inventory/presentation/pages/transfers_page.dart';
 import '../../features/products/presentation/pages/product_form_page.dart';
 import '../../features/products/presentation/pages/product_list_page.dart';
 import '../../features/settings/tax/presentation/pages/tax_settings_page.dart';
@@ -72,6 +77,13 @@ abstract final class AppPageRegistry {
     AppRoutes.crmSuppliers: SupplierListPage.pageBuilder,
     AppRoutes.crmSupplierDetail: SupplierDetailPage.pageBuilder,
     AppRoutes.crmEmployees: EmployeesPage.pageBuilder,
+
+    // ── Inventory Core (UI-9) ──────────────────────────────────────────────
+    AppRoutes.inventoryStocks: StockListPage.pageBuilder,
+    AppRoutes.inventoryMovements: MovementsPage.pageBuilder,
+    AppRoutes.inventoryAdjustments: AdjustmentsPage.pageBuilder,
+    AppRoutes.inventoryTransfers: TransfersPage.pageBuilder,
+    AppRoutes.inventoryOpname: OpnamePage.pageBuilder,
   };
 
   /// Pembangun untuk [route], atau null bila alamat itu masih penanda tempat.

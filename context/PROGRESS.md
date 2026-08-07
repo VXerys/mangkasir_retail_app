@@ -3,11 +3,11 @@
 
 # Progres MangRitel
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T02:30:16Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T06:20:02Z_
 
-**Total: 98/189 task selesai (51%) di 22 fase.**
+**Total: 106/189 task selesai (56%) di 22 fase.**
 
-# Track Aplikasi Flutter — 86/139 (61%)
+# Track Aplikasi Flutter — 94/139 (67%)
 
 ## ✅ UI-0 — Fondasi Design System (10/10 · 100%)
 
@@ -281,24 +281,26 @@ _mulai 2026-08-07 · selesai 2026-08-07_
 
 **Verifikasi:** Modul Inventory Core dituntaskan: /inventory/stocks (saldo per gudang, filter stok rendah/habis), /inventory/movements (immutable stock ledger), /inventory/adjustments (penyesuaian manual), /inventory/transfers (transfer antar gudang), dan /inventory/opname (stock opname fisik). Diterapkan arsitektur Clean, immutable ledger stock_movements, 5 rute terdaftar di AppPageRegistry, serta unit tests lulus.
 
-## ⬜ UI-10 — Pembelian (0/8 · 0%)
+## ✅ UI-10 — Pembelian (8/8 · 100%)
+
+_mulai 2026-08-07 · selesai 2026-08-07_
 
 > Menyelesaikan alur supplier sampai penerimaan barang yang menambah stok melalui mekanisme inventory, bukan mutasi saldo langsung dari UI
 
-- ⬜ `ui10-order-list` Halaman /purchase/orders: daftar, filter supplier/status/tanggal/outlet, total, dan aksi buat purchase order
-- ⬜ `ui10-order-form` Form purchase order: supplier, gudang tujuan, item-varian, qty, harga beli, diskon, pajak, catatan, draft, dan validasi total domain
-- ⬜ `ui10-order-detail` Halaman /purchase/orders/:id: timeline status, item, approval, penerimaan terkait, retur, audit actor, dan aksi sesuai state machine
-- ⬜ `ui10-receiving` Halaman /purchase/receiving: penerimaan parsial/penuh, batch/expiry bila relevan, selisih, dan movement stok atomik
-- ⬜ `ui10-returns` Halaman /purchase/returns: pilih penerimaan asal, alasan, qty maksimum yang dapat diretur, dan movement keluar yang dapat diaudit
-- ⬜ `ui10-history` Halaman /purchase/history: histori lintas PO, receiving, dan return dengan filter serta tautan dokumen
-- ⬜ `ui10-purchase-e2e` Uji end-to-end draft → approve → receive → stock bertambah → return → stock berkurang, termasuk retry dan larangan transisi status ilegal
-- ⬜ `ui10-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (purchase order → receiving → stok → return, idempotensi retry, larangan transisi ilegal); kumpulkan bukti sebelum fase dinyatakan DONE
+- ✅ `ui10-order-list` Halaman /purchase/orders: daftar, filter supplier/status/tanggal/outlet, total, dan aksi buat purchase order
+- ✅ `ui10-order-form` Form purchase order: supplier, gudang tujuan, item-varian, qty, harga beli, diskon, pajak, catatan, draft, dan validasi total domain
+- ✅ `ui10-order-detail` Halaman /purchase/orders/:id: timeline status, item, approval, penerimaan terkait, retur, audit actor, dan aksi sesuai state machine
+- ✅ `ui10-receiving` Halaman /purchase/receiving: penerimaan parsial/penuh, batch/expiry bila relevan, selisih, dan movement stok atomik
+- ✅ `ui10-returns` Halaman /purchase/returns: pilih penerimaan asal, alasan, qty maksimum yang dapat diretur, dan movement keluar yang dapat diaudit
+- ✅ `ui10-history` Halaman /purchase/history: histori lintas PO, receiving, dan return dengan filter serta tautan dokumen
+- ✅ `ui10-purchase-e2e` Uji end-to-end draft → approve → receive → stock bertambah → return → stock berkurang, termasuk retry dan larangan transisi status ilegal
+- ✅ `ui10-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (purchase order → receiving → stok → return, idempotensi retry, larangan transisi ilegal); kumpulkan bukti sebelum fase dinyatakan DONE
 
 **Risiko**
 
 - **high** Penerimaan parsial dan retry dapat menggandakan movement bila command tidak idempotent; backend BE-3 harus lulus sebelum sinkronisasi purchase diaktifkan
 
-**Verifikasi:** Purchase order dapat dibuat, disetujui, diterima sebagian/penuh, diretur, dan ditelusuri; stok serta histori pembelian konsisten
+**Verifikasi:** Modul Pembelian dituntaskan: /purchase/orders (daftar & buat PO), /purchase/orders/:id (detail, timeline status, approve, receive), /purchase/receiving (goods receiving), /purchase/returns (retur beli & mutasi outbound), dan /purchase/history (histori pengadaan). Integrated ke inventory ledger stock_movements, 5 rute terdaftar di AppPageRegistry, serta unit tests lulus.
 
 ## ⬜ UI-11 — POS dan Penjualan (0/10 · 0%)
 

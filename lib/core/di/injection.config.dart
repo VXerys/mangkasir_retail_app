@@ -121,6 +121,13 @@ import '../../features/products/domain/usecases/watch_products_usecase.dart'
     as _i622;
 import '../../features/products/presentation/bloc/product/product_bloc.dart'
     as _i426;
+import '../../features/purchase/data/datasources/purchase_remote_ds.dart'
+    as _i885;
+import '../../features/purchase/data/repositories/purchase_repository_impl.dart'
+    as _i254;
+import '../../features/purchase/domain/repositories/purchase_repository.dart'
+    as _i220;
+import '../../features/purchase/presentation/bloc/purchase_cubit.dart' as _i771;
 import '../../features/settings/tax/data/datasources/tax_remote_ds.dart'
     as _i192;
 import '../../features/settings/tax/data/repositories/tax_repository_impl.dart'
@@ -236,6 +243,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i126.CrmRemoteDs>(
       () => _i126.CrmRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i885.PurchaseRemoteDs>(
+      () => _i885.PurchaseRemoteDsImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i353.UnitRemoteDs>(
       () => _i353.UnitRemoteDsImpl(gh<_i454.SupabaseClient>()),
     );
@@ -256,6 +266,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i28.OutletRepository>(
       () => _i73.OutletRepositoryImpl(gh<_i1062.OutletRemoteDs>()),
+    );
+    gh.lazySingleton<_i220.PurchaseRepository>(
+      () => _i254.PurchaseRepositoryImpl(gh<_i885.PurchaseRemoteDs>()),
     );
     gh.factory<_i140.BrandCubit>(
       () => _i140.BrandCubit(gh<_i396.BrandRepository>()),
@@ -316,6 +329,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i425.WarehouseCubit>(
       () => _i425.WarehouseCubit(gh<_i163.WarehouseRepository>()),
+    );
+    gh.factory<_i771.PurchaseCubit>(
+      () => _i771.PurchaseCubit(gh<_i220.PurchaseRepository>()),
     );
     gh.factory<_i726.UnitCubit>(
       () => _i726.UnitCubit(gh<_i921.UnitRepository>()),

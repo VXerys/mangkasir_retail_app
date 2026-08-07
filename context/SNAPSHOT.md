@@ -3,7 +3,7 @@
 
 # MangRitel — di mana proyek ini sekarang
 
-_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T02:30:16Z_
+_Sumber: `context/roadmap.yaml` · diperbarui 2026-08-07T06:20:02Z_
 
 ## 🔄 Aplikasi Flutter — fase aktif UI-6 · Identity dan Organisasi Nyata
 
@@ -15,7 +15,7 @@ Berikutnya:
 
 1. `ui6-device-rbac` Buktikan login, deep link terlarang, menu berbasis izin, ganti outlet, dan logout di ponsel serta tablet Android/iOS _(UI-6)_
 2. `ui6-quality-gate` [Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific integration test (auth Supabase nyata, RBAC lintas role, isolasi tenant di device Android/iOS); kumpulkan bukti sebelum fase dinyatakan DONE _(UI-6)_
-3. `ui10-order-list` Halaman /purchase/orders: daftar, filter supplier/status/tanggal/outlet, total, dan aksi buat purchase order _(UI-10)_
+3. `ui11-pos-catalog` Halaman /sales/pos responsif dengan ProductCard, pencarian/scan, filter kategori, harga-varian, stok tersedia, dan katalog outlet aktif _(UI-11)_
 
 ## ⬜ Backend Supabase — fase aktif BE-1 · Quality Gate Kontrak Inti
 
@@ -47,7 +47,7 @@ _Tidak ada task berstatus in_progress._
 - ✅ **UI-7** Master Data Katalog — 8/8 (100%)
 - ✅ **UI-8** CRM — 7/7 (100%)
 - ✅ **UI-9** Inventory Core — 7/7 (100%)
-- ⬜ **UI-10** Pembelian — 0/8 (0%)
+- ✅ **UI-10** Pembelian — 8/8 (100%)
 - ⬜ **UI-11** POS dan Penjualan — 0/10 (0%)
 - ⬜ **UI-12** Keuangan — 0/8 (0%)
 - ⬜ **UI-13** Dasbor dan Laporan — 0/9 (0%)

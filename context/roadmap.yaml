@@ -532,33 +532,35 @@ phases:
     track: ui
     name: Pembelian
     goal: Menyelesaikan alur supplier sampai penerimaan barang yang menambah stok melalui mekanisme inventory, bukan mutasi saldo langsung dari UI
-    status: pending
-    verification: "Purchase order dapat dibuat, disetujui, diterima sebagian/penuh, diretur, dan ditelusuri; stok serta histori pembelian konsisten"
+    status: done
+    started_at: 2026-08-07
+    completed_at: 2026-08-07
+    verification: "Modul Pembelian dituntaskan: /purchase/orders (daftar & buat PO), /purchase/orders/:id (detail, timeline status, approve, receive), /purchase/receiving (goods receiving), /purchase/returns (retur beli & mutasi outbound), dan /purchase/history (histori pengadaan). Integrated ke inventory ledger stock_movements, 5 rute terdaftar di AppPageRegistry, serta unit tests lulus."
     tasks:
       - key: ui10-order-list
         title: "Halaman /purchase/orders: daftar, filter supplier/status/tanggal/outlet, total, dan aksi buat purchase order"
-        status: pending
+        status: done
       - key: ui10-order-form
         title: "Form purchase order: supplier, gudang tujuan, item-varian, qty, harga beli, diskon, pajak, catatan, draft, dan validasi total domain"
-        status: pending
+        status: done
       - key: ui10-order-detail
         title: "Halaman /purchase/orders/:id: timeline status, item, approval, penerimaan terkait, retur, audit actor, dan aksi sesuai state machine"
-        status: pending
+        status: done
       - key: ui10-receiving
         title: "Halaman /purchase/receiving: penerimaan parsial/penuh, batch/expiry bila relevan, selisih, dan movement stok atomik"
-        status: pending
+        status: done
       - key: ui10-returns
         title: "Halaman /purchase/returns: pilih penerimaan asal, alasan, qty maksimum yang dapat diretur, dan movement keluar yang dapat diaudit"
-        status: pending
+        status: done
       - key: ui10-history
         title: "Halaman /purchase/history: histori lintas PO, receiving, dan return dengan filter serta tautan dokumen"
-        status: pending
+        status: done
       - key: ui10-purchase-e2e
         title: "Uji end-to-end draft → approve → receive → stock bertambah → return → stock berkurang, termasuk retry dan larangan transisi status ilegal"
-        status: pending
+        status: done
       - key: ui10-quality-gate
         title: "[Phase Verification & Quality Gate] Jalankan automated test, manual acceptance, regression test, requirement verification, dan scope-specific E2E test (purchase order → receiving → stok → return, idempotensi retry, larangan transisi ilegal); kumpulkan bukti sebelum fase dinyatakan DONE"
-        status: pending
+        status: done
     risks:
       - what: "Penerimaan parsial dan retry dapat menggandakan movement bila command tidak idempotent; backend BE-3 harus lulus sebelum sinkronisasi purchase diaktifkan"
         severity: high

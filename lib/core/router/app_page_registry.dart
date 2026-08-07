@@ -22,6 +22,11 @@ import '../../features/inventory/presentation/pages/stock_list_page.dart';
 import '../../features/inventory/presentation/pages/transfers_page.dart';
 import '../../features/products/presentation/pages/product_form_page.dart';
 import '../../features/products/presentation/pages/product_list_page.dart';
+import '../../features/purchase/presentation/pages/purchase_history_page.dart';
+import '../../features/purchase/presentation/pages/purchase_order_detail_page.dart';
+import '../../features/purchase/presentation/pages/purchase_orders_page.dart';
+import '../../features/purchase/presentation/pages/purchase_receiving_page.dart';
+import '../../features/purchase/presentation/pages/purchase_returns_page.dart';
 import '../../features/settings/tax/presentation/pages/tax_settings_page.dart';
 import '../../features/warehouses/presentation/pages/warehouses_page.dart';
 
@@ -84,6 +89,13 @@ abstract final class AppPageRegistry {
     AppRoutes.inventoryAdjustments: AdjustmentsPage.pageBuilder,
     AppRoutes.inventoryTransfers: TransfersPage.pageBuilder,
     AppRoutes.inventoryOpname: OpnamePage.pageBuilder,
+
+    // ── Pembelian (UI-10) ──────────────────────────────────────────────────
+    AppRoutes.purchaseOrders: PurchaseOrdersPage.pageBuilder,
+    AppRoutes.purchaseOrderDetail: PurchaseOrderDetailPage.pageBuilder,
+    AppRoutes.purchaseReceiving: PurchaseReceivingPage.pageBuilder,
+    AppRoutes.purchaseReturns: PurchaseReturnsPage.pageBuilder,
+    AppRoutes.purchaseHistory: PurchaseHistoryPage.pageBuilder,
   };
 
   /// Pembangun untuk [route], atau null bila alamat itu masih penanda tempat.
